@@ -1,66 +1,657 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Cricket Predictions</title>
-  <!-- Bootstrap CSS -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  />
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RDM Channel - Sports News & Cricket Predictions</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1e40af;
+            --secondary-color: #3b82f6;
+            --accent-color: #f59e0b;
+            --dark-color: #1f2937;
+            --light-color: #f3f4f6;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            background-color: #f8fafc;
+        }
+        
+        /* Header Styles */
+        .top-bar {
+            background-color: var(--dark-color);
+            padding: 8px 0;
+        }
+        
+        .top-bar a {
+            color: #e5e7eb;
+            font-size: 14px;
+            margin-right: 15px;
+            text-decoration: none;
+        }
+        
+        .top-bar a:hover {
+            color: white;
+        }
+        
+        .main-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            padding: 20px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo:hover {
+            color: white;
+        }
+        
+        .logo-icon {
+            background-color: var(--accent-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .nav-link {
+            color: white !important;
+            font-weight: 600;
+            padding: 10px 20px !important;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .nav-link i {
+            margin-right: 6px;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://via.placeholder.com/1920x600');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 20px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        /* Featured Section */
+        .section-title {
+            position: relative;
+            margin-bottom: 40px;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 60px;
+            height: 4px;
+            background-color: var(--accent-color);
+        }
+        
+        .card {
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .card-category {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .card-title {
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .card-text {
+            color: #6b7280;
+        }
+        
+        .card-footer {
+            background-color: white;
+            border-top: 1px solid #f3f4f6;
+            padding: 15px;
+        }
+        
+        .card-footer small {
+            color: #6b7280;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .cta-section h2 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .cta-section p {
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+        
+        .btn-cta {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-weight: 600;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-cta:hover {
+            background-color: #e69009;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(245, 158, 11, 0.4);
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--dark-color);
+            color: #e5e7eb;
+            padding: 60px 0 30px;
+        }
+        
+        .footer h5 {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #e5e7eb;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+        
+        .social-icons a {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+        
+        .copyright p {
+            margin-bottom: 0;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 16px;
+            }
+            
+            .section-title {
+                text-align: center;
+            }
+            
+            .section-title::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+    </style>
 </head>
 <body>
-
-  <!-- Bootstrap Navbar Header -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">🏏 Cricket Predictions</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Predictions</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
-          </li>
-        </ul>
-      </div>
+    <!-- Top Bar -->
+    <div class="top-bar d-none d-md-block">
+        <div class="container">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <a href="#"><i class="fas fa-envelope me-1"></i> contact@rdmchannel.com</a>
+                    <a href="#"><i class="fas fa-phone me-1"></i> +91 9876543210</a>
+                </div>
+                <div>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
     </div>
-  </nav>
 
-  <div class="container mt-4">
-    <h1>🏏 Cricket Match Predictions</h1>
+    <!-- Header -->
+    <header class="main-header sticky-top">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-dark">
+                <a class="logo" href="index.html">
+                    <div class="logo-icon">RDM</div>
+                    Channel
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#"><i class="fas fa-home"></i> Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-newspaper"></i> News</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-cricket"></i> Cricket</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-blog"></i> Posts</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-video"></i> Vlogs</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-chart-line"></i> Predictions</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
 
-    <form id="predictionForm">
-      <input type="text" id="team1" placeholder="Team 1" required />
-      <input type="text" id="team2" placeholder="Team 2" required />
-      <input type="text" id="prediction" placeholder="Your Prediction" required />
-      <button type="submit" class="btn btn-primary mt-2">Post Prediction</button>
-    </form>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Your Ultimate Cricket Destination</h1>
+            <p>Stay updated with the latest news, match analyses, expert predictions, and exclusive content from the world of cricket.</p>
+            <a href="#" class="btn btn-cta">Subscribe Now</a>
+        </div>
+    </section>
 
-    <h2 class="mt-4">📢 Latest Predictions</h2>
-    <ul id="predictionList" class="list-group"></ul>
-  </div>
+    <!-- Featured News Section -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="section-title">Featured News</h2>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100">
+                        <span class="card-category">IPL 2025</span>
+                        <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="News Image">
+                        <div class="card-body">
+                            <h5 class="card-title">LSG Defeats GT by 33 Runs in a High-Scoring Thriller</h5>
+                            <p class="card-text">Mitchell Marsh's explosive century powers Lucknow Super Giants to a commanding victory against Gujarat Titans.</p>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between align-items-center">
+                            <small>May 22, 2025</small>
+                            <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100">
+                        <span class="card-category">Test Cricket</span>
+                        <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="News Image">
+                        <div class="card-body">
+                            <h5 class="card-title">India Announces Squad for England Test Series</h5>
+                            <p class="card-text">Several new faces included as selectors look to build a team for the future while maintaining experience.</p>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between align-items-center">
+                            <small>May 20, 2025</small>
+                            <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100">
+                        <span class="card-category">T20 World Cup</span>
+                        <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="News Image">
+                        <div class="card-body">
+                            <h5 class="card-title">ICC Announces T20 World Cup 2026 Schedule</h5>
+                            <p class="card-text">The tournament will be hosted across 8 cities with the opening match scheduled for March 4, 2026.</p>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between align-items-center">
+                            <small>May 18, 2025</small>
+                            <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <!-- Bootstrap JS Bundle (includes Popper) -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Latest Predictions Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title">Latest Predictions</h2>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-3">
+                                <span class="badge bg-primary">IPL 2025</span>
+                                <span class="text-muted">May 23, 2025</span>
+                            </div>
+                            <h5 class="card-title">CSK vs MI: Match Prediction</h5>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-warning text-white rounded-circle p-2 me-2">CSK</div>
+                                    <span>Chennai Super Kings</span>
+                                </div>
+                                <span>vs</span>
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-primary text-white rounded-circle p-2 me-2">MI</div>
+                                    <span>Mumbai Indians</span>
+                                </div>
+                            </div>
+                            <p class="card-text">Our analysis predicts a close contest with CSK having a 55% chance of winning due to their strong home record and current form.</p>
+                            <div class="progress mb-3">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 55%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100">55%</div>
+                                <div class="progress-bar bg-primary" role="progressbar" style="width: 45%" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">45%</div>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between align-items-center">
+                            <div>
+                                <i class="fas fa-user-circle me-1"></i> By Expert Analyst
+                            </div>
+                            <a href="#" class="btn btn-sm btn-outline-primary">Full Analysis</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-3">
+                                <span class="badge bg-success">ODI Series</span>
+                                <span class="text-muted">May 25, 2025</span>
+                            </div>
+                            <h5 class="card-title">IND vs AUS: 1st ODI Prediction</h5>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-info text-white rounded-circle p-2 me-2">IND</div>
+                                    <span>India</span>
+                                </div>
+                                <span>vs</span>
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-warning text-white rounded-circle p-2 me-2">AUS</div>
+                                    <span>Australia</span>
+                                </div>
+                            </div>
+                            <p class="card-text">India's strong batting lineup and home advantage gives them a 60% edge over Australia in the series opener at Mumbai.</p>
+                            <div class="progress mb-3">
+                                <div class="progress-bar bg-info" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">60%</div>
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">40%</div>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between align-items-center">
+                            <div>
+                                <i class="fas fa-user-circle me-1"></i> By Expert Analyst
+                            </div>
+                            <a href="#" class="btn btn-sm btn-outline-primary">Full Analysis</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <script type="module" src="script.js"></script>
+    <!-- Latest Videos Section -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="section-title">Latest Videos</h2>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100">
+                        <div class="position-relative">
+                            <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="Video Thumbnail">
+                            <div class="position-absolute top-50 start-50 translate-middle">
+                                <div class="bg-white rounded-circle p-3 shadow">
+                                    <i class="fas fa-play text-primary"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Match Analysis: LSG vs GT Highlights</h5>
+                            <p class="card-text">Breaking down the key moments from the high-scoring encounter between LSG and GT.</p>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between align-items-center">
+                            <small><i class="fas fa-eye me-1"></i> 24K views</small>
+                            <small><i class="fas fa-clock me-1"></i> 15:30</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100">
+                        <div class="position-relative">
+                            <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="Video Thumbnail">
+                            <div class="position-absolute top-50 start-50 translate-middle">
+                                <div class="bg-white rounded-circle p-3 shadow">
+                                    <i class="fas fa-play text-primary"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Expert Interview: Future of Test Cricket</h5>
+                            <p class="card-text">Former players discuss the challenges and opportunities for Test cricket in the T20 era.</p>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between align-items-center">
+                            <small><i class="fas fa-eye me-1"></i> 18K views</small>
+                            <small><i class="fas fa-clock me-1"></i> 22:45</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100">
+                        <div class="position-relative">
+                            <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="Video Thumbnail">
+                            <div class="position-absolute top-50 start-50 translate-middle">
+                                <div class="bg-white rounded-circle p-3 shadow">
+                                    <i class="fas fa-play text-primary"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Batting Masterclass: Playing Spin Bowling</h5>
+                            <p class="card-text">Learn the techniques and strategies to master spin bowling from professional coaches.</p>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between align-items-center">
+                            <small><i class="fas fa-eye me-1"></i> 32K views</small>
+                            <small><i class="fas fa-clock me-1"></i> 18:15</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>Never Miss a Cricket Update</h2>
+            <p>Subscribe to our newsletter and get the latest news, match predictions, and exclusive content delivered straight to your inbox.</p>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control form-control-lg" placeholder="Your email address">
+                        <button class="btn btn-cta" type="button">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <a class="logo mb-4 d-inline-block" href="index.html">
+                        <div class="logo-icon">RDM</div>
+                        Channel
+                    </a>
+                    <p>Your ultimate destination for cricket news, analysis, predictions, and exclusive content. Stay updated with everything happening in the world of cricket.</p>
+                    <div class="social-icons mt-4">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h5>Quick Links</h5>
+                    <ul class="footer-links">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h5>Categories</h5>
+                    <ul class="footer-links">
+                        <li><a href="#">News</a></li>
+                        <li><a href="#">Cricket</a></li>
+                        <li><a href="#">Posts</a></li>
+                        <li><a href="#">Vlogs</a></li>
+                        <li><a href="#">Predictions</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-4 mb-4">
+                    <h5>Contact Us</h5>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-map-marker-alt me-2"></i> 123 Cricket Avenue, Sports City, India</li>
+                        <li><i class="fas fa-phone me-2"></i> +91 9876543210</li>
+                        <li><i class="fas fa-envelope me-2"></i> contact@rdmchannel.com</li>
+                    </ul>
+                    <div class="mt-4">
+                        <h5>Download Our App</h5>
+                        <div class="d-flex mt-3">
+                            <a href="#" class="me-2"><img src="https://via.placeholder.com/120x40" alt="App Store"></a>
+                            <a href="#"><img src="https://via.placeholder.com/120x40" alt="Google Play"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copyright text-center">
+            <div class="container">
+                <p>© 2025 RDM Channel. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script>
+        // Add active class to current nav item
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    navLinks.forEach(item => item.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
 </body>
 </html>
