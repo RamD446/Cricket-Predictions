@@ -298,6 +298,26 @@
                 transform: translateX(-50%);
             }
         }
+        .logo {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 20px;
+  text-decoration: none;
+  color: #000; /* Change color as needed */
+}
+
+.logo-icon {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* spacing between image and "RDM" */
+}
+
+.logo-icon img {
+  height: 40px; /* Control logo image size here */
+  width: auto;
+}
+
     </style>
 </head>
 <body>
@@ -306,14 +326,14 @@
         <div class="container">
             <div class="d-flex justify-content-between">
                 <div>
-                    <a href="#"><i class="fas fa-envelope me-1"></i> contact@rdmchannel.com</a>
-                    <a href="#"><i class="fas fa-phone me-1"></i> +91 9876543210</a>
+                    <a ><i class="fas fa-envelope me-1"></i> contact@rdmchannel.com</a>
+                    <a ><i class="fas fa-phone me-1"></i> +91 9876543210</a>
                 </div>
                 <div>
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a ><i class="fab fa-facebook-f"></i></a>
+                    <a ><i class="fab fa-twitter"></i></a>
+                    <a ><i class="fab fa-instagram"></i></a>
+                    <a ><i class="fab fa-youtube"></i></a>
                 </div>
             </div>
         </div>
@@ -324,31 +344,34 @@
         <div class="container">
             <nav class="navbar navbar-expand-lg navbar-dark">
                 <a class="logo" href="index.html">
-                    <div class="logo-icon">RDM</div>
-                    Channel
-                </a>
+                    <div class="logo-icon">
+                         <img src="images/rdm logo.jpg" alt="Logo" /><span>RDM</span>
+                    </div>
+                
+
+
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link active" href="#"><i class="fas fa-home"></i> Home</a>
+                            <a class="nav-link active" ><i class="fas fa-home"></i> Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fas fa-newspaper"></i> News</a>
+                            <a class="nav-link" ><i class="fas fa-newspaper"></i> News</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fas fa-cricket"></i> Cricket</a>
+                            <a class="nav-link" ><i class="fas fa-cricket"></i> Cricket</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fas fa-blog"></i> Posts</a>
+                            <a class="nav-link" ><i class="fas fa-blog"></i> Posts</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fas fa-video"></i> Vlogs</a>
+                            <a class="nav-link" ><i class="fas fa-video"></i> Vlogs</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fas fa-chart-line"></i> Predictions</a>
+                            <a class="nav-link" ><i class="fas fa-chart-line"></i> Predictions</a>
                         </li>
                     </ul>
                 </div>
@@ -357,13 +380,13 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="hero">
+    <!-- <section class="hero">
         <div class="container">
-            <h1>Your Ultimate Cricket Destination</h1>
+            <h1> Well come <br></b>Your Ultimate Cricket Destination</h1>
             <p>Stay updated with the latest news, match analyses, expert predictions, and exclusive content from the world of cricket.</p>
-            <a href="#" class="btn btn-cta">Subscribe Now</a>
+            <a  class="btn btn-cta">Be Positive and Subscribe Now</a>
         </div>
-    </section>
+    </section> -->
 
     <!-- Featured News Section -->
     <section class="py-5">
@@ -373,42 +396,42 @@
                 <div class="col-md-6 col-lg-4">
                     <div class="card h-100">
                         <span class="card-category">IPL 2025</span>
-                        <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="News Image">
+                        <img src="images/image1.jpeg" class="card-img-top" alt="News Image">
                         <div class="card-body">
                             <h5 class="card-title">LSG Defeats GT by 33 Runs in a High-Scoring Thriller</h5>
                             <p class="card-text">Mitchell Marsh's explosive century powers Lucknow Super Giants to a commanding victory against Gujarat Titans.</p>
                         </div>
                         <div class="card-footer d-flex justify-content-between align-items-center">
                             <small>May 22, 2025</small>
-                            <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
+                            <a  class="btn btn-sm btn-outline-primary">Read More</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
                     <div class="card h-100">
                         <span class="card-category">Test Cricket</span>
-                        <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="News Image">
+                        <img src="images/image2.jpeg"  class="card-img-top" alt="News Image">
                         <div class="card-body">
                             <h5 class="card-title">India Announces Squad for England Test Series</h5>
                             <p class="card-text">Several new faces included as selectors look to build a team for the future while maintaining experience.</p>
                         </div>
                         <div class="card-footer d-flex justify-content-between align-items-center">
                             <small>May 20, 2025</small>
-                            <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
+                            <a  class="btn btn-sm btn-outline-primary">Read More</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
                     <div class="card h-100">
                         <span class="card-category">T20 World Cup</span>
-                        <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="News Image">
+                        <img src="images/image3.png" class="card-img-top" alt="News Image">
                         <div class="card-body">
                             <h5 class="card-title">ICC Announces T20 World Cup 2026 Schedule</h5>
                             <p class="card-text">The tournament will be hosted across 8 cities with the opening match scheduled for March 4, 2026.</p>
                         </div>
                         <div class="card-footer d-flex justify-content-between align-items-center">
                             <small>May 18, 2025</small>
-                            <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
+                            <a  class="btn btn-sm btn-outline-primary">Read More</a>
                         </div>
                     </div>
                 </div>
@@ -450,7 +473,7 @@
                             <div>
                                 <i class="fas fa-user-circle me-1"></i> By Expert Analyst
                             </div>
-                            <a href="#" class="btn btn-sm btn-outline-primary">Full Analysis</a>
+                            <a  class="btn btn-sm btn-outline-primary">Full Analysis</a>
                         </div>
                     </div>
                 </div>
@@ -483,7 +506,7 @@
                             <div>
                                 <i class="fas fa-user-circle me-1"></i> By Expert Analyst
                             </div>
-                            <a href="#" class="btn btn-sm btn-outline-primary">Full Analysis</a>
+                            <a  class="btn btn-sm btn-outline-primary">Full Analysis</a>
                         </div>
                     </div>
                 </div>
@@ -499,7 +522,7 @@
                 <div class="col-md-6 col-lg-4">
                     <div class="card h-100">
                         <div class="position-relative">
-                            <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="Video Thumbnail">
+                            <img src="images/image2.jpeg"  class="card-img-top" alt="Video Thumbnail">
                             <div class="position-absolute top-50 start-50 translate-middle">
                                 <div class="bg-white rounded-circle p-3 shadow">
                                     <i class="fas fa-play text-primary"></i>
@@ -519,7 +542,7 @@
                 <div class="col-md-6 col-lg-4">
                     <div class="card h-100">
                         <div class="position-relative">
-                            <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="Video Thumbnail">
+                            <img src="images/image3.png"  class="card-img-top" alt="Video Thumbnail">
                             <div class="position-absolute top-50 start-50 translate-middle">
                                 <div class="bg-white rounded-circle p-3 shadow">
                                     <i class="fas fa-play text-primary"></i>
@@ -539,7 +562,7 @@
                 <div class="col-md-6 col-lg-4">
                     <div class="card h-100">
                         <div class="position-relative">
-                            <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="Video Thumbnail">
+                             <img src="images/image1.jpeg"class="card-img-top" alt="Video Thumbnail">
                             <div class="position-absolute top-50 start-50 translate-middle">
                                 <div class="bg-white rounded-circle p-3 shadow">
                                     <i class="fas fa-play text-primary"></i>
@@ -581,53 +604,46 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 mb-4">
-                    <a class="logo mb-4 d-inline-block" href="index.html">
-                        <div class="logo-icon">RDM</div>
-                        Channel
-                    </a>
+
                     <p>Your ultimate destination for cricket news, analysis, predictions, and exclusive content. Stay updated with everything happening in the world of cricket.</p>
                     <div class="social-icons mt-4">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a ><i class="fab fa-facebook-f"></i></a>
+                        <a ><i class="fab fa-twitter"></i></a>
+                        <a ><i class="fab fa-instagram"></i></a>
+                        <a ><i class="fab fa-youtube"></i></a>
+                        <a ><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4 mb-4">
                     <h5>Quick Links</h5>
                     <ul class="footer-links">
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
+                        <li><a >Home</a></li>
+                        <li><a >About Us</a></li>
+                        <li><a >Contact Us</a></li>
+                        <li><a >Privacy Policy</a></li>
+                        <li><a >Terms of Service</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-2 col-md-4 mb-4">
                     <h5>Categories</h5>
                     <ul class="footer-links">
-                        <li><a href="#">News</a></li>
-                        <li><a href="#">Cricket</a></li>
-                        <li><a href="#">Posts</a></li>
-                        <li><a href="#">Vlogs</a></li>
-                        <li><a href="#">Predictions</a></li>
+                        <li><a >News</a></li>
+                        <li><a >Cricket</a></li>
+                        <li><a >Posts</a></li>
+                        <li><a >Vlogs</a></li>
+                        <li><a >Predictions</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-4 col-md-4 mb-4">
                     <h5>Contact Us</h5>
                     <ul class="footer-links">
+                        <li><i class="fas fa-user me-2"></i> Website developed by Yalla Ramana</li>
                         <li><i class="fas fa-map-marker-alt me-2"></i> 123 Cricket Avenue, Sports City, India</li>
-                        <li><i class="fas fa-phone me-2"></i> +91 9876543210</li>
-                        <li><i class="fas fa-envelope me-2"></i> contact@rdmchannel.com</li>
+                        <li><i class="fas fa-phone me-2"></i> +91 8179479516 </li>
+                        <li><i class="fas fa-envelope me-2"></i> Ramana9000r@gmail.com</li>
+                        <li><i class="fas fa-clock me-2"></i> Mon - Fri: 9:00 AM - 6:00 PM</li>
                     </ul>
-                    <div class="mt-4">
-                        <h5>Download Our App</h5>
-                        <div class="d-flex mt-3">
-                            <a href="#" class="me-2"><img src="https://via.placeholder.com/120x40" alt="App Store"></a>
-                            <a href="#"><img src="https://via.placeholder.com/120x40" alt="Google Play"></a>
-                        </div>
-                    </div>
+                  
                 </div>
             </div>
         </div>
