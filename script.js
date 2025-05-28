@@ -1,48 +1,47 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
-import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
+// Import Firebase modules
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, push } from "firebase/database";
 
-// Firebase config — replace with your real data
+// Firebase config
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+  apiKey: "AIzaSyCK_3CTysqCxTWLhMHZ_mtsa-5f1E3w1Js",
+  authDomain: "rdmdb-76959.firebaseapp.com",
   databaseURL: "https://rdmdb-76959-default-rtdb.firebaseio.com",
   projectId: "rdmdb-76959",
-  storageBucket: "rdmdb-76959.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  storageBucket: "rdmdb-76959.firebasestorage.app",
+  messagingSenderId: "415793355835",
+  appId: "1:415793355835:web:daf2911118c0c38611d01e",
+  measurementId: "G-2ZXYPG8WZT"
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-const form = document.getElementById("predictionForm");
-const list = document.getElementById("predictionList");
 
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const team1 = document.getElementById("team1").value;
-  const team2 = document.getElementById("team2").value;
-  const prediction = document.getElementById("prediction").value;
-
-  push(ref(db, "predictions"), {
-    team1,
-    team2,
-    prediction,
+function saveFeedback(name, email, message) {
+  const feedbackRef = ref(db, 'feedbacks/');
+  push(feedbackRef, {
+    name,
+    email,
+    message,
     timestamp: Date.now()
   });
+}
 
-  form.reset();
-});
+const feedbackForm = document.getElementById("feedbackForm");
 
-// Display predictions
-onValue(ref(db, "predictions"), (snapshot) => {
-  list.innerHTML = "";
-  const data = snapshot.val();
-  if (data) {
-    Object.values(data).forEach(pred => {
-      const li = document.createElement("li");
-      li.textContent = `${pred.team1} vs ${pred.team2}: ${pred.prediction}`;
-      list.appendChild(li);
-    });
-  }
-});
+if (feedbackForm) {
+  feedbackForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const message = document.getElementById("message").value;
+
+    saveFeedback(name, email, message);
+
+    alert("✅ Feedback submitted successfully!");
+    feedbackForm.reset();
+  });
+}
