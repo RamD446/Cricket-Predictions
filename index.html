@@ -75,8 +75,7 @@
 
             </div>
         </div>
-    </nav>
-    
+    </nav>   
 
 <!-- ✅ Login Modal -->
 <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
@@ -138,67 +137,9 @@
 
   
 
-<!-- Tabs -->
-<div>
-  <div class="container bg-light border-bottom py-4">
-    <h2 class="text-center fw-bold mb-2">Today's Match Predictions</h2>
-    <p class="text-center text-muted mb-4">Select a sport below to view expert predictions for today’s games.</p>
-
-    <ul class="nav justify-content-center flex-wrap gap-2">
-      <li class="nav-item">
-        <button class="btn btn-outline-dark tab-btn active" data-sport="all">
-          <i class="bi bi-grid me-1"></i> All Sports
-        </button>
-      </li>
-      <li class="nav-item">
-        <button class="btn btn-outline-dark tab-btn" data-sport="cricket">
-          <i class="bi bi-trophy me-1"></i> Cricket
-        </button>
-      </li>
-      <li class="nav-item">
-        <button class="btn btn-outline-dark tab-btn" data-sport="football">
-          <i class="bi bi-dribbble me-1"></i> Football
-        </button>
-      </li>
-      <li class="nav-item">
-        <button class="btn btn-outline-dark tab-btn" data-sport="basketball">
-          <i class="bi bi-basket me-1"></i> Basketball
-        </button>
-      </li>
-    </ul>
-  </div>
-</div>
-
-
-
-
-<!-- Predictions -->
-<div class="container py-4">
-  <div class="row">
-    <div class="col-md-8 offset-md-2">
-
-      <div class="card mb-3 prediction-card cricket show">
-        <div class="card-body">🏏 Cricket: India vs Australia</div>
-      </div>
-
-      <div class="card mb-3 prediction-card football show">
-        <div class="card-body">⚽ Football: Man City vs Arsenal</div>
-      </div>
-
-      <div class="card mb-3 prediction-card basketball show">
-        <div class="card-body">🏀 Basketball: Lakers vs Celtics</div>
-      </div>
-
-      <div class="card mb-3 prediction-card cricket show">
-        <div class="card-body">🏏 Cricket: IPL Final</div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-
-   <!-- Create Prediction Button (Right-Aligned) -->
+<!-- Tabs Section -->
+<div class="container bg-light border-bottom py-4">
+      <!-- Create Prediction Button (Right-Aligned) -->
 <div class="container mt-4 d-none" id="createBtnWrapper">
   <div class="d-flex justify-content-end">
     <button class="btn btn-success" id="createBtn" data-bs-toggle="modal" data-bs-target="#editorModal">
@@ -206,6 +147,45 @@
     </button>
   </div>
 </div>
+  <h2 class="text-center fw-bold mb-2">Today's Match Predictions</h2>
+  <p class="text-center text-muted mb-4">Select a sport below to view expert predictions for today’s games.</p>
+
+  <ul class="nav justify-content-center flex-wrap gap-2">
+    <li class="nav-item">
+      <button class="btn btn-outline-dark tab-btn active" data-sport="all">
+        <i class="bi bi-grid me-1"></i> All Sports
+      </button>
+    </li>
+    <li class="nav-item">
+      <button class="btn btn-outline-dark tab-btn" data-sport="cricket">
+        <i class="bi bi-trophy me-1"></i> Cricket
+      </button>
+    </li>
+    <li class="nav-item">
+      <button class="btn btn-outline-dark tab-btn" data-sport="football">
+        <i class="bi bi-dribbble me-1"></i> Football
+      </button>
+    </li>
+    <li class="nav-item">
+      <button class="btn btn-outline-dark tab-btn" data-sport="basketball">
+        <i class="bi bi-basket me-1"></i> Basketball
+      </button>
+    </li>
+  </ul>
+</div>
+
+<!-- Predictions Display Section -->
+<div class="container py-4">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <div class="accordion mt-4" id="matchAccordion"></div>
+    </div>
+  </div>
+</div>
+
+
+
+ 
 
 <!-- Prediction Editor Modal -->
 <div class="modal fade" id="editorModal" tabindex="-1" aria-labelledby="editorModalLabel" aria-hidden="true">
@@ -218,19 +198,52 @@
 
       <div class="modal-body">
         <form id="predictionForm">
-          <div class="mb-3">
-            <label for="titleInput" class="form-label">Prediction Title</label>
-            <input type="text" id="titleInput" class="form-control" placeholder="Enter prediction title" required />
-          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="titleInput" class="form-label">Prediction Title</label>
+              <input type="text" id="titleInput" class="form-control" placeholder="Enter prediction title" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="matchInput" class="form-label">Match Number</label>
+              <input type="text" id="matchInput" class="form-control" placeholder="Enter match number" required>
+            </div>
 
-          <div class="mb-3">
-            <label for="matchInput" class="form-label">Match Number</label>
-            <input type="text" id="matchInput" class="form-control" placeholder="Enter match number" required />
+            <div class="col-md-6 mb-3">
+              <label for="teamA" class="form-label">Team A</label>
+              <input type="text" id="teamA" class="form-control" placeholder="Team A name" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="teamB" class="form-label">Team B</label>
+              <input type="text" id="teamB" class="form-control" placeholder="Team B name" required>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label for="teamAChance" class="form-label">Team A Winning %</label>
+              <input type="number" id="teamAChance" class="form-control" placeholder="e.g. 60" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="teamBChance" class="form-label">Team B Winning %</label>
+              <input type="number" id="teamBChance" class="form-control" placeholder="e.g. 40" required>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label for="gameType" class="form-label">Game Type</label>
+              <select id="gameType" class="form-select" required>
+                <option value="">Select game type</option>
+                <option value="cricket">Cricket</option>
+                <option value="football">Football</option>
+                <option value="basketball">Basketball</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="authorName" class="form-label">Author Name</label>
+              <input type="text" id="authorName" class="form-control" placeholder="Author" required>
+            </div>
           </div>
 
           <div class="mb-3">
             <label class="form-label">Prediction Details</label>
-            <div id="editor-container"></div>
+            <div id="editor-container" style="min-height: 150px; border: 1px solid #ccc; padding: 10px;"></div>
           </div>
 
           <p id="status" class="text-success mt-2 mb-0"></p>
@@ -245,153 +258,13 @@
   </div>
 </div>
 
-<!-- Saved Predictions Section -->
-<div class="container pb-5">
-  <h2 class="mb-4">Saved Predictions</h2>
-  <div id="cards-container" class="row gy-4"></div>
-</div>
+
+
 
 
     <!-- Main Content -->
     <div class="container py-4">
-        <!-- Predictions Section -->
-        <section id="predictions" class="mb-5">
-            <h2 class="section-title">Today's Match Predictions</h2>
-            <div class="row">
-                <!-- Match Card 1 -->
-                <div class="col-md-6">
-                    <div class="card match-card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <span><i class="bi bi-calendar-event me-2"></i> Today, 7:30 PM</span>
-                            <span class="badge bg-light text-dark">T20</span>
-                        </div>
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <div class="d-flex align-items-center">
-                                    <div class="team-logo me-2">IND</div>
-                                    <h5 class="mb-0">India</h5>
-                                </div>
-                                <span class="vs-badge">VS</span>
-                                <div class="d-flex align-items-center">
-                                    <h5 class="mb-0">Australia</h5>
-                                    <div class="team-logo ms-2">AUS</div>
-                                </div>
-                            </div>
-                            <div class="progress mb-3" style="height: 10px;">
-                                <div class="progress-bar bg-primary" role="progressbar" style="width: 65%"></div>
-                                <div class="progress-bar bg-warning" role="progressbar" style="width: 35%"></div>
-                            </div>
-                            <div class="d-flex justify-content-between small mb-4">
-                                <span>India: 65% chance</span>
-                                <span>Australia: 35% chance</span>
-                            </div>
-                            <div class="prediction-badge">
-                                <i class="bi bi-graph-up me-2"></i> Prediction: India to win
-                            </div>
-                            <div class="mt-3">
-                                <button class="btn btn-sm btn-outline-primary"><i class="bi bi-eye me-1"></i> Detailed Analysis</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Match Card 2 -->
-                <div class="col-md-6">
-                    <div class="card match-card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <span><i class="bi bi-calendar-event me-2"></i> Tomorrow, 3:00 PM</span>
-                            <span class="badge bg-light text-dark">ODI</span>
-                        </div>
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <div class="d-flex align-items-center">
-                                    <div class="team-logo me-2">ENG</div>
-                                    <h5 class="mb-0">England</h5>
-                                </div>
-                                <span class="vs-badge">VS</span>
-                                <div class="d-flex align-items-center">
-                                    <h5 class="mb-0">Pakistan</h5>
-                                    <div class="team-logo ms-2">PAK</div>
-                                </div>
-                            </div>
-                            <div class="progress mb-3" style="height: 10px;">
-                                <div class="progress-bar bg-primary" role="progressbar" style="width: 55%"></div>
-                                <div class="progress-bar bg-warning" role="progressbar" style="width: 45%"></div>
-                            </div>
-                            <div class="d-flex justify-content-between small mb-4">
-                                <span>England: 55% chance</span>
-                                <span>Pakistan: 45% chance</span>
-                            </div>
-                            <div class="prediction-badge">
-                                <i class="bi bi-graph-up me-2"></i> Prediction: England to win
-                            </div>
-                            <div class="mt-3">
-                                <button class="btn btn-sm btn-outline-primary"><i class="bi bi-eye me-1"></i> Detailed Analysis</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Fantasy Tips Section -->
-        <section id="fantasy" class="mb-5">
-            <h2 class="section-title">Fantasy Cricket Tips</h2>
-            <div class="card">
-                <div class="card-header bg-light">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0"><i class="bi bi-stars me-2 text-warning"></i> India vs Australia Fantasy Tips</h5>
-                        <span class="badge bg-primary">Today's Match</span>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h6 class="fw-bold mb-3">Captain & Vice-Captain Picks:</h6>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item d-flex align-items-center">
-                                    <div class="team-logo me-2">VK</div>
-                                    <div>
-                                        <strong>Virat Kohli</strong>
-                                        <div class="small text-muted">Consistent performer</div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item d-flex align-items-center">
-                                    <div class="team-logo me-2">SS</div>
-                                    <div>
-                                        <strong>Steve Smith</strong>
-                                        <div class="small text-muted">Excellent record against India</div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-md-6">
-                            <h6 class="fw-bold mb-3">Top Fantasy Picks:</h6>
-                            <div class="row">
-                                <div class="col-6">
-                                    <ul class="list-unstyled">
-                                        <li><i class="bi bi-check-circle-fill text-success me-2"></i> Rohit Sharma</li>
-                                        <li><i class="bi bi-check-circle-fill text-success me-2"></i> Jasprit Bumrah</li>
-                                        <li><i class="bi bi-check-circle-fill text-success me-2"></i> Glenn Maxwell</li>
-                                    </ul>
-                                </div>
-                                <div class="col-6">
-                                    <ul class="list-unstyled">
-                                        <li><i class="bi bi-check-circle-fill text-success me-2"></i> Pat Cummins</li>
-                                        <li><i class="bi bi-check-circle-fill text-success me-2"></i> Hardik Pandya</li>
-                                        <li><i class="bi bi-check-circle-fill text-success me-2"></i> Mitchell Starc</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="alert alert-warning mt-3" role="alert">
-                        <i class="bi bi-lightbulb-fill me-2"></i> <strong>Pro Tip:</strong> The pitch favors spinners, consider adding Ravindra Jadeja to your team.
-                    </div>
-                </div>
-            </div>
-        </section>
-        
+
         <!-- Latest News Section -->
         <section id="news" class="mb-5">
             <h2 class="section-title">Latest Cricket News</h2>
@@ -522,28 +395,7 @@
     });
   });
 </script>
-<script>
-  const tabButtons = document.querySelectorAll('.tab-btn');
-  const predictionCards = document.querySelectorAll('.prediction-card');
 
-  tabButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      // Active tab toggle
-      tabButtons.forEach(btn => btn.classList.remove('active'));
-      button.classList.add('active');
-
-      const sport = button.getAttribute('data-sport');
-
-      predictionCards.forEach(card => {
-        if (sport === 'all') {
-          card.classList.add('show');
-        } else {
-          card.classList.toggle('show', card.classList.contains(sport));
-        }
-      });
-    });
-  });
-</script>
 
 <script>
  document.addEventListener("DOMContentLoaded", () => {
