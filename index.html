@@ -22,6 +22,18 @@
       height: 200px;
     }
   </style>
+  <style>
+    .tab-btn.active {
+      border-bottom: 3px solid #fd7e14;
+      color: #fd7e14 !important;
+    }
+    .prediction-card {
+      display: none;
+    }
+    .prediction-card.show {
+      display: block;
+    }
+  </style>
 </head>
 
 <body>
@@ -64,6 +76,7 @@
             </div>
         </div>
     </nav>
+    
 
 <!-- ✅ Login Modal -->
 <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
@@ -122,6 +135,68 @@
             </div>
         </div>
     </section>
+
+  
+
+<!-- Tabs -->
+<div>
+  <div class="container bg-light border-bottom py-4">
+    <h2 class="text-center fw-bold mb-2">Today's Match Predictions</h2>
+    <p class="text-center text-muted mb-4">Select a sport below to view expert predictions for today’s games.</p>
+
+    <ul class="nav justify-content-center flex-wrap gap-2">
+      <li class="nav-item">
+        <button class="btn btn-outline-dark tab-btn active" data-sport="all">
+          <i class="bi bi-grid me-1"></i> All Sports
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="btn btn-outline-dark tab-btn" data-sport="cricket">
+          <i class="bi bi-trophy me-1"></i> Cricket
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="btn btn-outline-dark tab-btn" data-sport="football">
+          <i class="bi bi-dribbble me-1"></i> Football
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="btn btn-outline-dark tab-btn" data-sport="basketball">
+          <i class="bi bi-basket me-1"></i> Basketball
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+
+
+<!-- Predictions -->
+<div class="container py-4">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+
+      <div class="card mb-3 prediction-card cricket show">
+        <div class="card-body">🏏 Cricket: India vs Australia</div>
+      </div>
+
+      <div class="card mb-3 prediction-card football show">
+        <div class="card-body">⚽ Football: Man City vs Arsenal</div>
+      </div>
+
+      <div class="card mb-3 prediction-card basketball show">
+        <div class="card-body">🏀 Basketball: Lakers vs Celtics</div>
+      </div>
+
+      <div class="card mb-3 prediction-card cricket show">
+        <div class="card-body">🏏 Cricket: IPL Final</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 
    <!-- Create Prediction Button (Right-Aligned) -->
 <div class="container mt-4 d-none" id="createBtnWrapper">
@@ -442,6 +517,28 @@
               behavior: 'smooth'
             });
           }
+        }
+      });
+    });
+  });
+</script>
+<script>
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  const predictionCards = document.querySelectorAll('.prediction-card');
+
+  tabButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      // Active tab toggle
+      tabButtons.forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+
+      const sport = button.getAttribute('data-sport');
+
+      predictionCards.forEach(card => {
+        if (sport === 'all') {
+          card.classList.add('show');
+        } else {
+          card.classList.toggle('show', card.classList.contains(sport));
         }
       });
     });
