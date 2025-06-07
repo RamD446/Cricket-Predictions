@@ -45,31 +45,63 @@
 </head>
 
 <body>
+  <!-- Header with Social Media Icons and Date/Time -->
 
-  
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
-        <div class="container">
-          
-            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" title="Open menu" aria-label="Open menu">
-        <i class="bi bi-list fs-4"><span class="fw-bold">RDMCricketPro</span></i>
+ 
+
+
+
+  <header class="bg-dark py-2">
+  <div class="container d-flex justify-content-between align-items-center" style="color: red; font-weight: bold;">
+
+    <!-- Social Media Icons -->
+    <div class="d-flex gap-3">
+      <a href="#" class="text-danger" title="Facebook"><i class="bi bi-facebook fs-5"></i></a>
+      <a href="#" class="text-danger" title="Twitter"><i class="bi bi-twitter fs-5"></i></a>
+      <a href="#" class="text-danger" title="Instagram"><i class="bi bi-instagram fs-5"></i></a>
+      <a href="#" class="text-danger" title="LinkedIn"><i class="bi bi-linkedin fs-5"></i></a>
+    </div>
+
+    <!-- Date and Time -->
+    <div class="text-end">
+      <span id="currentDate" class="me-3"></span>
+      <span id="currentTime"></span>
+    </div>
+
+  </div>
+</header>
+  <!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+  <div class="container d-flex flex-wrap align-items-center">
+
+    <!-- Offcanvas + Logo -->
+    <div class="d-flex align-items-center" style="margin-right: 3cm;">
+      <button class="btn btn-primary me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" title="Open menu" aria-label="Open menu">
+        <i class="bi bi-list fs-4"></i>
       </button>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" title="Toggle navigation" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-           
-               <div class="ms-lg-3 mt-3 mt-lg-0">
-                <button class="btn btn-sm btn-light" data-bs-toggle="modal" data-bs-target="#loginModal">
-                    <i class="bi bi-person-circle me-1"></i> Login
-                </button>
-                <button class="btn btn-sm btn-warning ms-2" disabled>
-                    <i class="bi bi-person-plus me-1"></i> Sign Up
-                </button>
-            </div>
+      <span class="navbar-brand mb-0 h1">RDMCricketPro</span>
+    </div>
 
-            </div>
-        </div>
-    </nav>   
+    <!-- Navbar Toggler -->
+    <div style="margin-right: 3cm;">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" title="Toggle navigation" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+
+    <!-- Login and Signup Buttons -->
+    <div class="d-flex align-items-center">
+      <button class="btn btn-sm btn-light me-2" data-bs-toggle="modal" data-bs-target="#loginModal">
+        <i class="bi bi-person-circle me-1"></i> Login
+      </button>
+      <button class="btn btn-sm btn-warning" disabled>
+        <i class="bi bi-person-plus me-1"></i> Sign Up
+      </button>
+    </div>
+
+  </div>
+</nav>
+ 
 
 
     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasMenu">
@@ -132,7 +164,6 @@
     </div>
   </div>
 </div>
-
 
 
 
@@ -421,6 +452,25 @@
       });
     });
   });
+</script>
+
+<script>
+  function updateDateTime() {
+    const now = new Date();
+
+    // Format date: Sunday, June 7, 2025
+    const optionsDate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const formattedDate = now.toLocaleDateString(undefined, optionsDate);
+
+    // Format time: HH:MM:SS
+    const formattedTime = now.toLocaleTimeString();
+
+    document.getElementById('currentDate').textContent = formattedDate;
+    document.getElementById('currentTime').textContent = formattedTime;
+  }
+
+  updateDateTime();           // Initial call
+  setInterval(updateDateTime, 1000);  // Update every second
 </script>
 
 
