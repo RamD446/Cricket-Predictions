@@ -45,49 +45,59 @@
 </head>
 
 <body>
-  <!-- Header with Social Media Icons and Date/Time -->
-
- 
-
 
 
 <!-- Mini Header -->
-<header class="bg-dark py-2">
-  <div class="container d-flex justify-content-between align-items-center" style="color: red; font-weight: bold;">
+<header class="bg-dark py-2 text-danger fw-bold">
+  <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+
     <!-- Social Media Icons -->
-    <div class="d-flex gap-3">
-      <a href="#" class="text-danger" title="Facebook"><i class="bi bi-facebook fs-5"></i></a>
-      <a href="#" class="text-danger" title="Twitter"><i class="bi bi-twitter fs-5"></i></a>
-      <a href="#" class="text-danger" title="Instagram"><i class="bi bi-instagram fs-5"></i></a>
-      <a href="#" class="text-danger" title="LinkedIn"><i class="bi bi-linkedin fs-5"></i></a>
+    <div class="d-flex gap-4">
+      <a href="#" title="Facebook" class="text-danger d-flex align-items-center gap-1">
+        <i class="bi bi-facebook fs-5"></i><span class="d-none d-md-inline">Facebook</span>
+      </a>
+      <a href="#" title="Twitter" class="text-danger d-flex align-items-center gap-1">
+        <i class="bi bi-twitter fs-5"></i><span class="d-none d-md-inline">Twitter</span>
+      </a>
+      <a href="#" title="Instagram" class="text-danger d-flex align-items-center gap-1">
+        <i class="bi bi-instagram fs-5"></i><span class="d-none d-md-inline">Instagram</span>
+      </a>
+      <a href="#" title="LinkedIn" class="text-danger d-flex align-items-center gap-1">
+        <i class="bi bi-linkedin fs-5"></i><span class="d-none d-md-inline">LinkedIn</span>
+      </a>
     </div>
 
     <!-- Date and Time -->
-    <div class="text-end">
-      <span id="currentDate" class="me-3"></span>
-      <span id="currentTime"></span>
+    <div class="d-flex gap-4 align-items-center">
+      <div class="d-flex align-items-center gap-1">
+        <i class="bi bi-clock fs-5"></i>
+        <span id="currentTime" class="fs-6"></span>
+      </div>
+      <div class="d-flex align-items-center gap-1">
+        <i class="bi bi-calendar fs-5"></i>
+        <span id="currentDate" class="fs-6"></span>
+      </div>
     </div>
+
   </div>
 </header>
 
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-  <div class="container d-flex flex-wrap align-items-center">
+  <div class="container d-flex flex-wrap align-items-center justify-content-between">
 
     <!-- Offcanvas + Logo -->
-    <div class="d-flex align-items-center mb-2 mb-lg-0 me-lg-5">
-      <button class="btn btn-primary me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" title="Open menu" aria-label="Open menu">
+    <div class="d-flex align-items-center mb-2 mb-lg-0">
+      <button class="btn btn-primary me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-label="Open menu">
         <i class="bi bi-list fs-4"></i>
       </button>
-      <span class="navbar-brand mb-0 h1">RDMCricketPro</span>
+      <a class="navbar-brand mb-0 fs-4" href="#">RDMCricketPro</a>
     </div>
 
     <!-- Navbar Toggler -->
-    <div class="mb-2 mb-lg-0 me-lg-5">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" title="Toggle navigation" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    </div>
+    <button class="navbar-toggler mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
     <!-- Login and Signup Buttons -->
     <div class="d-flex align-items-center">
@@ -104,8 +114,10 @@
 
 
 
- 
 
+
+
+  <!-- Offcanvas Menu -->
 
     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasMenu">
     <div class="offcanvas-header">
