@@ -37,6 +37,11 @@
       display: block;
     }
   </style>
+  <style>
+    .offcanvas-start {
+      width: 250px;
+    }
+  </style>
 </head>
 
 <body>
@@ -45,40 +50,58 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="#">
-                <i class="bi bi-trophy-fill me-2" style="color: var(--accent);"></i>
-                <span class="fw-bold">RDMCricketPro</span>
-            </a>
+          
+            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" title="Open menu" aria-label="Open menu">
+        <i class="bi bi-list fs-4"><span class="fw-bold">RDMCricketPro</span></i>
+      </button>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" title="Toggle navigation" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                   
-                    <li class="nav-item">
-                        <a class="nav-link" href="#predictions"><i class="bi bi-graph-up me-1"></i> Predictions</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#fantasy"><i class="bi bi-stars me-1"></i> Fantasy Tips</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#news"><i class="bi bi-newspaper me-1"></i> News</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#contact"><i class="bi bi-envelope me-1"></i> Contact</a>
-                    </li>
-                </ul>
+           
                <div class="ms-lg-3 mt-3 mt-lg-0">
                 <button class="btn btn-sm btn-light" data-bs-toggle="modal" data-bs-target="#loginModal">
-                <i class="bi bi-person-circle me-1"></i> Login</button>
+                    <i class="bi bi-person-circle me-1"></i> Login
+                </button>
                 <button class="btn btn-sm btn-warning ms-2" disabled>
-               <i class="bi bi-person-plus me-1"></i> Sign Up
-              </button>
-          </div>
+                    <i class="bi bi-person-plus me-1"></i> Sign Up
+                </button>
+            </div>
 
             </div>
         </div>
     </nav>   
+
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasMenu">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title">Menu</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" title="Close menu" aria-label="Close menu"></button>
+    </div>
+    <div class="offcanvas-body">
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2">
+          <a class="nav-link d-flex align-items-center" href="#">
+            <i class="bi bi-house-door-fill me-2"></i> Home
+          </a>
+        </li>
+        <li class="nav-item mb-2">
+          <a class="nav-link d-flex align-items-center" href="#">
+            <i class="bi bi-info-circle-fill me-2"></i> About
+          </a>
+        </li>
+        <li class="nav-item mb-2">
+          <a class="nav-link d-flex align-items-center" href="#">
+            <i class="bi bi-gear-fill me-2"></i> Services
+          </a>
+        </li>
+        <li class="nav-item mb-2">
+          <a class="nav-link d-flex align-items-center" href="#">
+            <i class="bi bi-envelope-fill me-2"></i> Contact
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
 
 <!-- ✅ Login Modal -->
 <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
@@ -109,6 +132,7 @@
     </div>
   </div>
 </div>
+
 
 
 
@@ -181,7 +205,7 @@
 <div class="container py-4">
   <div class="row">
     <div class="col-md-8 offset-md-2">
-      <div class="accordion mt-4" id="matchAccordion"></div>
+      <div class="accordion mt-6" id="matchAccordion"></div>
     </div>
   </div>
 </div>
