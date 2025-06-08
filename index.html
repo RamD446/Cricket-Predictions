@@ -37,6 +37,10 @@
     .prediction-card.show {
       display: block;
     }
+    #Newseditor {
+      min-height: 150px;
+      border: 1px solid #ccc;
+    }
   </style>
   <style>
     .offcanvas-start {
@@ -224,14 +228,16 @@
         </div>
     </section>
 
-  
+
+
+
 
 <!-- Tabs Section -->
 <div class="container bg-light border-bottom py-4">
       <!-- Create Prediction Button (Right-Aligned) -->
 <div class="container mt-4 d-none" id="createBtnWrapper">
   <div class="d-flex justify-content-end">
-    <button class="btn btn-success" id="createBtn" data-bs-toggle="modal" data-bs-target="#editorModal">
+    <button class="btn btn-success" id="createPredictionBtn" data-bs-toggle="modal" data-bs-target="#editorModal">
       ➕ Create Prediction
     </button>
   </div>
@@ -343,7 +349,7 @@
 
           <div class="mb-3">
             <label class="form-label">Prediction Details</label>
-            <div id="editor-container" style="min-height: 150px; border: 1px solid #ccc; padding: 10px;"></div>
+            <div id="editor-container"></div>
           </div>
 
           <p id="status" class="text-success mt-2 mb-0"></p>
@@ -362,36 +368,33 @@
 
 
 
-  <!-- Main Content: Latest Cricket News -->
+ <!-- Main Content: Latest Cricket News -->
 <div class="container py-4">
   <!-- Latest News Section -->
   <section id="news" class="mb-5">
     <!-- Header with Title and Create News Button -->
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h2 class="section-title m-0">
-        <i class="bi bi-newspaper me-2 text-primary"></i>Latest Cricket News
+        <i class="bi bi-newspaper me-2 text-primary"></i>Latest News
       </h2>
-      <!-- Create News Button -->
-     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createNewsModal">
-        <i class="bi bi-plus-circle me-1"></i> Create News
-     </button>
-
+     <!-- News create button wrapper, hidden initially -->
+<div id="createNewsBtnWrapper" class="d-none">
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createNewsModal">
+    <i class="bi bi-plus-circle me-1"></i> Create News
+  </button>
+</div>
     </div>
 
-  <div class="row" id="newsContainer"></div>
+    <div class="row" id="newsContainer"></div>
 
-<div class="d-flex justify-content-between align-items-center mt-3">
-  <button id="prevPage" class="btn btn-outline-secondary btn-sm">Previous</button>
-  <span id="pageInfo" class="mx-2 text-muted small"></span>
-  <button id="nextPage" class="btn btn-outline-secondary btn-sm">Next</button>
-</div>
-
-
-   
+    <div class="d-flex justify-content-between align-items-center mt-3">
+      <button id="prevPage" class="btn btn-outline-secondary btn-sm">Previous</button>
+      <span id="pageInfo" class="mx-2 text-muted small"></span>
+      <button id="nextPage" class="btn btn-outline-secondary btn-sm">Next</button>
+    </div>
   </section>
 </div>
 
-<div id="newsContainer" class="mt-4"></div>
 
 
 <!-- Create News Modal -->
@@ -410,11 +413,11 @@
           </div>
           <div class="mb-3">
             <label for="createdBy" class="form-label">Created By <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="createdBy" value="Yalla Ramana" required />
+            <input type="text" class="form-control" id="createdBy" placeholder="Author Name" required />
           </div>
           <div class="mb-3">
             <label class="form-label">News Details</label>
-            <div id="Newseditor-container" style="min-height: 150px; border: 1px solid #ccc; padding: 10px;"></div>
+            <div id="Newseditor" ></div>
           </div>
           <div class="text-end">
             <button type="submit" class="btn btn-primary">Save News</button>
@@ -427,43 +430,12 @@
 
 
 
-
     <!-- Footer -->
     <footer class="footer" id="contact">
         <div class="container">
-            <div class="row">
-                <div class="col-md-4 mb-4 mb-md-0">
-                    <h5 class="text-warning mb-3">RDMCricketPro</h5>
-                    <p>Your trusted source for cricket predictions and fantasy tips. We help cricket fans make informed decisions.</p>
-                    <div class="mt-3">
-                        <a href="#" class="social-icon" title="Facebook"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="social-icon" title="Twitter"><i class="bi bi-twitter"></i></a>
-                        <a href="#" class="social-icon" title="Instagram"><i class="bi bi-instagram"></i></a>
-                        <a href="#" class="social-icon" title="YouTube"><i class="bi bi-youtube"></i></a>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4 mb-md-0">
-                    <h5 class="text-warning mb-3">Quick Links</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#"><i class="bi bi-chevron-right me-1"></i> Home</a></li>
-                        <li class="mb-2"><a href="#predictions"><i class="bi bi-chevron-right me-1"></i> Predictions</a></li>
-                        <li class="mb-2"><a href="#fantasy"><i class="bi bi-chevron-right me-1"></i> Fantasy Tips</a></li>
-                        <li class="mb-2"><a href="#news"><i class="bi bi-chevron-right me-1"></i> News</a></li>
-                        <li class="mb-2"><a href="#contact"><i class="bi bi-chevron-right me-1"></i> Contact</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    <h5 class="text-warning mb-3">Contact Us</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><i class="bi bi-geo-alt me-2"></i> Yalla Ramana, Hyderabad City in Telangana</li>
-                        <li class="mb-2"><i class="bi bi-envelope me-2"></i> Ramana9000r@gmail.com</li>
-                        <li class="mb-2"><i class="bi bi-telephone me-2"></i> +1 234 567 8900</li>
-                    </ul>
-                </div>
-            </div>
-            <hr class="mt-4 mb-3 custom-footer-hr">
             <div class="text-center">
                 <p class="mb-0">&copy; 2025 RDMCricketPro. All rights reserved.</p>
+                <p class="mb-0">Contact : Ramana9000r@gmail.com</p>
             </div>
         </div>
     </footer>
@@ -476,23 +448,29 @@
 
 
 
-<!-- ✅ Smooth Scrolling Script -->
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+    const offset = 70; // Height of fixed header
 
     navLinks.forEach(link => {
       link.addEventListener('click', function (e) {
+        // Remove active class from all links
         navLinks.forEach(l => l.classList.remove('active'));
+        // Add active class to clicked link
         this.classList.add('active');
 
         const href = this.getAttribute('href');
         if (href.startsWith('#') && href !== '#') {
           e.preventDefault();
+
           const targetElement = document.querySelector(href);
           if (targetElement) {
+            const elementPosition = targetElement.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - offset;
+
             window.scrollTo({
-              top: targetElement.offsetTop - 70,
+              top: offsetPosition,
               behavior: 'smooth'
             });
           }
@@ -501,6 +479,7 @@
     });
   });
 </script>
+
 
 <script>
   function updateDateTime() {
@@ -523,7 +502,7 @@
 
 
 <script>
- document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
   const loginForm = document.getElementById("loginForm");
   const usernameInput = document.getElementById("usernameInput");
   const passwordInput = document.getElementById("passwordInput");
@@ -531,7 +510,9 @@
 
   const editorSection = document.getElementById("editorSection");
   const createBtnWrapper = document.getElementById("createBtnWrapper");
-  const createBtn = document.getElementById("createBtn");
+  const createBtn = document.getElementById("createPredictionBtn") || document.getElementById("createBtn");
+
+  const createNewsBtnWrapper = document.getElementById("createNewsBtnWrapper");
 
   loginForm.addEventListener("submit", function (e) {
     e.preventDefault();
@@ -546,8 +527,11 @@
       loginForm.reset();
       loginError.textContent = "";
 
-      // Show the create button
-      createBtnWrapper.classList.remove("d-none");
+      // Show the create prediction button
+      if (createBtnWrapper) createBtnWrapper.classList.remove("d-none");
+
+      // Show the create news button
+      if (createNewsBtnWrapper) createNewsBtnWrapper.classList.remove("d-none");
 
       // Update footer
       const footerNote = document.getElementById("footerNote");
@@ -563,14 +547,15 @@
   });
 
   // Toggle editor section when "Create Prediction" button is clicked
-  createBtn.addEventListener("click", () => {
-    editorSection.classList.toggle("d-none");
-    createBtn.textContent = editorSection.classList.contains("d-none")
-      ? "➕ Create Prediction"
-      : "✖️ Hide Editor";
-  });
+  if (createBtn) {
+    createBtn.addEventListener("click", () => {
+      editorSection.classList.toggle("d-none");
+      createBtn.textContent = editorSection.classList.contains("d-none")
+        ? "➕ Create Prediction"
+        : "✖️ Hide Editor";
+    });
+  }
 });
-
 
 </script>
 

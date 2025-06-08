@@ -5,13 +5,20 @@ import {
   onValue
 } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
 
+// Initialize Firebase Realtime Database
 const db = getDatabase();
 
-// Constants for pagination
+// Initialize Quill editor
+const newsQuill = new Quill('#Newseditor', {
+  theme: 'snow'
+});
+
+// Pagination setup
 let currentPage = 1;
 const itemsPerPage = 5;
 let fullNewsList = [];
 
+// Handle form submission
 document.getElementById('createNewsForm').addEventListener('submit', (e) => {
   e.preventDefault();
 
@@ -32,13 +39,19 @@ document.getElementById('createNewsForm').addEventListener('submit', (e) => {
     timestamp
   };
 
-  push(ref(db, 'news'), newsData).then(() => {
-    bootstrap.Modal.getInstance(document.getElementById('createNewsModal')).hide();
-    document.getElementById('createNewsForm').reset();
-    newsQuill.root.innerHTML = '';
-  });
+  push(ref(db, 'news'), newsData)
+    .then(() => {
+      bootstrap.Modal.getInstance(document.getElementById('createNewsModal')).hide();
+      document.getElementById('createNewsForm').reset();
+      newsQuill.root.innerHTML = '';
+    })
+    .catch((err) => {
+      console.error("❌ Error saving news:", err);
+      alert("❌ Failed to save news.");
+    });
 });
 
+// Utility: Time ago
 function timeAgo(timestamp) {
   const now = new Date();
   const posted = new Date(timestamp);
@@ -62,12 +75,12 @@ function timeAgo(timestamp) {
   return 'just now';
 }
 
+// Load news data
 function loadNewsCards() {
   const newsRef = ref(db, 'news');
 
   onValue(newsRef, (snapshot) => {
     fullNewsList = [];
-
     snapshot.forEach(child => {
       fullNewsList.push({ id: child.key, ...child.val() });
     });
@@ -78,6 +91,7 @@ function loadNewsCards() {
   });
 }
 
+// Render paginated news
 function renderPage() {
   const container = document.getElementById('newsContainer');
   const pageInfo = document.getElementById('pageInfo');
@@ -99,42 +113,40 @@ function renderPage() {
 
     const card = document.createElement('div');
     card.className = 'col-md-12';
- card.innerHTML = `
-  <div class="card h-100 shadow-sm rounded-3 border-0 mb-3">
-    <div class="card-header d-flex justify-content-between align-items-center bg-light">
-      <div class="text-danger fw-bold">
-         ${date} - ${new Date(news.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+    card.innerHTML = `
+      <div class="card h-100 shadow-sm rounded-3 border-0 mb-3">
+        <div class="card-header d-flex justify-content-between align-items-center bg-light">
+          <div class="text-danger fw-bold">
+             ${date} - ${new Date(news.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          </div>
+          <div class="text-secondary small fw-semibold">
+            ✅${news.author}
+          </div>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">✅ ${news.title}</h5>
+          <p class="card-text" id="snippet-${news.id}">${snippet}...</p>
+          <div class="card-text d-none" id="full-${news.id}">${news.content}</div>
+          <a href="#" class="btn btn-sm btn-outline-primary toggle-btn mt-2" data-id="${news.id}">
+            <i class="bi bi-box-arrow-in-right me-1"></i> Read More
+          </a>
+        </div>
+        <div class="card-footer bg-white border-top-0 d-flex justify-content-between small text-muted">
+          <span><i class="bi bi-info-circle me-1"></i> <strong>Note:</strong> This news is covered by social media.</span>
+          <span>🕒 ${postedTime} </span>
+        </div>
       </div>
-      <div class="text-secondary small fw-semibold">
-        <i class="bi bi-person-circle me-1"></i> Created by: ${news.author}
-      </div>
-    </div>
-    <div class="card-body">
-      <h5 class="card-title">✅ ${news.title}</h5>
-      <p class="card-text" id="snippet-${news.id}">${snippet}...</p>
-      <div class="card-text d-none" id="full-${news.id}">${news.content}</div>
-      <a href="#" class="btn btn-sm btn-outline-primary toggle-btn mt-2" data-id="${news.id}">
-        <i class="bi bi-box-arrow-in-right me-1"></i> Read More
-      </a>
-    </div>
-    <div class="card-footer bg-white border-top-0 d-flex justify-content-between small text-muted">
-      <span><i class="bi bi-info-circle me-1"></i> <strong>Note:</strong> This news is covered by social media.</span>
-      <span>🕒 ${postedTime}</span>
-    </div>
-  </div>
-`;
-
-
+    `;
     container.appendChild(card);
   });
 
+  // Toggle content expand/collapse
   container.querySelectorAll('.toggle-btn').forEach(btn => {
     btn.addEventListener('click', e => {
       e.preventDefault();
       const id = btn.getAttribute('data-id');
       const snippetEl = document.getElementById(`snippet-${id}`);
       const fullEl = document.getElementById(`full-${id}`);
-
       const isCollapsed = fullEl.classList.contains('d-none');
 
       if (isCollapsed) {
@@ -149,11 +161,13 @@ function renderPage() {
     });
   });
 
+  // Update pagination controls
   pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
   prevBtn.disabled = currentPage === 1;
   nextBtn.disabled = currentPage === totalPages;
 }
 
+// Pagination controls
 document.getElementById('prevPage').addEventListener('click', () => {
   if (currentPage > 1) {
     currentPage--;
@@ -169,4 +183,5 @@ document.getElementById('nextPage').addEventListener('click', () => {
   }
 });
 
+// Initial load
 loadNewsCards();
