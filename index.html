@@ -264,13 +264,24 @@
 </div>
 
 <!-- Predictions Display Section -->
-<div class="container py-4">
+<!-- <div class="container py-4">
   <div class="row">
     <div class="col-md-8 offset-md-2">
       <div class="accordion mt-6" id="matchAccordion"></div>
     </div>
   </div>
-</div>
+</div> -->
+
+<div class="container py-4">
+    <h2 class="mb-4">
+      <i class="bi bi-stars text-warning me-2"></i>Match Predictions
+    </h2>
+
+    <!-- Container where cards will be injected -->
+    <div id="matchAccordion" class="row"></div>
+    
+  </div>
+
 
 
 
@@ -367,71 +378,20 @@
 
     </div>
 
-    <!-- News Cards Grid -->
-    <div class="row g-4" id="newsContainer">
-      <!-- Example News Card -->
-      <div class="col-md-12">
-        <div class="card h-100 shadow-sm rounded-3 border-0">
+  <div class="row" id="newsContainer"></div>
 
-          <!-- Card Header -->
-          <div class="card-header bg-light d-flex justify-content-between align-items-center">
-            <div class="text-muted small">
-              <i class="bi bi-calendar-event me-1"></i> Oct 14, 2023
-            </div>
-            <div class="text-secondary small">
-              <i class="bi bi-person-circle me-1"></i> Yalla Ramana
-            </div>
-          </div>
+<div class="d-flex justify-content-between align-items-center mt-3">
+  <button id="prevPage" class="btn btn-outline-secondary btn-sm">Previous</button>
+  <span id="pageInfo" class="mx-2 text-muted small"></span>
+  <button id="nextPage" class="btn btn-outline-secondary btn-sm">Next</button>
+</div>
 
-          <!-- Card Body -->
-          <div class="card-body">
-            <h5 class="card-title">
-              <i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>
-              England's Star Bowler Injured During Practice
-            </h5>
-            <p class="card-text">
-              England's leading fast bowler suffered an injury during a practice session and might miss the upcoming series.
-            </p>
-            <a href="#" class="btn btn-sm btn-outline-primary">
-              <i class="bi bi-box-arrow-in-right me-1"></i> Read More
-            </a>
-          </div>
 
-          <!-- Card Footer -->
-          <div class="card-footer bg-white border-top-0">
-            <small class="text-muted">
-              <i class="bi bi-info-circle me-1"></i> Note: This news is <strong>not covered</strong> by social media.
-            </small>
-          </div>
-
-        </div>
-      </div>
-      <!-- Repeat similar blocks dynamically as needed -->
-    </div>
-
-    <!-- Pagination Controls -->
-    <nav aria-label="News pagination" class="mt-4">
-      <ul class="pagination justify-content-center">
-        <li class="page-item disabled">
-          <a class="page-link" href="#" tabindex="-1"><i class="bi bi-chevron-left"></i> Prev</a>
-        </li>
-        <li class="page-item active">
-          <a class="page-link" href="#">1</a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="#">2</a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="#">3</a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="#">Next <i class="bi bi-chevron-right"></i></a>
-        </li>
-      </ul>
-    </nav>
+   
   </section>
 </div>
 
+<div id="newsContainer" class="mt-4"></div>
 
 
 <!-- Create News Modal -->
@@ -446,15 +406,15 @@
         <form id="createNewsForm">
           <div class="mb-3">
             <label for="newsTitle" class="form-label">News Title <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="newsTitle" required>
+            <input type="text" class="form-control" id="newsTitle" required />
           </div>
           <div class="mb-3">
             <label for="createdBy" class="form-label">Created By <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="createdBy" value="Yalla Ramana" required>
+            <input type="text" class="form-control" id="createdBy" value="Yalla Ramana" required />
           </div>
           <div class="mb-3">
             <label class="form-label">News Details</label>
-            <div id="editor-container" style="min-height: 150px; border: 1px solid #ccc; padding: 10px;"></div>
+            <div id="Newseditor-container" style="min-height: 150px; border: 1px solid #ccc; padding: 10px;"></div>
           </div>
           <div class="text-end">
             <button type="submit" class="btn btn-primary">Save News</button>
@@ -464,6 +424,7 @@
     </div>
   </div>
 </div>
+
 
 
 
@@ -512,6 +473,8 @@
 
 <!-- ✅ Quill Editor JS -->
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+
 
 <!-- ✅ Smooth Scrolling Script -->
 <script>
