@@ -112,32 +112,29 @@ function renderPage() {
     const snippet = news.content.replace(/<[^>]+>/g, '').slice(0, 100);
 
     const card = document.createElement('div');
-    card.className = 'col-md-12';
-    card.innerHTML = `
-      <div class="card h-100 shadow-sm rounded-3 border-0 mb-3">
-        <div class="card-header d-flex justify-content-between align-items-center bg-light">
-          <div class="text-danger fw-bold">
-             ${date} - ${new Date(news.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-          </div>
-          <div class="text-secondary small fw-semibold">
-            ✅${news.author}
-          </div>
-        </div>
-        <div class="card-body">
-          <h5 class="card-title">✅ ${news.title}</h5>
-          <p class="card-text" id="snippet-${news.id}">${snippet}...</p>
-          <div class="card-text d-none" id="full-${news.id}">${news.content}</div>
-          <a href="#" class="btn btn-sm btn-outline-primary toggle-btn mt-2" data-id="${news.id}">
-            <i class="bi bi-box-arrow-in-right me-1"></i> Read More
-          </a>
-        </div>
-        <div class="card-footer bg-white border-top-0 d-flex justify-content-between small text-muted">
-          <span><i class="bi bi-info-circle me-1"></i> <strong>Note:</strong> This news is covered by social media.</span>
-          <span>🕒 ${postedTime} </span>
-        </div>
+ card.className = 'col-12 mb-4';
+const rotateAngle = (news.id % 2 === 0) ? '-0.4deg' : '0.4deg'; // alternate rotation
+
+card.innerHTML = `
+  <div class="card h-100 shadow-sm rounded-3 border-0" style="transform: rotate(${rotateAngle});">
+    <div class="card-body">
+      <h5 class="card-title fw-bold text-primary">✅ ${news.title}</h5>
+      <p class="card-text" id="snippet-${news.id}">${snippet}...</p>
+      <div class="card-text d-none" id="full-${news.id}">${news.content}</div>
+      <div class="mt-3 text-primary fw-bold small">
+        📅 ${date} | 🕒 ${new Date(news.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} |
+        ✍️ ${news.author}
       </div>
-    `;
-    container.appendChild(card);
+      <a href="#" class="btn btn-sm btn-outline-primary toggle-btn mt-2" data-id="${news.id}">
+        <i class="bi bi-box-arrow-in-right me-1"></i> Read More
+      </a>
+    </div>
+  </div>
+`;
+container.appendChild(card);
+
+
+
   });
 
   // Toggle content expand/collapse
