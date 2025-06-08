@@ -5,20 +5,17 @@ import {
   onValue
 } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
 
-// Initialize Firebase Realtime Database
 const db = getDatabase();
 
-// Initialize Quill editor
-const newsQuill = new Quill('#Newseditor', {
-  theme: 'snow'
-});
+// Quill setup
+const newsQuill = new Quill('#Newseditor', { theme: 'snow' });
 
 // Pagination setup
 let currentPage = 1;
 const itemsPerPage = 5;
 let fullNewsList = [];
 
-// Handle form submission
+// Submit handler
 document.getElementById('createNewsForm').addEventListener('submit', (e) => {
   e.preventDefault();
 
@@ -32,12 +29,7 @@ document.getElementById('createNewsForm').addEventListener('submit', (e) => {
     return;
   }
 
-  const newsData = {
-    title,
-    author,
-    content,
-    timestamp
-  };
+  const newsData = { title, author, content, timestamp };
 
   push(ref(db, 'news'), newsData)
     .then(() => {
@@ -51,7 +43,7 @@ document.getElementById('createNewsForm').addEventListener('submit', (e) => {
     });
 });
 
-// Utility: Time ago
+// Time ago utility
 function timeAgo(timestamp) {
   const now = new Date();
   const posted = new Date(timestamp);
@@ -75,7 +67,7 @@ function timeAgo(timestamp) {
   return 'just now';
 }
 
-// Load news data
+// Load data
 function loadNewsCards() {
   const newsRef = ref(db, 'news');
 
@@ -91,7 +83,7 @@ function loadNewsCards() {
   });
 }
 
-// Render paginated news
+// Render news
 function renderPage() {
   const container = document.getElementById('newsContainer');
   const pageInfo = document.getElementById('pageInfo');
@@ -107,64 +99,62 @@ function renderPage() {
   const pageItems = fullNewsList.slice(start, end);
 
   pageItems.forEach(news => {
-    const date = new Date(news.timestamp).toLocaleDateString();
-    const postedTime = timeAgo(news.timestamp);
     const snippet = news.content.replace(/<[^>]+>/g, '').slice(0, 100);
+    const postedAgo = timeAgo(news.timestamp);
+    const rotateAngle = (news.id % 2 === 0) ? '-0.4deg' : '0.4deg';
 
     const card = document.createElement('div');
- card.className = 'col-12 mb-4';
-const rotateAngle = (news.id % 2 === 0) ? '-0.4deg' : '0.4deg'; // alternate rotation
+    card.className = 'col-12 mb-4';
 
-card.innerHTML = `
-  <div class="card h-100 shadow-sm rounded-3 border-0" style="transform: rotate(${rotateAngle});">
-    <div class="card-body">
-      <h5 class="card-title fw-bold text-primary">✅ ${news.title}</h5>
-      <p class="card-text" id="snippet-${news.id}">${snippet}...</p>
-      <div class="card-text d-none" id="full-${news.id}">${news.content}</div>
-      <div class="mt-3 text-primary fw-bold small">
-        📅 ${date} | 🕒 ${new Date(news.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} |
-        ✍️ ${news.author}
+    card.innerHTML = `
+      <div class="card h-100 shadow-sm rounded-3 border-0" style="transform: rotate(${rotateAngle});">
+        <div class="card-body">
+          <h5 class="card-title fw-bold text-primary">✅ ${news.title}</h5>
+          <p class="card-text" id="snippet-${news.id}">${snippet}...</p>
+          <div class="card-text d-none" id="full-${news.id}">${news.content}</div>
+          <div class="mt-3 text-primary fw-bold small d-none" id="meta-${news.id}">
+            🕒 ${postedAgo} | ✍️ ${news.author}
+          </div>
+          <a href="#" class="btn btn-sm btn-outline-primary toggle-btn mt-2" data-id="${news.id}">
+            <i class="bi bi-box-arrow-in-right me-1"></i> Read More
+          </a>
+        </div>
       </div>
-      <a href="#" class="btn btn-sm btn-outline-primary toggle-btn mt-2" data-id="${news.id}">
-        <i class="bi bi-box-arrow-in-right me-1"></i> Read More
-      </a>
-    </div>
-  </div>
-`;
-container.appendChild(card);
-
-
-
+    `;
+    container.appendChild(card);
   });
 
-  // Toggle content expand/collapse
+  // Toggle Read More / Show Less
   container.querySelectorAll('.toggle-btn').forEach(btn => {
     btn.addEventListener('click', e => {
       e.preventDefault();
       const id = btn.getAttribute('data-id');
       const snippetEl = document.getElementById(`snippet-${id}`);
       const fullEl = document.getElementById(`full-${id}`);
+      const metaEl = document.getElementById(`meta-${id}`);
       const isCollapsed = fullEl.classList.contains('d-none');
 
       if (isCollapsed) {
         snippetEl.classList.add('d-none');
         fullEl.classList.remove('d-none');
+        metaEl.classList.remove('d-none');
         btn.innerHTML = `<i class="bi bi-box-arrow-left me-1"></i> Show Less`;
       } else {
         snippetEl.classList.remove('d-none');
         fullEl.classList.add('d-none');
+        metaEl.classList.add('d-none');
         btn.innerHTML = `<i class="bi bi-box-arrow-in-right me-1"></i> Read More`;
       }
     });
   });
 
-  // Update pagination controls
+  // Pagination controls
   pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
   prevBtn.disabled = currentPage === 1;
   nextBtn.disabled = currentPage === totalPages;
 }
 
-// Pagination controls
+// Pagination events
 document.getElementById('prevPage').addEventListener('click', () => {
   if (currentPage > 1) {
     currentPage--;
@@ -180,5 +170,5 @@ document.getElementById('nextPage').addEventListener('click', () => {
   }
 });
 
-// Initial load
+// Initial call
 loadNewsCards();
