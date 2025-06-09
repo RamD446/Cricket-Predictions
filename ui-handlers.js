@@ -38,44 +38,51 @@ export function renderPredictions(sport) {
     const item = document.createElement("div");
     item.className = "col-md-12 mb-3";
 
-    item.innerHTML = `
-      <div class="card shadow-sm rounded-3 border-0">
-        <div class="card-header d-flex justify-content-between align-items-center bg-light">
-          <div class="text-danger fw-bold" style="min-width: 180px;">
-            <i class="bi bi-calendar-event me-1"></i> ${dateStr} - ${timeStr}
-          </div>
-          <div class="text-muted small fw-semibold">
-            <i class="bi bi-person-circle me-1"></i> Created by: ${data.createdBy}
-          </div>
+  item.innerHTML = `
+  <div class="card border-0 shadow-lg rounded-4 overflow-hidden mb-4">
+    <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center px-4 py-3">
+      <div class="text-danger fw-semibold d-flex align-items-center">
+        <i class="bi bi-calendar-event me-2"></i>
+        <span>${dateStr} - ${timeStr}</span>
+      </div>
+      <div class="text-muted small">
+        <i class="bi bi-person-circle me-1"></i> ${data.createdBy}
+      </div>
+    </div>
+
+    <div class="card-body px-4 py-3">
+      <h5 class="card-title fw-bold text-dark mb-3">
+        🏏 ${data.title}<br>
+        <span class="text-primary">${data.teamA}</span> vs <span class="text-success">${data.teamB}</span> 
+        <small class="text-muted">(${data.gameType})</small>
+      </h5>
+
+      <p class="mb-2"><strong>Match #:</strong> ${data.matchNumber}</p>
+
+      <div class="mb-3">
+        <div class="progress" style="height: 12px;">
+          <div class="progress-bar bg-primary" style="width: ${data.teamAChance}%"></div>
+          <div class="progress-bar bg-success" style="width: ${data.teamBChance}%"></div>
         </div>
-
-        <div class="card-body">
-          <h5 class="card-title">
-            🏏 ${data.title} — <strong>${data.teamA}</strong> vs <strong>${data.teamB}</strong> (${data.gameType})
-          </h5>
-          <p><strong>Match #:</strong> ${data.matchNumber}</p>
-
-          <div class="progress mb-2" style="height: 10px;">
-            <div class="progress-bar bg-primary" style="width: ${data.teamAChance}%"></div>
-            <div class="progress-bar bg-warning" style="width: ${data.teamBChance}%"></div>
-          </div>
-
-          <p><strong>${data.teamA}:</strong> ${data.teamAChance}%</p>
-          <p><strong>${data.teamB}:</strong> ${data.teamBChance}%</p>
-
-          <div id="${collapseId}" class="collapse mb-2">${data.text}</div>
-
-          <div class="d-flex justify-content-between">
-            <button class="btn btn-sm btn-outline-primary toggle-collapse-btn" data-target="#${collapseId}">
-              🔽 Read More
-            </button>
-            <button class="btn btn-sm btn-outline-secondary edit-btn" data-id="${data.id}">
-              ✏️ Edit
-            </button>
-          </div>
+        <div class="d-flex justify-content-between small mt-1 text-muted">
+          <span><strong>${data.teamA}:</strong> ${data.teamAChance}%</span>
+          <span><strong>${data.teamB}:</strong> ${data.teamBChance}%</span>
         </div>
       </div>
-    `;
+
+      <div id="${collapseId}" class="collapse mb-3">
+        <div class="bg-light p-3 rounded">${data.text}</div>
+      </div>
+
+      <div class="d-flex justify-content-end gap-2">
+        <button class="btn btn-sm btn-outline-primary toggle-collapse-btn" data-target="#${collapseId}">
+          🔽 Read More
+        </button>
+   
+      </div>
+    </div>
+  </div>
+`;
 
     container.appendChild(item);
   });
