@@ -104,25 +104,30 @@ function renderPage() {
     const rotateAngle = (news.id % 2 === 0) ? '-0.4deg' : '0.4deg';
 
     const card = document.createElement('div');
-    card.className = 'col-12 mb-4';
+    card.className = 'col-12 mb-2';
 
   card.innerHTML = `
-  <div class="card h-100 shadow-sm rounded-3 border-0" style="transform: rotate(${rotateAngle});">
-    <div class="card-body">
-      <div class="d-flex justify-content-between align-items-center mb-2">
-        <div class="text-primary fw-bold" style="font-size: 0.8rem; line-height: 1;">
+  <div class="card shadow-sm rounded-2 border-0" style="transform: rotate(${rotateAngle}); font-size: 0.78rem;">
+    <div class="card-body py-2 px-3">
+      <div class="d-flex justify-content-between align-items-center mb-1">
+        <div class="text-primary fw-semibold" style="line-height: 1.2;">
           ✅ ${news.title} <span class="text-muted">🕒 ${postedAgo}</span>
         </div>
-        <a href="#" class="btn btn-sm btn-outline-primary toggle-btn" data-id="${news.id}" style="font-size: 0.7rem; padding: 0.2rem 0.5rem;">
-          <i class="bi bi-box-arrow-in-right me-1"></i> See More
-        </a>
       </div>
 
-      <p class="card-text" id="snippet-${news.id}">${snippet}...</p>
+      <p class="card-text mb-2" id="snippet-${news.id}">${snippet}...</p>
       <div class="card-text d-none" id="full-${news.id}">${news.content}</div>
-      <div class="mt-2 text-muted small d-none" id="meta-${news.id}">
-        Created by: ${news.author} | ${new Date(news.timestamp).toLocaleDateString()} @ ${new Date(news.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+
+      <div class="text-muted small d-none" id="meta-${news.id}">
+        Created by: ${news.author} | 
+        ${new Date(news.timestamp).toLocaleDateString()} @ 
+        ${new Date(news.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
       </div>
+             <a href="#" class="btn btn-sm btn-outline-primary toggle-btn" 
+           data-id="${news.id}" 
+           style="font-size: 0.75rem; padding: 0.25rem 0.6rem;">
+          <i class="bi bi-box-arrow-in-right me-1"></i> See More
+        </a>
     </div>
   </div>
 `;
