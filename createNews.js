@@ -125,13 +125,12 @@ function renderPage() {
       </div>
              <a href="#" class="btn btn-sm btn-outline-primary toggle-btn" 
            data-id="${news.id}" 
-           style="font-size: 0.75rem; padding: 0.25rem 0.6rem;">
+           style="font-size: 0.75rem; padding: 0.25rem 0.5rem;">
           <i class="bi bi-box-arrow-in-right me-1"></i> See More
         </a>
     </div>
   </div>
 `;
-
 container.appendChild(card);
   });
 
