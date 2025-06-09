@@ -12,7 +12,7 @@ const newsQuill = new Quill('#Newseditor', { theme: 'snow' });
 
 // Pagination setup
 let currentPage = 1;
-const itemsPerPage = 5;
+const itemsPerPage = 15;
 let fullNewsList = [];
 
 // Submit handler
@@ -106,22 +106,28 @@ function renderPage() {
     const card = document.createElement('div');
     card.className = 'col-12 mb-4';
 
-    card.innerHTML = `
-      <div class="card h-100 shadow-sm rounded-3 border-0" style="transform: rotate(${rotateAngle});">
-        <div class="card-body">
-          <h5 class="card-title fw-bold text-primary">✅ ${news.title}    🕒 ${postedAgo}</h5>
-          <p class="card-text" id="snippet-${news.id}">${snippet}...</p>
-          <div class="card-text d-none" id="full-${news.id}">${news.content}</div>
-          <div class="mt-3 text-primary fw-bold small d-none" id="meta-${news.id}">
-             Created by : ${news.author} | Date: ${new Date(news.timestamp).toLocaleDateString()} | Time: ${new Date(news.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}  
-          </div>
-          <a href="#" class="btn btn-sm btn-outline-primary toggle-btn mt-2" data-id="${news.id}">
-            <i class="bi bi-box-arrow-in-right me-1"></i> Read More
-          </a>
+  card.innerHTML = `
+  <div class="card h-100 shadow-sm rounded-3 border-0" style="transform: rotate(${rotateAngle});">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <div class="text-primary fw-bold" style="font-size: 0.8rem; line-height: 1;">
+          ✅ ${news.title} <span class="text-muted">🕒 ${postedAgo}</span>
         </div>
+        <a href="#" class="btn btn-sm btn-outline-primary toggle-btn" data-id="${news.id}" style="font-size: 0.7rem; padding: 0.2rem 0.5rem;">
+          <i class="bi bi-box-arrow-in-right me-1"></i> See More
+        </a>
       </div>
-    `;
-    container.appendChild(card);
+
+      <p class="card-text" id="snippet-${news.id}">${snippet}...</p>
+      <div class="card-text d-none" id="full-${news.id}">${news.content}</div>
+      <div class="mt-2 text-muted small d-none" id="meta-${news.id}">
+        Created by: ${news.author} | ${new Date(news.timestamp).toLocaleDateString()} @ ${new Date(news.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+      </div>
+    </div>
+  </div>
+`;
+
+container.appendChild(card);
   });
 
   // Toggle Read More / Show Less
