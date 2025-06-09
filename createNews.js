@@ -109,11 +109,11 @@ function renderPage() {
     card.innerHTML = `
       <div class="card h-100 shadow-sm rounded-3 border-0" style="transform: rotate(${rotateAngle});">
         <div class="card-body">
-          <h5 class="card-title fw-bold text-primary">✅ ${news.title}</h5>
+          <h5 class="card-title fw-bold text-primary">✅ ${news.title}    🕒 ${postedAgo}</h5>
           <p class="card-text" id="snippet-${news.id}">${snippet}...</p>
           <div class="card-text d-none" id="full-${news.id}">${news.content}</div>
           <div class="mt-3 text-primary fw-bold small d-none" id="meta-${news.id}">
-            🕒 ${postedAgo} | ✍️ ${news.author}
+             Created by : ${news.author} | Date: ${new Date(news.timestamp).toLocaleDateString()} | Time: ${new Date(news.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}  
           </div>
           <a href="#" class="btn btn-sm btn-outline-primary toggle-btn mt-2" data-id="${news.id}">
             <i class="bi bi-box-arrow-in-right me-1"></i> Read More
