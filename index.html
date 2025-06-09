@@ -65,51 +65,67 @@
   }
 </style>
 <style>
-    body {
-      background-color: #f0f2f5;
-      font-family: 'Segoe UI', sans-serif;
-      padding: 10px;
-    }
+  body {
+    background-color: #f7f9fc;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px; /* Smaller base font size for mobile */
+  }
 
-    .mobile-tab {
-      background-color: #fff;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-      margin-bottom: 12px;
-      overflow: hidden;
-    }
+  .mobile-tab {
+    background-color: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
 
-    .tab-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 18px;
-      font-size: 1.1rem;
-      font-weight: 500;
-      cursor: pointer;
-    }
+  .tab-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    font-weight: 500;
+    font-size: 15px;
+    color: #333;
+    cursor: pointer;
+    background-color: #ffffff;
+    border-bottom: 1px solid #eaeaea;
+  }
 
-    .tab-header:hover {
-      background-color: #f8f9fa;
-    }
+  .tab-header:hover {
+    background-color: #f1f1f1;
+  }
 
-    .tab-icon {
-      font-size: 1.2rem;
-      transition: transform 0.2s ease;
-    }
+  .tab-icon {
+    font-size: 1.1rem;
+    color: #6c757d;
+  }
 
-    .tab-content {
-      display: none;
-      padding: 14px 18px;
-      font-size: 0.95rem;
-      background-color: #fafafa;
-      border-top: 1px solid #eee;
-    }
+  .tab-content {
+    display: none;
+    padding: 16px;
+    background-color: #fcfcfc;
+  }
 
-    .tab-content.show {
-      display: block;
-    }
-  </style>
+  .tab-content.show {
+    display: block;
+  }
+
+  .section-title,
+  .section-headingmatchAccordion {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .btn-sm, .btn {
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+
+  .nav-item .btn {
+    padding: 6px 10px;
+  }
+</style>
 </head>
 
 <body>
@@ -216,115 +232,103 @@
 
 
 
-<!-- Mobile Tabs Section -->
-<div class="container">
+<div class="container py-2">
+  
+
+  <!-- Prediction Tab -->
+  <div class="mobile-tab show" id="tab-prediction">
+    <div class="tab-header" onclick="toggleTab('prediction')">
+      <span>🔮 Prediction</span>
+      <i class="bi bi-dash tab-icon" id="icon-prediction"></i>
+    </div>
+    <div class="tab-content" id="content-prediction">
+      <div class="container px-0">
+        <div class="d-flex justify-content-end d-none" id="createBtnWrapper">
+          <button class="btn btn-success btn-sm mb-3" id="createPredictionBtn" data-bs-toggle="modal" data-bs-target="#editorModal">
+            ➕ Create
+          </button>
+        </div>
+
+        <ul class="nav justify-content-center flex-wrap gap-2 mb-3">
+          <li class="nav-item">
+            <button class="btn btn-outline-dark btn-sm tab-btn active" data-sport="all">
+              <i class="bi bi-grid me-1"></i> All
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="btn btn-outline-dark btn-sm tab-btn" data-sport="cricket">
+              <i class="bi bi-trophy me-1"></i> Cricket
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="btn btn-outline-dark btn-sm tab-btn" data-sport="football">
+              <i class="bi bi-dribbble me-1"></i> Football
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="btn btn-outline-dark btn-sm tab-btn" data-sport="basketball">
+              <i class="bi bi-basket me-1"></i> Basketball
+            </button>
+          </li>
+        </ul>
+
+        <div class="d-flex align-items-center border-bottom pb-2 mb-3">
+          <i class="bi bi-stars fs-5 me-2 text-danger"></i>
+          <h2 class="section-headingmatchAccordion mb-0">Predictions & Dream Team Tips</h2>
+        </div>
+
+        <div class="row" id="matchAccordion"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- News Tab -->
   <div class="mobile-tab" id="tab-news">
     <div class="tab-header" onclick="toggleTab('news')">
       <span>📰 News</span>
       <i class="bi bi-plus tab-icon" id="icon-news"></i>
     </div>
     <div class="tab-content" id="content-news">
-      <!-- Main Content: Latest Cricket News -->
-      <div class="container py-2">
-        <!-- Latest News Section -->
-        <section id="news" class="mb-4">
-          <!-- Header with Title and Create News Button -->
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 class="section-title m-0">
-              <i class="bi bi-newspaper me-2 text-primary"></i>Latest News
-            </h2>
-            <!-- News create button wrapper, hidden initially -->
-            <div id="createNewsBtnWrapper" class="d-none">
-              <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createNewsModal">
-                <i class="bi bi-plus-circle me-1"></i> Create News
-              </button>
-            </div>
+      <section id="news" class="mb-3">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h2 class="section-title m-0">
+            <i class="bi bi-newspaper me-1 text-primary"></i>Latest News
+          </h2>
+          <div id="createNewsBtnWrapper" class="d-none">
+            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createNewsModal">
+              <i class="bi bi-plus-circle me-1"></i> Create
+            </button>
           </div>
-
-          <!-- Dynamic news content -->
-          <div class="row" id="newsContainer"></div>
-
-          <!-- Pagination Controls -->
-          <div class="d-flex justify-content-between align-items-center mt-1">
-            <button id="prevPage" class="btn btn-outline-secondary btn-sm">Previous</button>
-            <span id="pageInfo" class="mx-2 text-muted small">Page 1 of X</span>
-            <button id="nextPage" class="btn btn-outline-secondary btn-sm">Next</button>
-          </div>
-        </section>
-      </div>
+        </div>
+        <div class="row" id="newsContainer"></div>
+        <div class="d-flex justify-content-between align-items-center mt-2">
+          <button id="prevPage" class="btn btn-outline-secondary btn-sm">Prev</button>
+          <span id="pageInfo" class="mx-2 text-muted small">Page 1 of X</span>
+          <button id="nextPage" class="btn btn-outline-secondary btn-sm">Next</button>
+        </div>
+      </section>
     </div>
   </div>
-
-  <div class="mobile-tab" id="tab-prediction">
-    <div class="tab-header" onclick="toggleTab('prediction')">
-      <span>🔮 Prediction</span>
-      <i class="bi bi-plus tab-icon" id="icon-prediction"></i>
-      
-    </div>
-    <div class="tab-content" id="content-prediction">
-     <div class="container py-4">
-      <!-- Tabs Section -->
-<div class="container bg-light border-bottom py-4">
-      <!-- Create Prediction Button (Right-Aligned) -->
-<div class="container mt-4 d-none" id="createBtnWrapper">
-  <div class="d-flex justify-content-end">
-    <button class="btn btn-success" id="createPredictionBtn" data-bs-toggle="modal" data-bs-target="#editorModal">
-      ➕ Create Prediction
-    </button>
-  </div>
-</div>
-
-  <ul class="nav justify-content-center flex-wrap gap-2">
-    <li class="nav-item">
-      <button class="btn btn-outline-dark tab-btn active" data-sport="all">
-        <i class="bi bi-grid me-1"></i> All Sports
-      </button>
-    </li>
-    <li class="nav-item">
-      <button class="btn btn-outline-dark tab-btn" data-sport="cricket">
-        <i class="bi bi-trophy me-1"></i> Cricket
-      </button>
-    </li>
-    <li class="nav-item">
-      <button class="btn btn-outline-dark tab-btn" data-sport="football">
-        <i class="bi bi-dribbble me-1"></i> Football
-      </button>
-    </li>
-    <li class="nav-item">
-      <button class="btn btn-outline-dark tab-btn" data-sport="basketball">
-        <i class="bi bi-basket me-1"></i> Basketball
-      </button>
-    </li>
-  </ul>
-</div>
-  <div class="d-flex align-items-center mb-4 border-bottom pb-2 custom-headermatchAccordion">
-    <i class="bi bi-stars fs-4 me-2 text-danger"></i>
-    <h2 class="section-headingmatchAccordion mb-0"> Predictions & Dream Team Tips</h2>
-  </div>
-
-  <div class="row" id="matchAccordion"></div>
-</div>
-
-    </div>
-  </div>
-
+  
+  <!-- Dream Team Tab -->
   <div class="mobile-tab" id="tab-dreamteam">
     <div class="tab-header" onclick="toggleTab('dreamteam')">
       <span>⭐ Dream Team Tips</span>
       <i class="bi bi-plus tab-icon" id="icon-dreamteam"></i>
     </div>
     <div class="tab-content" id="content-dreamteam">
-      Fantasy team building tips and advice.
+      <p class="mb-0">Fantasy team building tips and expert advice to help you win contests.</p>
     </div>
   </div>
 
+  <!-- Current Affairs Tab -->
   <div class="mobile-tab" id="tab-current">
     <div class="tab-header" onclick="toggleTab('current')">
       <span>📚 Current Affairs</span>
       <i class="bi bi-plus tab-icon" id="icon-current"></i>
     </div>
     <div class="tab-content" id="content-current">
-      Current affairs and daily updates...
+      <p class="mb-0">Latest current affairs and general knowledge updates.</p>
     </div>
   </div>
 </div>
@@ -610,24 +614,35 @@
     });
   });
 </script>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    // Open Prediction tab by default
+    toggleTab('prediction');
+  });
+</script>
+
 
 <script>
-    function toggleTab(tab) {
-      const content = document.getElementById(`content-${tab}`);
-      const icon = document.getElementById(`icon-${tab}`);
-      const isOpen = content.classList.contains('show');
+  function toggleTab(tab) {
+    const content = document.getElementById(`content-${tab}`);
+    const icon = document.getElementById(`icon-${tab}`);
+    const isOpen = content.classList.contains('show');
 
-      if (isOpen) {
-        content.classList.remove('show');
-        icon.classList.remove('bi-dash');
-        icon.classList.add('bi-plus');
-      } else {
-        content.classList.add('show');
-        icon.classList.remove('bi-plus');
-        icon.classList.add('bi-dash');
-      }
+    // Optionally close all other tabs
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('show'));
+    document.querySelectorAll('.tab-icon').forEach(i => {
+      i.classList.remove('bi-dash');
+      i.classList.add('bi-plus');
+    });
+
+    // Toggle selected tab
+    if (!isOpen) {
+      content.classList.add('show');
+      icon.classList.remove('bi-plus');
+      icon.classList.add('bi-dash');
     }
-  </script>
+  }
+</script>
 
 <script>
   function updateDateTime() {
