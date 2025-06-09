@@ -64,6 +64,52 @@
     padding: 0.5rem 1rem;
   }
 </style>
+<style>
+    body {
+      background-color: #f0f2f5;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 10px;
+    }
+
+    .mobile-tab {
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    .tab-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 18px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .tab-header:hover {
+      background-color: #f8f9fa;
+    }
+
+    .tab-icon {
+      font-size: 1.2rem;
+      transition: transform 0.2s ease;
+    }
+
+    .tab-content {
+      display: none;
+      padding: 14px 18px;
+      font-size: 0.95rem;
+      background-color: #fafafa;
+      border-top: 1px solid #eee;
+    }
+
+    .tab-content.show {
+      display: block;
+    }
+  </style>
 </head>
 
 <body>
@@ -170,6 +216,120 @@
 
 
 
+<!-- Mobile Tabs Section -->
+<div class="container">
+  <div class="mobile-tab" id="tab-news">
+    <div class="tab-header" onclick="toggleTab('news')">
+      <span>📰 News</span>
+      <i class="bi bi-plus tab-icon" id="icon-news"></i>
+    </div>
+    <div class="tab-content" id="content-news">
+      <!-- Main Content: Latest Cricket News -->
+      <div class="container py-2">
+        <!-- Latest News Section -->
+        <section id="news" class="mb-4">
+          <!-- Header with Title and Create News Button -->
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="section-title m-0">
+              <i class="bi bi-newspaper me-2 text-primary"></i>Latest News
+            </h2>
+            <!-- News create button wrapper, hidden initially -->
+            <div id="createNewsBtnWrapper" class="d-none">
+              <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createNewsModal">
+                <i class="bi bi-plus-circle me-1"></i> Create News
+              </button>
+            </div>
+          </div>
+
+          <!-- Dynamic news content -->
+          <div class="row" id="newsContainer"></div>
+
+          <!-- Pagination Controls -->
+          <div class="d-flex justify-content-between align-items-center mt-1">
+            <button id="prevPage" class="btn btn-outline-secondary btn-sm">Previous</button>
+            <span id="pageInfo" class="mx-2 text-muted small">Page 1 of X</span>
+            <button id="nextPage" class="btn btn-outline-secondary btn-sm">Next</button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div class="mobile-tab" id="tab-prediction">
+    <div class="tab-header" onclick="toggleTab('prediction')">
+      <span>🔮 Prediction</span>
+      <i class="bi bi-plus tab-icon" id="icon-prediction"></i>
+      
+    </div>
+    <div class="tab-content" id="content-prediction">
+     <div class="container py-4">
+      <!-- Tabs Section -->
+<div class="container bg-light border-bottom py-4">
+      <!-- Create Prediction Button (Right-Aligned) -->
+<div class="container mt-4 d-none" id="createBtnWrapper">
+  <div class="d-flex justify-content-end">
+    <button class="btn btn-success" id="createPredictionBtn" data-bs-toggle="modal" data-bs-target="#editorModal">
+      ➕ Create Prediction
+    </button>
+  </div>
+</div>
+
+  <ul class="nav justify-content-center flex-wrap gap-2">
+    <li class="nav-item">
+      <button class="btn btn-outline-dark tab-btn active" data-sport="all">
+        <i class="bi bi-grid me-1"></i> All Sports
+      </button>
+    </li>
+    <li class="nav-item">
+      <button class="btn btn-outline-dark tab-btn" data-sport="cricket">
+        <i class="bi bi-trophy me-1"></i> Cricket
+      </button>
+    </li>
+    <li class="nav-item">
+      <button class="btn btn-outline-dark tab-btn" data-sport="football">
+        <i class="bi bi-dribbble me-1"></i> Football
+      </button>
+    </li>
+    <li class="nav-item">
+      <button class="btn btn-outline-dark tab-btn" data-sport="basketball">
+        <i class="bi bi-basket me-1"></i> Basketball
+      </button>
+    </li>
+  </ul>
+</div>
+  <div class="d-flex align-items-center mb-4 border-bottom pb-2 custom-headermatchAccordion">
+    <i class="bi bi-stars fs-4 me-2 text-danger"></i>
+    <h2 class="section-headingmatchAccordion mb-0"> Predictions & Dream Team Tips</h2>
+  </div>
+
+  <div class="row" id="matchAccordion"></div>
+</div>
+
+    </div>
+  </div>
+
+  <div class="mobile-tab" id="tab-dreamteam">
+    <div class="tab-header" onclick="toggleTab('dreamteam')">
+      <span>⭐ Dream Team Tips</span>
+      <i class="bi bi-plus tab-icon" id="icon-dreamteam"></i>
+    </div>
+    <div class="tab-content" id="content-dreamteam">
+      Fantasy team building tips and advice.
+    </div>
+  </div>
+
+  <div class="mobile-tab" id="tab-current">
+    <div class="tab-header" onclick="toggleTab('current')">
+      <span>📚 Current Affairs</span>
+      <i class="bi bi-plus tab-icon" id="icon-current"></i>
+    </div>
+    <div class="tab-content" id="content-current">
+      Current affairs and daily updates...
+    </div>
+  </div>
+</div>
+
+
 <!-- Offcanvas Menu -->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasMenu">
   <!-- Header -->
@@ -268,52 +428,19 @@
 
 
 
-<!-- Tabs Section -->
-<div class="container bg-light border-bottom py-4">
-      <!-- Create Prediction Button (Right-Aligned) -->
-<div class="container mt-4 d-none" id="createBtnWrapper">
-  <div class="d-flex justify-content-end">
-    <button class="btn btn-success" id="createPredictionBtn" data-bs-toggle="modal" data-bs-target="#editorModal">
-      ➕ Create Prediction
-    </button>
-  </div>
-</div>
-
-  <ul class="nav justify-content-center flex-wrap gap-2">
-    <li class="nav-item">
-      <button class="btn btn-outline-dark tab-btn active" data-sport="all">
-        <i class="bi bi-grid me-1"></i> All Sports
-      </button>
-    </li>
-    <li class="nav-item">
-      <button class="btn btn-outline-dark tab-btn" data-sport="cricket">
-        <i class="bi bi-trophy me-1"></i> Cricket
-      </button>
-    </li>
-    <li class="nav-item">
-      <button class="btn btn-outline-dark tab-btn" data-sport="football">
-        <i class="bi bi-dribbble me-1"></i> Football
-      </button>
-    </li>
-    <li class="nav-item">
-      <button class="btn btn-outline-dark tab-btn" data-sport="basketball">
-        <i class="bi bi-basket me-1"></i> Basketball
-      </button>
-    </li>
-  </ul>
-</div>
 
 
 
 
-<div class="container py-4">
+
+<!-- <div class="container py-4">
   <div class="d-flex align-items-center mb-4 border-bottom pb-2 custom-headermatchAccordion">
     <i class="bi bi-stars fs-4 me-2 text-danger"></i>
     <h2 class="section-headingmatchAccordion mb-0"> Predictions & Dream Team Tips</h2>
   </div>
 
   <div class="row" id="matchAccordion"></div>
-</div>
+</div> -->
 
 
 
@@ -397,32 +524,7 @@
 
 
 
- <!-- Main Content: Latest Cricket News -->
-<div class="container py-4">
-  <!-- Latest News Section -->
-  <section id="news" class="mb-5">
-    <!-- Header with Title and Create News Button -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <h2 class="section-title m-0">
-        <i class="bi bi-newspaper me-2 text-primary"></i>Latest News
-      </h2>
-     <!-- News create button wrapper, hidden initially -->
-<div id="createNewsBtnWrapper" class="d-none">
-  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createNewsModal">
-    <i class="bi bi-plus-circle me-1"></i> Create News
-  </button>
-</div>
-    </div>
 
-    <div class="row" id="newsContainer"></div>
-
-    <div class="d-flex justify-content-between align-items-center mt-3">
-      <button id="prevPage" class="btn btn-outline-secondary btn-sm">Previous</button>
-      <span id="pageInfo" class="mx-2 text-muted small"></span>
-      <button id="nextPage" class="btn btn-outline-secondary btn-sm">Next</button>
-    </div>
-  </section>
-</div>
 
 
 
@@ -509,6 +611,23 @@
   });
 </script>
 
+<script>
+    function toggleTab(tab) {
+      const content = document.getElementById(`content-${tab}`);
+      const icon = document.getElementById(`icon-${tab}`);
+      const isOpen = content.classList.contains('show');
+
+      if (isOpen) {
+        content.classList.remove('show');
+        icon.classList.remove('bi-dash');
+        icon.classList.add('bi-plus');
+      } else {
+        content.classList.add('show');
+        icon.classList.remove('bi-plus');
+        icon.classList.add('bi-dash');
+      }
+    }
+  </script>
 
 <script>
   function updateDateTime() {
