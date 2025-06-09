@@ -38,9 +38,9 @@ export function renderPredictions(sport) {
     const item = document.createElement("div");
     item.className = "col-md-12 mb-3";
 
-  item.innerHTML = `
-  <div class="card border-0 shadow-lg rounded-4 overflow-hidden mb-4">
-    <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center px-4 py-3">
+item.innerHTML = `
+  <div class="card border-0 shadow-sm rounded-3 overflow-hidden mb-3" style="font-size: 0.78rem;">
+    <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center px-3 py-2">
       <div class="text-danger fw-semibold d-flex align-items-center">
         <i class="bi bi-calendar-event me-2"></i>
         <span>${dateStr} - ${timeStr}</span>
@@ -50,17 +50,17 @@ export function renderPredictions(sport) {
       </div>
     </div>
 
-    <div class="card-body px-4 py-3">
-      <h5 class="card-title fw-bold text-dark mb-3">
+    <div class="card-body px-3 py-2">
+      <h6 class="card-title fw-semibold text-dark mb-2" style="line-height: 1.2;">
         🏏 ${data.title}<br>
         <span class="text-primary">${data.teamA}</span> vs <span class="text-success">${data.teamB}</span> 
         <small class="text-muted">(${data.gameType})</small>
-      </h5>
+      </h6>
 
       <p class="mb-2"><strong>Match #:</strong> ${data.matchNumber}</p>
 
-      <div class="mb-3">
-        <div class="progress" style="height: 12px;">
+      <div class="mb-2">
+        <div class="progress" style="height: 10px;">
           <div class="progress-bar bg-primary" style="width: ${data.teamAChance}%"></div>
           <div class="progress-bar bg-success" style="width: ${data.teamBChance}%"></div>
         </div>
@@ -70,15 +70,15 @@ export function renderPredictions(sport) {
         </div>
       </div>
 
-      <div id="${collapseId}" class="collapse mb-3">
-        <div class="bg-light p-3 rounded">${data.text}</div>
+      <div id="${collapseId}" class="collapse mb-2">
+        <div class="bg-light p-2 rounded">${data.text}</div>
       </div>
 
-      <div class="d-flex justify-content-end gap-2">
-        <button class="btn btn-sm btn-outline-primary toggle-collapse-btn" data-target="#${collapseId}">
+      <div class="d-flex justify-content-end">
+        <button class="btn btn-sm btn-outline-primary toggle-collapse-btn px-2 py-1" 
+                data-target="#${collapseId}" style="font-size: 0.75rem;">
           🔽 Read More
         </button>
-   
       </div>
     </div>
   </div>
