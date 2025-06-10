@@ -20,28 +20,14 @@
 
   <!-- ✅ Custom CSS -->
   <link rel="stylesheet" href="style.css" />
-  <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+  <!-- Quill -->
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
-  <!-- ✅ Inline Styles -->
-  <style>
-    #editor-container {
-      height: 200px;
-    }
-    .tab-btn.active {
-      border-bottom: 3px solid #fd7e14;
-      color: #fd7e14 !important;
-    }
-    .prediction-card {
-      display: none;
-    }
-    .prediction-card.show {
-      display: block;
-    }
-    #Newseditor {
-      min-height: 150px;
-      border: 1px solid #ccc;
-    }
-  </style>
+<!-- Firebase (loaded before your script.js) -->
+<script type="module" src="./script.js"></script>
+
+
   <style>
     .offcanvas-start {
       width: 250px;
@@ -125,6 +111,23 @@
   .nav-item .btn {
     padding: 6px 10px;
   }
+  #quillEditor {
+  height: 200px;
+  background-color: #f9f9f9;
+  border: 1px solid #dee2e6;
+  border-radius: 0.375rem; /* Bootstrap rounded */
+  padding: 10px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.ql-toolbar {
+  border-radius: 0.375rem 0.375rem 0 0;
+}
+
+.ql-container {
+  border-radius: 0 0 0.375rem 0.375rem;
+}
+
 </style>
 </head>
 
@@ -148,14 +151,6 @@
       </div>
     </div>
 
-    <!-- 🌐 Social Icons -->
-    <!-- <div class="d-flex gap-3">
-      <a href="https://facebook.com" class="text-dark" target="_blank" rel="noopener" title="Facebook" ><i class="bi bi-facebook fs-5"></i></a>
-      <a href="https://twitter.com" class="text-dark" target="_blank" rel="noopener" title="Twitter"><i class="bi bi-twitter-x fs-5"></i></a>
-      <a href="https://instagram.com" class="text-dark" target="_blank" rel="noopener" title="Instagram"><i class="bi bi-instagram fs-5"></i></a>
-      <a href="https://youtube.com" class="text-dark" target="_blank" rel="noopener" title="YouTube"><i class="bi bi-youtube fs-5"></i></a>
-    </div> -->
-
   </div>
 </header>
 
@@ -178,51 +173,50 @@
       <button class="btn btn-sm btn-light me-2" data-bs-toggle="modal" data-bs-target="#loginModal">
         <i class="bi bi-person-circle me-1"></i> Login
       </button>
-      <!-- <button class="btn btn-sm btn-warning" disabled>
-        <i class="bi bi-person-plus me-1"></i> Sign Up
-      </button> -->
     </div>
 
   </div>
 </nav>
 
-<div class="container bg-dark text-white my-2">
-  <div class="row justify-content-center">
-    <div class="col-12">
-      <!-- Header -->
-      <header class="my-2 text-center">
-      <div class="text-center mb-4">
-  <h1 class="h3 fw-bold text-warning">Predictions & Fantasy Tips</h1>
-  <div class="d-flex justify-content-center align-items-center mt-2">
-    <div class="border-top border-2 border-warning w-25"></div>
-    <i class="bi bi-stars text-warning mx-3 fs-5"></i>
-    <div class="border-top border-2 border-warning w-25"></div>
-  </div>
-</div>
 
-        <p class="lead text-white-50">Get the latest cricket predictions, fantasy tips, and expert analysis for all major matches.</p>
+
+<div class="container bg-dark text-white my-3 rounded-3 py-3 px-2">
+  <div class="row justify-content-center">
+    <div class="col-12 text-center">
+
+      <!-- Section Header -->
+      <header class="mb-4">
+        <h1 class="h3 fw-bold text-warning">Predictions & Fantasy Tips</h1>
+        <div class="d-flex justify-content-center align-items-center mt-2">
+          <div class="border-top border-2 border-warning w-25"></div>
+          <i class="bi bi-stars text-warning mx-3 fs-5"></i>
+          <div class="border-top border-2 border-warning w-25"></div>
+        </div>
+        <p class="lead text-white-50 mt-3">
+          Get the latest cricket predictions, fantasy tips, and expert analysis for all major matches.
+        </p>
       </header>
 
-      <!-- Body with Icons -->
-      <div class="d-flex justify-content-center gap-4 mb-2 flex-wrap text-center fs-4">
+      <!-- Sports Icons -->
+      <div class="d-flex justify-content-center gap-4 mb-4 flex-wrap text-center fs-5">
         <div>
-          <i class="bi bi-trophy-fill text-warning"></i><br>Cricket
+          <i class="bi bi-trophy-fill text-warning d-block"></i>Cricket
         </div>
         <div>
-          <i class="bi bi-dribbble text-info"></i><br>Football
+          <i class="bi bi-dribbble text-info d-block"></i>Football
         </div>
         <div>
-          <i class="bi bi-basket2-fill text-danger"></i><br>Basketball
+          <i class="bi bi-basket2-fill text-danger d-block"></i>Basketball
         </div>
       </div>
 
-      <!-- Middle Graphic Design -->
-      <div class="text-center mb-1">
+      <!-- Graphic SVG Illustration -->
+      <div class="text-center">
         <svg width="280" height="180" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
-          <rect x="50" y="50" width="200" height="100" rx="20" fill="#ffffff" opacity="0.05"/>
-          <circle cx="150" cy="100" r="40" fill="#ffffff" opacity="0.1"/>
-          <path d="M150 60 L150 140 M110 100 L190 100" stroke="#ffc107" stroke-width="4" opacity="0.8"/>
-          <circle cx="150" cy="100" r="10" fill="#fd7e14"/>
+          <rect x="50" y="50" width="200" height="100" rx="20" fill="#ffffff" opacity="0.05" />
+          <circle cx="150" cy="100" r="40" fill="#ffffff" opacity="0.1" />
+          <path d="M150 60 L150 140 M110 100 L190 100" stroke="#ffc107" stroke-width="4" opacity="0.8" />
+          <circle cx="150" cy="100" r="10" fill="#fd7e14" />
         </svg>
       </div>
 
@@ -230,10 +224,65 @@
   </div>
 </div>
 
+<!-- Create New Entry Header -->
+<div id="createEntryContainer" class="d-none container bg-light border rounded-4 py-3 px-4 my-3 shadow-sm d-flex justify-content-between align-items-center">
+  <span class="text-muted fw-semibold">Only logged-in users can create new entries</span>
+  <button id="createBtn" class="btn btn-outline-primary btn-sm d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#createModal">
+    <i class="bi bi-plus-circle me-1"></i> Create New
+  </button>
+</div>
 
 
-<div class="container py-2">
-  
+
+<!-- Modal for Creating Entry -->
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="createModalLabel">
+          <i class="bi bi-pencil-square me-2"></i> Create New Entry
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="createForm">
+          <div class="mb-3">
+            <label for="titleInput" class="form-label">Title Name</label>
+            <input type="text" class="form-control" id="titleInput" placeholder="Enter title" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="tabType" class="form-label">Type of Tab</label>
+            <select class="form-select" id="tabType" required>
+              <option value="news">News</option>
+              <option value="prediction">Prediction</option>
+              <option value="dreamteam">Dream Team</option>
+              <option value="current">Current Affairs</option>
+              <option value="jobs">Job Notifications</option>
+              <option value="movie">Movie Reviews</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="quillEditor" class="form-label">Content</label>
+            <div id="quillEditor"></div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success" form="createForm">
+          <i class="bi bi-cloud-upload me-1"></i> Submit
+        </button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          <i class="bi bi-x-circle me-1"></i> Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <div class="container py-2">
 
   <!-- Prediction Tab -->
   <div class="mobile-tab show" id="tab-prediction">
@@ -243,32 +292,18 @@
     </div>
     <div class="tab-content" id="content-prediction">
       <div class="container px-0">
-        <div class="d-flex justify-content-end d-none" id="createBtnWrapper">
-          <button class="btn btn-success btn-sm mb-3" id="createPredictionBtn" data-bs-toggle="modal" data-bs-target="#editorModal">
-            ➕ Create
-          </button>
-        </div>
-
         <ul class="nav justify-content-center flex-wrap gap-2 mb-3">
           <li class="nav-item">
-            <button class="btn btn-outline-dark btn-sm tab-btn active" data-sport="all">
-              <i class="bi bi-grid me-1"></i> All
-            </button>
+            <button class="btn btn-outline-dark btn-sm tab-btn active"><i class="bi bi-grid me-1"></i> All</button>
           </li>
           <li class="nav-item">
-            <button class="btn btn-outline-dark btn-sm tab-btn" data-sport="cricket">
-              <i class="bi bi-trophy me-1"></i> Cricket
-            </button>
+            <button class="btn btn-outline-dark btn-sm tab-btn"><i class="bi bi-trophy me-1"></i> Cricket</button>
           </li>
           <li class="nav-item">
-            <button class="btn btn-outline-dark btn-sm tab-btn" data-sport="football">
-              <i class="bi bi-dribbble me-1"></i> Football
-            </button>
+            <button class="btn btn-outline-dark btn-sm tab-btn"><i class="bi bi-dribbble me-1"></i> Football</button>
           </li>
           <li class="nav-item">
-            <button class="btn btn-outline-dark btn-sm tab-btn" data-sport="basketball">
-              <i class="bi bi-basket me-1"></i> Basketball
-            </button>
+            <button class="btn btn-outline-dark btn-sm tab-btn"><i class="bi bi-basket me-1"></i> Basketball</button>
           </li>
         </ul>
 
@@ -277,7 +312,10 @@
           <h2 class="section-headingmatchAccordion mb-0">Predictions & Dream Team Tips</h2>
         </div>
 
-        <div class="row" id="matchAccordion"></div>
+        <div class="row" id="matchAccordion">
+          <!-- Static placeholder -->
+          <p class="text-muted">No predictions available right now.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -289,48 +327,75 @@
       <i class="bi bi-plus tab-icon" id="icon-news"></i>
     </div>
     <div class="tab-content" id="content-news">
-      <section id="news" class="mb-3">
+      <section class="mb-3">
         <div class="d-flex justify-content-between align-items-center mb-2">
           <h2 class="section-title m-0">
-            <i class="bi bi-newspaper me-1 text-primary"></i>Latest News
+            <i class="bi bi-newspaper me-1 text-primary"></i> Latest News
           </h2>
-          <div id="createNewsBtnWrapper" class="d-none">
-            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createNewsModal">
-              <i class="bi bi-plus-circle me-1"></i> Create
-            </button>
-          </div>
         </div>
-        <div class="row" id="newsContainer"></div>
-        <div class="d-flex justify-content-between align-items-center mt-2">
-          <button id="prevPage" class="btn btn-outline-secondary btn-sm">Prev</button>
-          <span id="pageInfo" class="mx-2 text-muted small">Page 1 of X</span>
-          <button id="nextPage" class="btn btn-outline-secondary btn-sm">Next</button>
+        <div class="row">
+          <p class="text-muted">No news updates at the moment.</p>
         </div>
       </section>
     </div>
   </div>
 
   <!-- Dream Team Tab -->
-  <div class="mobile-tab" id="tab-dreamteam">
-    <div class="tab-header" onclick="toggleTab('dreamteam')">
-      <span>⭐ Dream Team Tips</span>
-      <i class="bi bi-plus tab-icon" id="icon-dreamteam"></i>
-    </div>
-    <div class="tab-content" id="content-dreamteam">
-      <p class="mb-0">Fantasy team building tips and expert advice to help you win contests.</p>
-    </div>
+<div class="mobile-tab" id="tab-dreamteam">
+  <div class="tab-header" onclick="toggleTab('dreamteam')">
+    <span>⭐ Dream Team Tips</span>
+    <i class="bi bi-plus tab-icon" id="icon-dreamteam"></i>
   </div>
+  <div class="tab-content" id="content-dreamteam">
+    <p class="mb-2 text-muted">Fantasy team building tips and expert advice to help you win contests.</p>
+    
+    <!-- ✅ Add this row container for dynamic content -->
+    <div class="row"></div>
+  </div>
+</div>
 
-  <!-- Current Affairs Tab -->
-  <div class="mobile-tab" id="tab-current">
-    <div class="tab-header" onclick="toggleTab('current')">
-      <span>📚 Current Affairs</span>
-      <i class="bi bi-plus tab-icon" id="icon-current"></i>
-    </div>
-    <div class="tab-content" id="content-current">
-      <p class="mb-0">Latest current affairs and general knowledge updates.</p>
-    </div>
+
+  <!-- Current Tab -->
+<div class="mobile-tab" id="tab-current">
+  <div class="tab-header" onclick="toggleTab('current')">
+    <span>📅 Current Info</span>
+    <i class="bi bi-plus tab-icon" id="icon-current"></i>
   </div>
+  <div class="tab-content" id="content-current">
+    <p class="mb-2 text-muted">Latest real-time updates and insights.</p>
+
+    <!-- ✅ Add this row container -->
+    <div class="row"></div>
+  </div>
+</div>
+
+
+<!-- Job Notifications Tab -->
+<div class="mobile-tab" id="tab-jobs">
+  <div class="tab-header" onclick="toggleTab('jobs')">
+    <span>📢 Job Notifications</span>
+    <i class="bi bi-plus tab-icon" id="icon-jobs"></i>
+  </div>
+  <div class="tab-content" id="content-jobs">
+    <p class="mb-2 text-muted">Latest job notifications and updates will appear here.</p>
+    <div class="row"></div> <!-- ✅ Required for dynamic data injection -->
+  </div>
+</div>
+
+
+ <!-- Movie Reviews Tab -->
+<div class="mobile-tab" id="tab-movie">
+  <div class="tab-header" onclick="toggleTab('movie')">
+    <span>🎬 Movie Reviews</span>
+    <i class="bi bi-plus tab-icon" id="icon-movie"></i>
+  </div>
+  <div class="tab-content" id="content-movie">
+    <p class="mb-2 text-muted">Latest movie reviews and updates will be shown here.</p>
+    <div class="row"></div> <!-- ✅ This is required for JS to inject content -->
+  </div>
+</div>
+
+
 </div>
 
 
@@ -368,147 +433,6 @@
 
 
    
- 
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-<!-- <div class="container py-4">
-  <div class="d-flex align-items-center mb-4 border-bottom pb-2 custom-headermatchAccordion">
-    <i class="bi bi-stars fs-4 me-2 text-danger"></i>
-    <h2 class="section-headingmatchAccordion mb-0"> Predictions & Dream Team Tips</h2>
-  </div>
-
-  <div class="row" id="matchAccordion"></div>
-</div> -->
-
-
-
-
-
-
- 
-
-<!-- Prediction Editor Modal -->
-<div class="modal fade" id="editorModal" tabindex="-1" aria-labelledby="editorModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editorModalLabel">Create New Prediction</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-
-      <div class="modal-body">
-        <form id="predictionForm">
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label for="titleInput" class="form-label">Prediction Title</label>
-              <input type="text" id="titleInput" class="form-control" placeholder="Enter prediction title" required>
-            </div>
-            <div class="col-md-6 mb-3">
-              <label for="matchInput" class="form-label">Match Number</label>
-              <input type="text" id="matchInput" class="form-control" placeholder="Enter match number" required>
-            </div>
-
-            <div class="col-md-6 mb-3">
-              <label for="teamA" class="form-label">Team A</label>
-              <input type="text" id="teamA" class="form-control" placeholder="Team A name" required>
-            </div>
-            <div class="col-md-6 mb-3">
-              <label for="teamB" class="form-label">Team B</label>
-              <input type="text" id="teamB" class="form-control" placeholder="Team B name" required>
-            </div>
-
-            <div class="col-md-6 mb-3">
-              <label for="teamAChance" class="form-label">Team A Winning %</label>
-              <input type="number" id="teamAChance" class="form-control" placeholder="e.g. 60" required>
-            </div>
-            <div class="col-md-6 mb-3">
-              <label for="teamBChance" class="form-label">Team B Winning %</label>
-              <input type="number" id="teamBChance" class="form-control" placeholder="e.g. 40" required>
-            </div>
-
-            <div class="col-md-6 mb-3">
-              <label for="gameType" class="form-label">Game Type</label>
-              <select id="gameType" class="form-select" required>
-                <option value="">Select game type</option>
-                <option value="cricket">Cricket</option>
-                <option value="football">Football</option>
-                <option value="basketball">Basketball</option>
-              </select>
-            </div>
-            <div class="col-md-6 mb-3">
-              <label for="authorName" class="form-label">Author Name</label>
-              <input type="text" id="authorName" class="form-control" placeholder="Author" required>
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">Prediction Details</label>
-            <div id="editor-container"></div>
-          </div>
-
-          <p id="status" class="text-success mt-2 mb-0"></p>
-        </form>
-      </div>
-
-      <div class="modal-footer">
-        <button id="saveBtn" type="button" class="btn btn-primary">💾 Save to Firebase</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-
-
-
-
-
-
-<!-- Create News Modal -->
-<div class="modal fade" id="createNewsModal" tabindex="-1" aria-labelledby="createNewsModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="createNewsModalLabel">Create News</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form id="createNewsForm">
-          <div class="mb-3">
-            <label for="newsTitle" class="form-label">News Title <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="newsTitle" required />
-          </div>
-          <div class="mb-3">
-            <label for="createdBy" class="form-label">Created By <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="createdBy" placeholder="Author Name" required />
-          </div>
-          <div class="mb-3">
-            <label class="form-label">News Details</label>
-            <div id="Newseditor" ></div>
-          </div>
-          <div class="text-end">
-            <button type="submit" class="btn btn-primary">Save News</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- Offcanvas Menu -->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasMenu">
@@ -520,25 +444,40 @@
   <div class="offcanvas-body d-flex flex-column justify-content-between">
     <ul class="nav flex-column overflow-auto offcanvas-menu-list">
       <li class="nav-item mb-2">
-        <a class="nav-link tab-link" href="#" data-tab="news"><i class="bi bi-newspaper me-2"></i> News</a>
+        <a class="nav-link tab-link" href="#" data-tab="movie">
+          <i class="bi bi-film me-2"></i> Movie Reviews
+        </a>
       </li>
       <li class="nav-item mb-2">
-        <a class="nav-link tab-link" href="#" data-tab="prediction"><i class="bi bi-trophy-fill me-2"></i> Prediction</a>
+        <a class="nav-link tab-link" href="#" data-tab="news">
+          <i class="bi bi-newspaper me-2"></i> News
+        </a>
       </li>
       <li class="nav-item mb-2">
-        <a class="nav-link tab-link" href="#" data-tab="dreamteam"><i class="bi bi-star-fill me-2"></i> Dream Team</a>
+        <a class="nav-link tab-link" href="#" data-tab="prediction">
+          <i class="bi bi-trophy-fill me-2"></i> Prediction
+        </a>
       </li>
       <li class="nav-item mb-2">
-        <a class="nav-link tab-link" href="#" data-tab="current"><i class="bi bi-globe me-2"></i> Current Affairs</a>
+        <a class="nav-link tab-link" href="#" data-tab="dreamteam">
+          <i class="bi bi-star-fill me-2"></i> Dream Team
+        </a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link tab-link" href="#" data-tab="current">
+          <i class="bi bi-globe me-2"></i> Current Affairs
+        </a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link tab-link" href="#" data-tab="jobs">
+          <i class="bi bi-briefcase-fill me-2"></i> Job Notifications
+        </a>
       </li>
     </ul>
 
     <div class="border-top pt-3 mt-3">
       <div class="d-flex gap-3 mb-2">
-        <!-- <a href="#" class="text-danger"><i class="bi bi-facebook fs-5"></i></a>
-        <a href="#" class="text-danger"><i class="bi bi-twitter fs-5"></i></a>
-        <a href="#" class="text-danger"><i class="bi bi-instagram fs-5"></i></a>
-        <a href="#" class="text-danger"><i class="bi bi-linkedin fs-5"></i></a> -->
+        <!-- Social media icons can be placed here if needed -->
       </div>
       <small class="text-muted d-block">Developed by <strong>Yalla Ramana</strong></small>
       <small class="text-muted">📧 <a href="mailto:ramana9000r@gmail.com">ramana9000r@gmail.com</a></small>
@@ -561,201 +500,135 @@
 </footer>
 
 
-
-<!-- ✅ Bootstrap JS (load only ONCE) -->
+<!-- ✅ Bootstrap JS (Load only once) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- ✅ Quill Editor JS -->
-<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<!-- ✅ Quill Editor (Only one version needed) -->
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
-
-
+<!-- ✅ Tab Link Scroll & Toggle Behavior -->
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
-    const offset = 70; // Height of fixed header
+    const offset = 70;
 
     navLinks.forEach(link => {
       link.addEventListener('click', function (e) {
-        // Remove active class from all links
         navLinks.forEach(l => l.classList.remove('active'));
-        // Add active class to clicked link
         this.classList.add('active');
 
         const href = this.getAttribute('href');
         if (href.startsWith('#') && href !== '#') {
           e.preventDefault();
-
           const targetElement = document.querySelector(href);
           if (targetElement) {
-            const elementPosition = targetElement.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.pageYOffset - offset;
-
-            window.scrollTo({
-              top: offsetPosition,
-              behavior: 'smooth'
-            });
+            const offsetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - offset;
+            window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
           }
         }
       });
     });
   });
 </script>
-<script>
-  document.querySelectorAll('.tab-link').forEach(link => {
-    link.addEventListener('click', function(e) {
-      e.preventDefault(); // Prevent default anchor behavior (no # in URL)
 
-      const tab = this.getAttribute('data-tab');
-      if (tab) {
-        // Call your existing toggleTab function to show the tab content
-        toggleTab(tab);
-
-        // Close the offcanvas menu (Bootstrap 5)
-        const offcanvasElement = document.getElementById('offcanvasMenu');
-        const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
-        if (bsOffcanvas) bsOffcanvas.hide();
-
-        // Optional: scroll to the tab section
-        const tabElement = document.getElementById(`tab-${tab}`);
-        if (tabElement) tabElement.scrollIntoView({behavior: 'smooth'});
-      }
-    });
-  });
-
-  // Example toggleTab function if you don't have it yet:
-  function toggleTab(tabName) {
-    const validTabs = ['news', 'prediction', 'dreamteam', 'current'];
-    validTabs.forEach(name => {
-      const content = document.getElementById(`content-${name}`);
-      const icon = document.getElementById(`icon-${name}`);
-      if (content && icon) {
-        if (name === tabName) {
-          content.classList.add('show');
-          icon.classList.remove('bi-plus');
-          icon.classList.add('bi-dash');
-        } else {
-          content.classList.remove('show');
-          icon.classList.remove('bi-dash');
-          icon.classList.add('bi-plus');
-        }
-      }
-    });
-  }
-</script>
-
-<script>
-  window.addEventListener('DOMContentLoaded', () => {
-    // Open Prediction tab by default
-    toggleTab('prediction');
-  });
-</script>
-
-
+<!-- ✅ Tab Content Toggle (only one function kept) -->
 <script>
   function toggleTab(tab) {
     const content = document.getElementById(`content-${tab}`);
     const icon = document.getElementById(`icon-${tab}`);
     const isOpen = content.classList.contains('show');
 
-    // Optionally close all other tabs
     document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('show'));
     document.querySelectorAll('.tab-icon').forEach(i => {
       i.classList.remove('bi-dash');
       i.classList.add('bi-plus');
     });
 
-    // Toggle selected tab
     if (!isOpen) {
       content.classList.add('show');
       icon.classList.remove('bi-plus');
       icon.classList.add('bi-dash');
     }
   }
+
+  document.querySelectorAll('.tab-link').forEach(link => {
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      const tab = this.getAttribute('data-tab');
+      if (tab) {
+        toggleTab(tab);
+        const offcanvasElement = document.getElementById('offcanvasMenu');
+        const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
+        if (bsOffcanvas) bsOffcanvas.hide();
+
+        const tabElement = document.getElementById(`tab-${tab}`);
+        if (tabElement) tabElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+
+  // Default tab
+  window.addEventListener('DOMContentLoaded', () => toggleTab('prediction'));
 </script>
 
+<!-- ✅ Date & Time Updater -->
 <script>
   function updateDateTime() {
     const now = new Date();
-
-    // Format date: Sunday, June 7, 2025
     const optionsDate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    const formattedDate = now.toLocaleDateString(undefined, optionsDate);
-
-    // Format time: HH:MM:SS
-    const formattedTime = now.toLocaleTimeString();
-
-    document.getElementById('currentDate').textContent = formattedDate;
-    document.getElementById('currentTime').textContent = formattedTime;
+    document.getElementById('currentDate').textContent = now.toLocaleDateString(undefined, optionsDate);
+    document.getElementById('currentTime').textContent = now.toLocaleTimeString();
   }
-
-  updateDateTime();           // Initial call
-  setInterval(updateDateTime, 1000);  // Update every second
+  updateDateTime();
+  setInterval(updateDateTime, 1000);
 </script>
 
-
+<!-- ✅ Admin Login Logic -->
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const loginForm = document.getElementById("loginForm");
-  const usernameInput = document.getElementById("usernameInput");
-  const passwordInput = document.getElementById("passwordInput");
-  const loginError = document.getElementById("loginError");
+  document.addEventListener("DOMContentLoaded", () => {
+    const loginForm = document.getElementById("loginForm");
+    const usernameInput = document.getElementById("usernameInput");
+    const passwordInput = document.getElementById("passwordInput");
+    const loginError = document.getElementById("loginError");
 
-  const editorSection = document.getElementById("editorSection");
-  const createBtnWrapper = document.getElementById("createBtnWrapper");
-  const createBtn = document.getElementById("createPredictionBtn") || document.getElementById("createBtn");
+    const createEntryContainer = document.getElementById("createEntryContainer");
+    const footerNote = document.getElementById("footerNote");
 
-  const createNewsBtnWrapper = document.getElementById("createNewsBtnWrapper");
+    loginForm.addEventListener("submit", function (e) {
+      e.preventDefault();
 
-  loginForm.addEventListener("submit", function (e) {
-    e.preventDefault();
+      const username = usernameInput.value.trim();
+      const password = passwordInput.value.trim();
 
-    const username = usernameInput.value.trim();
-    const password = passwordInput.value.trim();
+      if (username === "446" && password === "446") {
+        const modal = bootstrap.Modal.getInstance(document.getElementById("loginModal"));
+        modal.hide();
+        loginForm.reset();
+        loginError.textContent = "";
 
-    if (username === "Monisha" && password === "446447") {
-      const modal = bootstrap.Modal.getInstance(document.getElementById("loginModal"));
-      modal.hide();
+        // ✅ Show Create Entry section
+        if (createEntryContainer) createEntryContainer.classList.remove("d-none");
 
-      loginForm.reset();
-      loginError.textContent = "";
-
-      // Show the create prediction button
-      if (createBtnWrapper) createBtnWrapper.classList.remove("d-none");
-
-      // Show the create news button
-      if (createNewsBtnWrapper) createNewsBtnWrapper.classList.remove("d-none");
-
-      // Update footer
-      const footerNote = document.getElementById("footerNote");
-      if (footerNote) {
-        footerNote.textContent = "✔️ Logged in as Admin.";
-        footerNote.classList.remove("text-danger");
-        footerNote.classList.add("text-success");
+        // ✅ Show login success message
+        if (footerNote) {
+          footerNote.textContent = "✔️ Logged in as Admin.";
+          footerNote.classList.remove("text-danger");
+          footerNote.classList.add("text-success");
+        }
+      } else {
+        loginError.textContent = "❌ Invalid admin credentials.";
       }
-
-    } else {
-      loginError.textContent = "❌ Invalid admin credentials.";
-    }
-  });
-
-  // Toggle editor section when "Create Prediction" button is clicked
-  if (createBtn) {
-    createBtn.addEventListener("click", () => {
-      editorSection.classList.toggle("d-none");
-      createBtn.textContent = editorSection.classList.contains("d-none")
-        ? "➕ Create Prediction"
-        : "✖️ Hide Editor";
     });
-  }
-});
-
+  });
 </script>
 
 
 
-<!-- ✅ Your App Logic -->
+
+<!-- ✅ Main Logic (Create form, Quill setup, Firebase post) -->
 <script type="module" src="script.js"></script>
+
 
 </body>
 </html>
