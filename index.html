@@ -26,6 +26,8 @@
 
 <!-- Firebase (loaded before your script.js) -->
 <script type="module" src="./script.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
 
 
   <style>
@@ -157,21 +159,45 @@
 
 
 <!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-  <div class="container d-flex justify-content-between align-items-center">
+<nav class="navbar navbar-expand-lg navbar-dark bg-danger sticky-top shadow-sm">
+  <div class="container-fluid px-3 d-flex justify-content-between align-items-center">
 
-    <!-- Menu Button (Left) -->
+    <!-- Menu + Brand -->
     <div class="d-flex align-items-center">
-      <button class="btn btn-primary me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-label="Open menu">
-        <i class="bi bi-list fs-4"></i>
+      <button class="btn btn-light me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-label="Open menu">
+        <i class="bi bi-list fs-5"></i>
       </button>
-      <span class="navbar-brand mb-0 h1 text-white">RDMCricketPro</span>
+      <span class="navbar-brand mb-0 h5 text-white">RDMCricketPro</span>
     </div>
 
-    <!-- Login & Sign Up (Right) -->
-    <div class="d-flex align-items-center">
-      <button class="btn btn-sm btn-light me-2" data-bs-toggle="modal" data-bs-target="#loginModal">
-        <i class="bi bi-person-circle me-1"></i> Login
+    <!-- Tab Navigation Links -->
+    <div class="d-none d-lg-flex ms-3 flex-grow-1 justify-content-center overflow-auto">
+      <ul class="navbar-nav flex-row gap-2">
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#tab-prediction"><i class="bi bi-stars me-1"></i>Prediction</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#tab-news"><i class="bi bi-newspaper me-1"></i>News</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#tab-dreamteam"><i class="bi bi-lightbulb me-1"></i>Dream Team</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#tab-current"><i class="bi bi-calendar-event me-1"></i>Current Info</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#tab-jobs"><i class="bi bi-megaphone me-1"></i>Jobs</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#tab-movie"><i class="bi bi-film me-1"></i>Movies</a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Login -->
+    <div class="d-flex align-items-center ms-auto">
+      <button class="btn btn-sm btn-light" data-bs-toggle="modal" data-bs-target="#loginModal">
+        <i class="bi bi-person-circle me-1"></i>Login
       </button>
     </div>
 
@@ -180,49 +206,57 @@
 
 
 
-<div class="container bg-dark text-white my-3 rounded-3 py-3 px-2">
-  <div class="row justify-content-center">
-    <div class="col-12 text-center">
 
-      <!-- Section Header -->
-      <header class="mb-4">
-        <h1 class="h3 fw-bold text-warning">Predictions & Fantasy Tips</h1>
-        <div class="d-flex justify-content-center align-items-center mt-2">
-          <div class="border-top border-2 border-warning w-25"></div>
-          <i class="bi bi-stars text-warning mx-3 fs-5"></i>
-          <div class="border-top border-2 border-warning w-25"></div>
-        </div>
-        <p class="lead text-white-50 mt-3">
-          Get the latest cricket predictions, fantasy tips, and expert analysis for all major matches.
-        </p>
-      </header>
 
-      <!-- Sports Icons -->
-      <div class="d-flex justify-content-center gap-4 mb-4 flex-wrap text-center fs-5">
-        <div>
-          <i class="bi bi-trophy-fill text-warning d-block"></i>Cricket
-        </div>
-        <div>
-          <i class="bi bi-dribbble text-info d-block"></i>Football
-        </div>
-        <div>
-          <i class="bi bi-basket2-fill text-danger d-block"></i>Basketball
-        </div>
+<div class="container my-4 px-4 py-5 rounded-4 shadow-lg text-white animate__animated animate__fadeIn"
+     style="background: linear-gradient(135deg, #a80b28 0%, #3c2c3a 50%, #4d3a3c 100%);">
+  <div class="text-center">
+
+    <!-- Heading -->
+    <h2 class="fw-bold display-6 text-warning animate__animated animate__fadeInDown">
+      🎯 Welcome to RDM 11
+    </h2>
+    <p class="lead text-white-50 animate__animated animate__fadeInUp mb-4">
+      <strong>RDM 11  Your ultimate hub for sports predictions, news, fantasy tips, job updates, and movie reviews.</strong>
+    </p>
+
+    <!-- Icon Grid -->
+    <div class="row g-4 justify-content-center animate__animated animate__zoomIn">
+      <div class="col-6 col-md-4 col-lg-2 text-center">
+        <i class="bi bi-stars fs-1 text-warning"></i>
+        <div class="small mt-2">Prediction</div>
       </div>
-
-      <!-- Graphic SVG Illustration -->
-      <div class="text-center">
-        <svg width="280" height="180" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
-          <rect x="50" y="50" width="200" height="100" rx="20" fill="#ffffff" opacity="0.05" />
-          <circle cx="150" cy="100" r="40" fill="#ffffff" opacity="0.1" />
-          <path d="M150 60 L150 140 M110 100 L190 100" stroke="#ffc107" stroke-width="4" opacity="0.8" />
-          <circle cx="150" cy="100" r="10" fill="#fd7e14" />
-        </svg>
+      <div class="col-6 col-md-4 col-lg-2 text-center">
+        <i class="bi bi-newspaper fs-1 text-info"></i>
+        <div class="small mt-2">News</div>
       </div>
-
+      <div class="col-6 col-md-4 col-lg-2 text-center">
+        <i class="bi bi-lightbulb-fill fs-1 text-success"></i>
+        <div class="small mt-2">Dream Team</div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2 text-center">
+        <i class="bi bi-calendar-event-fill fs-1 text-primary"></i>
+        <div class="small mt-2">Current Info</div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2 text-center">
+        <i class="bi bi-megaphone-fill fs-1 text-danger"></i>
+        <div class="small mt-2">Jobs</div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2 text-center">
+        <i class="bi bi-film fs-1 text-light"></i>
+        <div class="small mt-2">Movies</div>
+      </div>
     </div>
+
+    <!-- Optional Graphic SVG or Emoji Bar -->
+    <div class="mt-4 animate__animated animate__fadeInUp">
+      <span class="fs-1">⚽🏏🎬📢🌍🎯</span>
+    </div>
+
   </div>
 </div>
+
+
 
 <!-- Create New Entry Header -->
 <div id="createEntryContainer" class="d-none container bg-light border rounded-4 py-3 px-4 my-3 shadow-sm d-flex justify-content-between align-items-center">
