@@ -52,85 +52,26 @@
     padding: 0.5rem 1rem;
   }
 </style>
+<!-- Styles for Scroll Behavior -->
 <style>
-  body {
-    background-color: #f7f9fc;
-    font-family: 'Segoe UI', sans-serif;
-    font-size: 14px; /* Smaller base font size for mobile */
-  }
-
-  .mobile-tab {
-    background-color: #fff;
-    border-radius: 14px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
-    margin-bottom: 16px;
-    overflow: hidden;
-  }
-
-  .tab-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 16px;
-    font-weight: 500;
-    font-size: 15px;
-    color: #333;
-    cursor: pointer;
-    background-color: #ffffff;
-    border-bottom: 1px solid #eaeaea;
-  }
-
-  .tab-header:hover {
-    background-color: #f1f1f1;
-  }
-
-  .tab-icon {
-    font-size: 1.1rem;
-    color: #6c757d;
-  }
-
-  .tab-content {
+  .scroll-mobile-tabs::-webkit-scrollbar {
     display: none;
-    padding: 16px;
-    background-color: #fcfcfc;
   }
 
-  .tab-content.show {
-    display: block;
+  .scroll-mobile-tabs {
+    white-space: nowrap;
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 
-  .section-title,
-  .section-headingmatchAccordion {
-    font-size: 16px;
-    font-weight: 600;
+  .scroll-mobile-tabs a.active {
+    background-color: #dc3545;
+    color: #fff !important;
+    font-weight: 500;
   }
-
-  .btn-sm, .btn {
-    font-size: 13px;
-    padding: 6px 10px;
-  }
-
-  .nav-item .btn {
-    padding: 6px 10px;
-  }
-  #quillEditor {
-  height: 200px;
-  background-color: #f9f9f9;
-  border: 1px solid #dee2e6;
-  border-radius: 0.375rem; /* Bootstrap rounded */
-  padding: 10px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.ql-toolbar {
-  border-radius: 0.375rem 0.375rem 0 0;
-}
-
-.ql-container {
-  border-radius: 0 0 0.375rem 0.375rem;
-}
-
 </style>
+
 </head>
 
 <body>
@@ -156,8 +97,6 @@
   </div>
 </header>
 
-
-
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-danger sticky-top shadow-sm">
   <div class="container-fluid px-3 d-flex justify-content-between align-items-center">
@@ -170,7 +109,7 @@
       <span class="navbar-brand mb-0 h5 text-white">RDMCricketPro</span>
     </div>
 
-    <!-- Tab Navigation Links -->
+    <!-- Desktop Tabs (hidden on mobile) -->
     <div class="d-none d-lg-flex ms-3 flex-grow-1 justify-content-center overflow-auto">
       <ul class="navbar-nav flex-row gap-2">
         <li class="nav-item">
@@ -183,7 +122,7 @@
           <a class="nav-link text-white" href="#tab-dreamteam"><i class="bi bi-lightbulb me-1"></i>Dream Team</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white" href="#tab-current"><i class="bi bi-calendar-event me-1"></i>Current Info</a>
+          <a class="nav-link text-white" href="#tab-current"><i class="bi bi-calendar-event me-1"></i>Info</a>
         </li>
         <li class="nav-item">
           <a class="nav-link text-white" href="#tab-jobs"><i class="bi bi-megaphone me-1"></i>Jobs</a>
@@ -194,15 +133,36 @@
       </ul>
     </div>
 
- <!-- Login -->
-    <!-- <div class="d-flex align-items-center ms-auto">
-      <button class="btn btn-sm btn-light" data-bs-toggle="modal" data-bs-target="#loginModal">
-        <i class="bi bi-person-circle me-1"></i>Login
-      </button>
-    </div> -->
-
   </div>
 </nav>
+
+<!-- Mobile Tab Scroll (visible only on small screens) -->
+<div class="d-lg-none bg-white border-bottom position-relative py-2">
+
+  <!-- Left Arrow -->
+  <button class="btn btn-sm btn-outline-danger position-absolute start-0 top-50 translate-middle-y z-3" onclick="scrollMobileTabs(-150)" title="Scroll left">
+    <i class="bi bi-chevron-left"></i>
+  </button>
+
+  <!-- Right Arrow -->
+  <button class="btn btn-sm btn-outline-danger position-absolute end-0 top-50 translate-middle-y z-3" onclick="scrollMobileTabs(150)" title="Scroll right">
+    <i class="bi bi-chevron-right"></i>
+  </button>
+
+  <!-- Scrollable Tabs -->
+  <div class="d-flex overflow-auto px-5 gap-2 scroll-mobile-tabs" id="mobileTabScroll">
+    <a class="btn btn-outline-danger btn-sm active" href="#tab-prediction"><i class="bi bi-stars me-1"></i>Prediction</a>
+    <a class="btn btn-outline-danger btn-sm" href="#tab-news"><i class="bi bi-newspaper me-1"></i>News</a>
+    <a class="btn btn-outline-danger btn-sm" href="#tab-dreamteam"><i class="bi bi-lightbulb me-1"></i>Dream Team</a>
+    <a class="btn btn-outline-danger btn-sm" href="#tab-current"><i class="bi bi-calendar-event me-1"></i>Info</a>
+    <a class="btn btn-outline-danger btn-sm" href="#tab-jobs"><i class="bi bi-megaphone me-1"></i>Jobs</a>
+    <a class="btn btn-outline-danger btn-sm" href="#tab-movie"><i class="bi bi-film me-1"></i>Movies</a>
+  </div>
+</div>
+
+
+
+
 
 
 
@@ -652,7 +612,25 @@
   });
 </script>
 
+<!-- Scroll Script -->
+<script>
+  function scrollMobileTabs(distance) {
+    const container = document.getElementById('mobileTabScroll');
+    container.scrollBy({ left: distance, behavior: 'smooth' });
+  }
 
+  document.querySelectorAll('.scroll-mobile-tabs a').forEach(tab => {
+    tab.addEventListener('click', function () {
+      document.querySelectorAll('.scroll-mobile-tabs a').forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const firstTab = document.querySelector('.scroll-mobile-tabs a');
+    if (firstTab) firstTab.classList.add('active');
+  });
+</script>
 
 
 <!-- ✅ Main Logic (Create form, Quill setup, Firebase post) -->
