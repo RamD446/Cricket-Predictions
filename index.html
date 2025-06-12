@@ -31,11 +31,60 @@
 
 
   <style>
-    .offcanvas-start {
-      width: 250px;
-    }
+    .custom-offcanvas .nav-link {
+  transition: all 0.2s ease-in-out;
+  border-radius: 0.375rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.custom-offcanvas .nav-link:hover {
+  background-color: #ffe5e5;
+  color: #dc3545;
+  transform: translateX(4px);
+}
+
+.custom-offcanvas .nav-link.active {
+  background-color: #dc3545;
+  color: #fff !important;
+}
+
+.custom-offcanvas .offcanvas-title {
+  font-size: 0.90rem;
+  font-weight: 600;
+}
+
   
   </style>
+  <style>
+  #offcanvasMenu {
+    width: 220px !important; /* Reduced width */
+  }
+
+  @media (max-width: 576px) {
+    #offcanvasMenu {
+      width: 200px !important; /* Even smaller on XS devices */
+    }
+  }
+
+  .offcanvas .nav-link {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.5rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .offcanvas .nav-link i {
+    font-size: 1rem;
+    color: red;
+  }
+
+  
+
+  .offcanvas-body small a {
+    color: #dc3545;
+  }
+</style>
+
     <style>
   .section-headingmatchAccordion {
     font-size: 1.4rem;
@@ -70,59 +119,35 @@
   }
 </style>
 <style>
-  /* Unique styling for RDM tab layout */
-.rdm-tab {
-  border: 1px solid #ddd;
-  border-radius: 0.5rem;
-  margin-bottom: 1rem;
-  background-color: #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  overflow: hidden;
-}
-
-.rdm-tab-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #f8f9fa;
-  padding: 0.75rem 1rem;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 1rem;
-  border-bottom: 1px solid #dee2e6;
-}
-
-.rdm-tab-header:hover {
-  background-color: #f1f1f1;
-}
-
-.rdm-tab-icon {
-  font-size: 1.25rem;
-}
-
-.rdm-tab-content {
-  display: none;
-  padding: 1rem;
-}
-
-.rdm-tab-content.show {
-  display: block;
-}
-
-.rdm-tab-btn.active {
-  background-color: #dc3545;
-  color: white;
-  border-color: #dc3545;
-}
-
-.rdm-section-heading,
-.rdm-section-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #333;
-}
-
-</style>
+    .rdm-tab {
+      border: 1px solid #e5e5e5;
+      border-radius: 1rem;
+      margin-bottom: 1rem;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+    .rdm-tab-header {
+      padding: 0.75rem 1.25rem;
+      background-color: #f8f9fa;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #dc3545;
+    }
+    .rdm-tab-content {
+      padding: 1rem 1.25rem;
+      display: none;
+      animation-duration: 0.5s;
+    }
+    .rdm-tab-content.show {
+      display: block;
+      animation-name: fadeIn;
+    }
+  </style>
 
 </head>
 
@@ -292,30 +317,41 @@
 
 <div class="container py-2">
 
-  <!-- 🟠 RDM Tab Section -->
+    <!-- 🟠 Movie Reviews -->
+  <div class="rdm-tab" id="rdm-tab-movie">
+    <div class="rdm-tab-header" onclick="toggleTab('movie')">
+      <span>🎬 Movie Reviews</span>
+      <i class="bi bi-plus rdm-tab-icon" id="icon-movie"></i>
+    </div>
+    <div class="rdm-tab-content" id="content-movie">
+      <p class="text-muted">Latest movie reviews and updates will be shown here.</p>
+      <div class="row"></div>
+    </div>
+  </div>
+  <!-- 🟠 Prediction -->
   <div class="rdm-tab" id="rdm-tab-prediction">
     <div class="rdm-tab-header" onclick="toggleTab('prediction')">
-      <span>🔮 Prediction</span>
+      <span>🔮 Sports Prediction</span>
       <i class="bi bi-dash rdm-tab-icon" id="icon-prediction"></i>
     </div>
     <div class="rdm-tab-content show" id="content-prediction">
       <div class="container px-0">
-        <ul class="nav justify-content-center flex-wrap gap-2 mb-3">
-          <li class="nav-item"><button class="btn btn-outline-dark btn-sm rdm-tab-btn active"><i class="bi bi-grid me-1"></i> All</button></li>
-          <li class="nav-item"><button class="btn btn-outline-dark btn-sm rdm-tab-btn"><i class="bi bi-trophy me-1"></i> Cricket</button></li>
-          <li class="nav-item"><button class="btn btn-outline-dark btn-sm rdm-tab-btn"><i class="bi bi-dribbble me-1"></i> Football</button></li>
-          <li class="nav-item"><button class="btn btn-outline-dark btn-sm rdm-tab-btn"><i class="bi bi-basket me-1"></i> Basketball</button></li>
-        </ul>
-
-        <div class="d-flex align-items-center border-bottom pb-2 mb-3">
-          <i class="bi bi-stars fs-5 me-2 text-danger"></i>
-          <h2 class="rdm-section-heading mb-0">Predictions & Dream Team Tips</h2>
-        </div>
-
         <div class="row" id="rdm-match-accordion">
-          <p class="text-muted">No predictions available right now.</p>
+      <p class="text-muted">Latest Prediction and updates will be shown here.</p>
         </div>
       </div>
+    </div>
+  </div>
+
+   <!-- 🟠 Dream Team -->
+  <div class="rdm-tab" id="rdm-tab-dreamteam">
+    <div class="rdm-tab-header" onclick="toggleTab('dreamteam')">
+      <span>⭐ Fantasy Dream Team Tips</span>
+      <i class="bi bi-plus rdm-tab-icon" id="icon-dreamteam"></i>
+    </div>
+    <div class="rdm-tab-content" id="content-dreamteam">
+      <p class="text-muted">Fantasy team building tips and expert advice to help you win contests.</p>
+      <div class="row"></div>
     </div>
   </div>
 
@@ -327,39 +363,15 @@
     </div>
     <div class="rdm-tab-content" id="content-news">
       <section class="mb-3">
-        <div class="d-flex justify-content-between align-items-center mb-2">
-          <h2 class="rdm-section-title m-0"><i class="bi bi-newspaper me-1 text-primary"></i> Latest News</h2>
-        </div>
+        <p class="text-muted">Latest news and updates will be shown here.</p>
         <div class="row">
-          <p class="text-muted">No news updates at the moment.</p>
+          
         </div>
       </section>
     </div>
   </div>
 
-  <!-- 🟠 Dream Team -->
-  <div class="rdm-tab" id="rdm-tab-dreamteam">
-    <div class="rdm-tab-header" onclick="toggleTab('dreamteam')">
-      <span>⭐ Dream Team Tips</span>
-      <i class="bi bi-plus rdm-tab-icon" id="icon-dreamteam"></i>
-    </div>
-    <div class="rdm-tab-content" id="content-dreamteam">
-      <p class="text-muted">Fantasy team building tips and expert advice to help you win contests.</p>
-      <div class="row"></div>
-    </div>
-  </div>
-
-  <!-- 🟠 Current Info -->
-  <div class="rdm-tab" id="rdm-tab-current">
-    <div class="rdm-tab-header" onclick="toggleTab('current')">
-      <span>📅 Current Info</span>
-      <i class="bi bi-plus rdm-tab-icon" id="icon-current"></i>
-    </div>
-    <div class="rdm-tab-content" id="content-current">
-      <p class="text-muted">Latest real-time updates and insights.</p>
-      <div class="row"></div>
-    </div>
-  </div>
+  
 
   <!-- 🟠 Job Notifications -->
   <div class="rdm-tab" id="rdm-tab-jobs">
@@ -373,14 +385,15 @@
     </div>
   </div>
 
-  <!-- 🟠 Movie Reviews -->
-  <div class="rdm-tab" id="rdm-tab-movie">
-    <div class="rdm-tab-header" onclick="toggleTab('movie')">
-      <span>🎬 Movie Reviews</span>
-      <i class="bi bi-plus rdm-tab-icon" id="icon-movie"></i>
+
+  <!-- 🟠 Current Info -->
+  <div class="rdm-tab" id="rdm-tab-current">
+    <div class="rdm-tab-header" onclick="toggleTab('current')">
+      <span>📅 Current Info</span>
+      <i class="bi bi-plus rdm-tab-icon" id="icon-current"></i>
     </div>
-    <div class="rdm-tab-content" id="content-movie">
-      <p class="text-muted">Latest movie reviews and updates will be shown here.</p>
+    <div class="rdm-tab-content" id="content-current">
+      <p class="text-muted">Latest real-time updates and insights.</p>
       <div class="row"></div>
     </div>
   </div>
@@ -425,55 +438,61 @@
    
 
 <!-- Offcanvas Menu -->
-<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasMenu">
-  <div class="offcanvas-header border-bottom">
-    <h5 class="offcanvas-title text-primary">Welcome to RDM 11</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close menu"></button>
+<div class="offcanvas offcanvas-start custom-offcanvas" tabindex="-1" id="offcanvasMenu">
+  <div class="offcanvas-header border-bottom bg-danger text-white">
+    <h5 class="offcanvas-title">🚀 Welcome to RDM 11</h5>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
 
-  <div class="offcanvas-body d-flex flex-column justify-content-between">
+  <div class="offcanvas-body d-flex flex-column justify-content-between p-3">
+    <!-- Nav List -->
     <ul class="nav flex-column overflow-auto offcanvas-menu-list">
       <li class="nav-item mb-2">
-        <a class="nav-link tab-link" href="#" data-tab="movie">
-          <i class="bi bi-film me-2"></i> Movie Reviews
+        <a class="nav-link tab-link text-dark fw-medium d-flex align-items-center gap-2" href="#" data-tab="movie">
+          <i class="bi bi-film text-danger fs-5"></i> Movie Reviews
         </a>
       </li>
       <li class="nav-item mb-2">
-        <a class="nav-link tab-link" href="#" data-tab="news">
-          <i class="bi bi-newspaper me-2"></i> News
+        <a class="nav-link tab-link text-dark fw-medium d-flex align-items-center gap-2" href="#" data-tab="news">
+          <i class="bi bi-newspaper text-danger fs-5"></i> News
         </a>
       </li>
       <li class="nav-item mb-2">
-        <a class="nav-link tab-link" href="#" data-tab="prediction">
-          <i class="bi bi-trophy-fill me-2"></i> Prediction
+        <a class="nav-link tab-link text-dark fw-medium d-flex align-items-center gap-2" href="#" data-tab="prediction">
+          <i class="bi bi-trophy-fill text-danger fs-5"></i> Prediction
         </a>
       </li>
       <li class="nav-item mb-2">
-        <a class="nav-link tab-link" href="#" data-tab="dreamteam">
-          <i class="bi bi-star-fill me-2"></i> Dream Team
+        <a class="nav-link tab-link text-dark fw-medium d-flex align-items-center gap-2" href="#" data-tab="dreamteam">
+          <i class="bi bi-star-fill text-danger fs-5"></i> Dream Team
         </a>
       </li>
       <li class="nav-item mb-2">
-        <a class="nav-link tab-link" href="#" data-tab="current">
-          <i class="bi bi-globe me-2"></i> Current Affairs
+        <a class="nav-link tab-link text-dark fw-medium d-flex align-items-center gap-2" href="#" data-tab="current">
+          <i class="bi bi-globe text-danger fs-5"></i> Current Affairs
         </a>
       </li>
       <li class="nav-item mb-2">
-        <a class="nav-link tab-link" href="#" data-tab="jobs">
-          <i class="bi bi-briefcase-fill me-2"></i> Job Notifications
+        <a class="nav-link tab-link text-dark fw-medium d-flex align-items-center gap-2" href="#" data-tab="jobs">
+          <i class="bi bi-briefcase-fill text-danger fs-5"></i> Job Notifications
         </a>
       </li>
     </ul>
 
-    <div class="border-top pt-3 mt-3">
-      <div class="d-flex gap-3 mb-2">
-        <!-- Social media icons can be placed here if needed -->
+    <!-- Footer -->
+    <div class="border-top pt-3 mt-3 small text-muted">
+      <div class="d-flex justify-content-start gap-3 mb-2">
+        <!-- Optional social icons -->
+        <!-- <a href="#" class="text-danger" title="Twitter"><i class="bi bi-twitter"></i></a>
+        <a href="#" class="text-danger" title="Facebook"><i class="bi bi-facebook"></i></a>
+        <a href="#" class="text-danger" title="Email"><i class="bi bi-envelope"></i></a> -->
       </div>
-      <small class="text-muted d-block">Developed by <strong>Yalla Ramana</strong></small>
-      <small class="text-muted">📧 <a href="mailto:ramana9000r@gmail.com">ramana9000r@gmail.com</a></small>
+      <div>Developed by <strong class="text-danger">Yalla Ramana</strong></div>
+      <!-- <div>📧 <a href="mailto:ramana9000r@gmail.com">ramana9000r@gmail.com</a></div> -->
     </div>
   </div>
 </div>
+
 
 
    <!-- Footer -->
@@ -625,6 +644,29 @@
 }
 
 </script>
+<script>
+  document.querySelectorAll('.tab-link').forEach(link => {
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+
+      const tabId = this.getAttribute('data-tab');
+      const section = document.getElementById(`rdm-tab-${tabId}`);
+
+      if (section) {
+        // Scroll to the tab smoothly
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        // Optionally close the offcanvas if open
+        const offcanvasElement = document.getElementById('offcanvasMenu');
+        const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasElement);
+        if (offcanvasInstance) {
+          offcanvasInstance.hide();
+        }
+      }
+    });
+  });
+</script>
+
 
 <!-- ✅ Load external JS (e.g., Firebase, Quill, etc.) -->
 <script type="module" src="script.js"></script>
