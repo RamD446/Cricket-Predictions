@@ -148,6 +148,11 @@
       animation-name: fadeIn;
     }
   </style>
+   <style>
+    #quillEditor {
+      height: 200px;
+    }
+  </style>
 
 </head>
 
@@ -156,35 +161,24 @@
 
 
 
+<!-- ✅ Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-danger sticky-top shadow-sm py-2">
   <div class="container-fluid px-3 d-flex justify-content-between align-items-center">
 
-    <!-- Small Menu Button -->
-    <button class="btn btn-sm btn-light me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-label="Open menu">
+    <!-- Offcanvas Toggle -->
+    <button class="btn btn-sm btn-light me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" title="Open menu">
       <i class="bi bi-list fs-5"></i>
     </button>
 
     <!-- Desktop Tabs -->
     <div class="d-none d-lg-flex flex-grow-1 justify-content-center overflow-auto">
       <ul class="navbar-nav flex-row gap-2 small mb-0">
-        <li class="nav-item">
-          <a class="nav-link text-white py-1 px-2" href="#tab-prediction"><i class="bi bi-stars me-1"></i>Prediction</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white py-1 px-2" href="#tab-news"><i class="bi bi-newspaper me-1"></i>News</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white py-1 px-2" href="#tab-dreamteam"><i class="bi bi-lightbulb me-1"></i>Dream Team</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white py-1 px-2" href="#tab-current"><i class="bi bi-calendar-event me-1"></i>Info</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white py-1 px-2" href="#tab-jobs"><i class="bi bi-megaphone me-1"></i>Jobs</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white py-1 px-2" href="#tab-movie"><i class="bi bi-film me-1"></i>Movies</a>
-        </li>
+        <li class="nav-item"><a class="nav-link text-white py-1 px-2" href="#rdm-tab-prediction"><i class="bi bi-stars me-1"></i>Prediction</a></li>
+        <li class="nav-item"><a class="nav-link text-white py-1 px-2" href="#rdm-tab-news"><i class="bi bi-newspaper me-1"></i>News</a></li>
+        <li class="nav-item"><a class="nav-link text-white py-1 px-2" href="#rdm-tab-dreamteam"><i class="bi bi-lightbulb me-1"></i>Dream Team</a></li>
+        <li class="nav-item"><a class="nav-link text-white py-1 px-2" href="#rdm-tab-current"><i class="bi bi-calendar-event me-1"></i>Info</a></li>
+        <li class="nav-item"><a class="nav-link text-white py-1 px-2" href="#rdm-tab-jobs"><i class="bi bi-megaphone me-1"></i>Jobs</a></li>
+        <li class="nav-item"><a class="nav-link text-white py-1 px-2" href="#rdm-tab-movie"><i class="bi bi-film me-1"></i>Movies</a></li>
       </ul>
     </div>
 
@@ -197,15 +191,15 @@
   </div>
 </nav>
 
-<!-- Mobile Tabs -->
-<div class="d-lg-none bg-white border-bottom position-relative py-2">
-  <div class="d-flex overflow-auto px-2 gap-2 scroll-mobile-tabs" id="mobileTabScroll">
-    <a class="btn btn-outline-danger btn-sm active" href="#tab-prediction"><i class="bi bi-stars me-1"></i>Prediction</a>
-    <a class="btn btn-outline-danger btn-sm" href="#tab-news"><i class="bi bi-newspaper me-1"></i>News</a>
-    <a class="btn btn-outline-danger btn-sm" href="#tab-dreamteam"><i class="bi bi-lightbulb me-1"></i>Dream Team</a>
-    <a class="btn btn-outline-danger btn-sm" href="#tab-current"><i class="bi bi-calendar-event me-1"></i>Info</a>
-    <a class="btn btn-outline-danger btn-sm" href="#tab-jobs"><i class="bi bi-megaphone me-1"></i>Jobs</a>
-    <a class="btn btn-outline-danger btn-sm" href="#tab-movie"><i class="bi bi-film me-1"></i>Movies</a>
+<!-- ✅ Mobile Tabs -->
+<div class="d-lg-none bg-white border-bottom py-2">
+  <div class="d-flex overflow-auto px-2 gap-2 scroll-mobile-tabs">
+    <a class="btn btn-outline-danger btn-sm active" href="#rdm-tab-prediction"><i class="bi bi-stars me-1"></i>Prediction</a>
+    <a class="btn btn-outline-danger btn-sm" href="#rdm-tab-news"><i class="bi bi-newspaper me-1"></i>News</a>
+    <a class="btn btn-outline-danger btn-sm" href="#rdm-tab-dreamteam"><i class="bi bi-lightbulb me-1"></i>Dream Team</a>
+    <a class="btn btn-outline-danger btn-sm" href="#rdm-tab-current"><i class="bi bi-calendar-event me-1"></i>Info</a>
+    <a class="btn btn-outline-danger btn-sm" href="#rdm-tab-jobs"><i class="bi bi-megaphone me-1"></i>Jobs</a>
+    <a class="btn btn-outline-danger btn-sm" href="#rdm-tab-movie"><i class="bi bi-film me-1"></i>Movies</a>
   </div>
 </div>
 
