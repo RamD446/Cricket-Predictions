@@ -1,24 +1,36 @@
 import { database } from './firebase.js';
 import { ref, get, child } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js';
 
-// Load dream team data
-export async function loadDreamTeam() {
-  const container = document.querySelector('#content-dreamteam .row');
-  if (!container) return;
+const ITEMS_PER_PAGE = 20;
+let currentPage = 1;
+let totalPages = 1;
+let allEntries = [];
 
-  container.innerHTML = ''; // Clear previous content
+export async function loadDreamTeam(page = 1) {
+  const container = document.querySelector('#content-dreamteam .row');
+  const pagination = document.querySelector('#content-dreamteam .pagination-controls');
+
+  if (!container || !pagination) return;
+
+  container.innerHTML = '';
+  pagination.innerHTML = '';
 
   try {
     const snapshot = await get(child(ref(database), 'dreamteam'));
 
     if (snapshot.exists()) {
       const data = snapshot.val();
-      const entries = Object.values(data).sort((a, b) => new Date(b.date) - new Date(a.date));
+      allEntries = Object.values(data).sort((a, b) => new Date(b.date) - new Date(a.date));
 
-      entries.forEach(entry => {
-        const card = createDreamTeamCard(entry);
-        container.appendChild(card);
-      });
+      totalPages = Math.ceil(allEntries.length / ITEMS_PER_PAGE);
+      currentPage = Math.max(1, Math.min(page, totalPages));
+
+      const start = (currentPage - 1) * ITEMS_PER_PAGE;
+      const end = start + ITEMS_PER_PAGE;
+      const pageEntries = allEntries.slice(start, end);
+
+      pageEntries.forEach(entry => container.appendChild(createDreamTeamCard(entry)));
+      renderPagination(pagination);
     } else {
       showNoDreamTeam(container);
     }
@@ -28,90 +40,103 @@ export async function loadDreamTeam() {
   }
 }
 
-// Create a dream team card
 function createDreamTeamCard(entry) {
   const div = document.createElement('div');
   div.className = 'col-12 mb-3';
 
   const guid = entry.id || `dt-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-  const timeAgo = getTimeAgo(entry.date);
+  const relativeTime = getTimeAgo(entry.date);
 
   div.innerHTML = `
     <div class="card shadow-sm border border-0 rounded-4 bg-light">
-      <div class="card-body p-3">
-
-        <!-- Title -->
-        <h5 class="card-title text-primary mb-2 fs-6">
-          <i class="bi bi-stars me-2 text-warning"></i>${entry.title}
-        </h5>
-
-        <!-- Time ago -->
-        <small class="text-muted d-block mb-2">
-          <i class="bi bi-clock me-1"></i> ${timeAgo}
-        </small>
-
-        <!-- Hidden content -->
-        <div id="content-${guid}" class="collapse">
-          <div class="card-text mb-2">${entry.content}</div>
-          <small class="text-muted d-block">
-            <i class="bi bi-person-circle me-1"></i> Created by: ${entry.author || 'Anonymous'} 
-            <i class="bi bi-calendar-event ms-2 me-1"></i> ${formatDate(entry.date)}
-          </small>
+      <div class="card-body py-2 px-3">
+        <div class="d-flex justify-content-between align-items-center">
+          <a href="details.html?tabType=dreamteam&id=${guid}" 
+             class="text-decoration-none text-primary fw-semibold fs-6 d-flex align-items-center flex-grow-1 me-2 title-hover">
+            <i class="bi bi-stars me-2 text-warning"></i>${entry.title}
+          </a>
+          <button class="btn btn-sm btn-light border-0 show-more-btn p-1"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#content-${guid}"
+                  aria-expanded="false"
+                  aria-controls="content-${guid}"
+                  title="Toggle content">
+            <i class="bi bi-chevron-down small"></i>
+          </button>
         </div>
 
-        <!-- Read More / Read Less -->
-        <button class="btn btn-sm btn-outline-dark px-3 rounded-pill show-more-btn mt-2"
-                data-bs-toggle="collapse"
-                data-bs-target="#content-${guid}"
-                aria-expanded="false"
-                aria-controls="content-${guid}">
-          Read More
-        </button>
+        <div id="content-${guid}" class="collapse mt-2">
+          <div class="text-dark mb-1 small">${entry.content}</div>
+          <small class="text-muted d-block">
+            <i class="bi bi-person-circle me-1"></i> ${entry.author || 'Anonymous'}
+            <i class="bi bi-calendar-event ms-2 me-1"></i> ${formatDate(entry.date)}
+            <span class="badge bg-secondary ms-2">${relativeTime}</span>
+          </small>
+        </div>
       </div>
     </div>
   `;
 
-  // Toggle button text
-  setTimeout(() => {
-    const button = div.querySelector('.show-more-btn');
-    const content = div.querySelector(`#content-${guid}`);
-    button.addEventListener('click', () => {
-      setTimeout(() => {
-        const isExpanded = content.classList.contains('show');
-        button.textContent = isExpanded ? 'Read Less' : 'Read More';
-      }, 200);
-    });
-  }, 0);
-
   return div;
 }
 
-// Fallback if no data
+function renderPagination(container) {
+  if (totalPages <= 1) return;
+
+  const prevBtn = document.createElement('button');
+  prevBtn.textContent = 'Previous';
+  prevBtn.className = 'btn btn-sm btn-outline-primary me-2';
+  prevBtn.disabled = currentPage === 1;
+  prevBtn.onclick = () => loadDreamTeam(currentPage - 1);
+
+  const nextBtn = document.createElement('button');
+  nextBtn.textContent = 'Next';
+  nextBtn.className = 'btn btn-sm btn-outline-primary';
+  nextBtn.disabled = currentPage === totalPages;
+  nextBtn.onclick = () => loadDreamTeam(currentPage + 1);
+
+  const pageInfo = document.createElement('span');
+  pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+  pageInfo.className = 'text-muted me-3';
+
+  container.appendChild(prevBtn);
+  container.appendChild(pageInfo);
+  container.appendChild(nextBtn);
+}
+
 function showNoDreamTeam(container) {
   container.innerHTML = `<p class="text-muted">No dream teams available at the moment.</p>`;
 }
 
-// Format date
 function formatDate(dateStr) {
   try {
     const d = new Date(dateStr);
-    return d.toLocaleString();
+    return d.toLocaleString(undefined, {
+      weekday: 'short',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
   } catch {
     return dateStr;
   }
 }
 
-// Get relative time
 function getTimeAgo(dateStr) {
   try {
     const now = new Date();
     const past = new Date(dateStr);
-    const diff = Math.floor((now - past) / 1000); // in seconds
+    const seconds = Math.floor((now - past) / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
 
-    if (diff < 60) return `${diff} sec ago`;
-    if (diff < 3600) return `${Math.floor(diff / 60)} min ago`;
-    if (diff < 86400) return `${Math.floor(diff / 3600)} hr ago`;
-    return `${Math.floor(diff / 86400)} day(s) ago`;
+    if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`;
+    if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+    if (minutes > 0) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+    return 'Just now';
   } catch {
     return '';
   }
