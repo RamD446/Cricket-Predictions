@@ -37,35 +37,40 @@ function createNewsCard(entry) {
   const guid = entry.id || `news-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
   const relativeTime = formatRelativeTime(entry.date);
 
-  div.innerHTML = `
-    <div class="card shadow-sm border border-0 rounded-4 bg-light">
-      <div class="card-body p-3">
+div.innerHTML = `
+  <div class="card shadow-sm border-0 rounded-4 bg-light mb-1">
+    <div class="card-body py-2 px-3">
 
-        <!-- Reduced font size using fs-6 -->
-        <h5 class="card-title text-primary mb-2 fs-6 d-flex justify-content-between align-items-center">
-          <span><i class="bi bi-megaphone-fill me-2 text-primary"></i>${entry.title}</span>
-          <span class="badge bg-secondary text-light ms-2">${relativeTime}</span>
-        </h5>
-
-        <div id="content-${guid}" class="collapse">
-          <div class="card-text mb-2">${entry.content}</div>
-          <small class="text-muted d-block">
-            <i class="bi bi-person-circle me-1"></i> Created by: ${entry.author || 'Anonymous'}
-            <i class="bi bi-calendar-event ms-2 me-1"></i> ${formatDate(entry.date)}
-          </small>
-        </div>
-
-        <button class="btn btn-sm btn-outline-dark px-3 rounded-pill show-more-btn mt-2"
+      <div class="d-flex justify-content-between align-items-center">
+        <a href="details.html?tabType=${entry.tabType}&id=${guid}" 
+           class="text-decoration-none text-primary fw-semibold fs-6 d-flex align-items-center flex-grow-1 me-2">
+          <i class="bi bi-megaphone-fill me-2"></i>${entry.title}
+        </a>
+        <button class="btn btn-sm btn-light border-0 show-more-btn p-1"
                 data-bs-toggle="collapse"
                 data-bs-target="#content-${guid}"
                 aria-expanded="false"
-                aria-controls="content-${guid}">
-          Read More
+                aria-controls="content-${guid}"
+                title="Toggle content">
+          <i class="bi bi-chevron-down small"></i>
         </button>
-
       </div>
+
+      <div id="content-${guid}" class="collapse mt-2">
+        <div class="text-dark mb-1 small">${entry.content}</div>
+        <small class="text-muted d-block">
+          <i class="bi bi-person-circle me-1"></i> ${entry.author || 'Anonymous'}
+          <i class="bi bi-calendar-event ms-2 me-1"></i> ${formatDate(entry.date)}
+          <span class="badge bg-secondary ms-2">${relativeTime}</span>
+        </small>
+      </div>
+
     </div>
-  `;
+  </div>
+`;
+
+
+
 
   setTimeout(() => {
     const button = div.querySelector('.show-more-btn');
