@@ -45,7 +45,7 @@ export async function loadNews(page = 1) {
 
 function createNewsCard(entry) {
   const div = document.createElement('div');
-  div.className = 'col-6 mb-2';
+  div.className = 'col-12 mb-2';
 
   const guid = entry.id || `news-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
   const relativeTime = formatRelativeTime(entry.date);
