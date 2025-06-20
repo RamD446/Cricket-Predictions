@@ -55,7 +55,7 @@ function createNewsCard(entry) {
       <div class="row g-0 align-items-center">
 
         <!-- 🟥 Very small square block -->
-        <div class="col-3 d-flex align-items-center justify-content-center">
+        <div class="col-1 d-flex align-items-center justify-content-center">
           <div style="
             width: 70px;
             height: 70px;
@@ -75,7 +75,7 @@ function createNewsCard(entry) {
         </div>
 
         <!-- 📄 Text part -->
-        <div class="col-9">
+        <div class="col-11">
           <div class="card-body py-1 px-2">
             <p class="mb-1 fw-semibold text-truncate" style="font-size: 0.8rem;">
               <a href="details.html?tabType=${entry.tabType}&id=${guid}" class="text-decoration-none text-dark title-hover">
