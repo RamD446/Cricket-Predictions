@@ -85,69 +85,10 @@
   }
 </style>
 
-    <style>
-  .section-headingmatchAccordion {
-    font-size: 1.4rem;
-    font-weight: 600;
-    letter-spacing: 0.3px;
-    color: #d12a2a; /* Frost red tone */
-  }
-
-  .custom-headermatchAccordion {
-    -webkit-backdrop-filter: blur(4px);
-    backdrop-filter: blur(4px);
-    background-color: rgba(255, 0, 0, 0.05); /* Light transparent red */
-    border-radius: 0.5rem;
-    padding: 0.5rem 1rem;
-  }
-</style>
+ 
 <!-- Styles & Script -->
-<style>
-  .scroll-mobile-tabs::-webkit-scrollbar {
-    display: none;
-  }
-  .scroll-mobile-tabs {
-    white-space: nowrap;
-    scroll-behavior: smooth;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-  .scroll-mobile-tabs a.active {
-    background-color: #dc3545;
-    color: #fff !important;
-    font-weight: 500;
-  }
-</style>
-<style>
-    .rdm-tab {
-      border: 1px solid #e5e5e5;
-      border-radius: 1rem;
-      margin-bottom: 1rem;
-      overflow: hidden;
-      background: #fff;
-      box-shadow: 0 0 10px rgba(0,0,0,0.05);
-    }
-    .rdm-tab-header {
-      padding: 0.75rem 1.25rem;
-      background-color: #f8f9fa;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 1.075rem;
-      font-weight: 600;
-      color: #dc3545;
-    }
-    .rdm-tab-content {
-      padding: 1rem 1.25rem;
-      display: none;
-      animation-duration: 0.5s;
-    }
-    .rdm-tab-content.show {
-      display: block;
-      animation-name: fadeIn;
-    }
-  </style>
+
+
    <style>
     #quillEditor {
       height: 200px;
@@ -308,7 +249,7 @@
 
 <div class="container py-4">
 
-  <section id="content-movie" class="my-5">
+  <section id="content-movie" class="my-2">
     <h2 class="mb-4 text-danger fw-bold">
       <button type="button" class="btn btn-warning" disabled>
         <i class="bi bi-collection-play-fill"></i> All Movie Reviews
@@ -318,30 +259,30 @@
     <div class="pagination-controls d-flex justify-content-center align-items-center mt-4"></div>
   </section>
 
-  <section id="content-prediction" class="my-5">
+  <section id="content-prediction" class="my-2">
     <div class="d-flex align-items-center mb-3">
       <button type="button" class="btn btn-warning fw-semibold" disabled>
-        <i class="bi bi-graph-up-arrow me-2"></i> Sports Predictions
+         Sports Predictions
       </button>
     </div>
     <div class="row"></div>
     <div class="pagination-controls mt-3 d-flex justify-content-center"></div>
   </section>
 
-  <section class="my-5">
+  <section class="my-2">
     <h2 class="text-success mb-3">
       <button type="button" class="btn btn-warning" disabled>
-        <i class="bi bi-newspaper"></i> Latest News
+      Latest News
       </button>
     </h2>
     <div class="row" id="news-updates"></div>
     <div class="pagination-controls mt-3 d-flex justify-content-center"></div>
   </section>
 
-  <section class="my-5" id="content-jobs">
+  <section class="my-2" id="content-jobs">
     <h2 class="text-warning mb-3">
       <button type="button" class="btn btn-warning" disabled>
-        <i class="bi bi-briefcase-fill"></i> Job Notifications
+         Job Notifications
       </button>
     </h2>
     <div class="row"></div>
@@ -460,7 +401,6 @@
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const offset = 70;
-
     // ✅ Scroll & Highlight Tabs (Desktop + Mobile)
     const tabs = document.querySelectorAll('.nav-link, .scroll-mobile-tabs a');
     tabs.forEach(tab => {
@@ -511,18 +451,7 @@
       });
     }
 
-    // // ✅ Date/Time Updater
-    // function updateDateTime() {
-    //   const now = new Date();
-    //   document.getElementById('currentDate').textContent = now.toLocaleDateString(undefined, {
-    //     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-    //   });
-    //   document.getElementById('currentTime').textContent = now.toLocaleTimeString();
-    // }
-    // updateDateTime();
-    // setInterval(updateDateTime, 1000);
-
-    // ✅ Accordion-like Tab Toggle (if used)
+   
     document.querySelectorAll('.tab-link').forEach(link => {
       link.addEventListener('click', function (e) {
         e.preventDefault();
@@ -566,48 +495,7 @@
     }
   });
 </script>
-<script>
-  function toggleTab(tab) {
-  const content = document.getElementById(`content-${tab}`);
-  const icon = document.getElementById(`icon-${tab}`);
-  const isOpen = content.classList.contains('show');
 
-  document.querySelectorAll('.rdm-tab-content').forEach(c => c.classList.remove('show'));
-  document.querySelectorAll('.rdm-tab-icon').forEach(i => {
-    i.classList.remove('bi-dash');
-    i.classList.add('bi-plus');
-  });
-
-  if (!isOpen) {
-    content.classList.add('show');
-    icon.classList.remove('bi-plus');
-    icon.classList.add('bi-dash');
-  }
-}
-
-</script>
-<script>
-  document.querySelectorAll('.tab-link').forEach(link => {
-    link.addEventListener('click', function (e) {
-      e.preventDefault();
-
-      const tabId = this.getAttribute('data-tab');
-      const section = document.getElementById(`rdm-tab-${tabId}`);
-
-      if (section) {
-        // Scroll to the tab smoothly
-        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-        // Optionally close the offcanvas if open
-        const offcanvasElement = document.getElementById('offcanvasMenu');
-        const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasElement);
-        if (offcanvasInstance) {
-          offcanvasInstance.hide();
-        }
-      }
-    });
-  });
-</script>
 
 
 <!-- ✅ Load external JS (e.g., Firebase, Quill, etc.) -->

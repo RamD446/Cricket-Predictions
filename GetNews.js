@@ -66,10 +66,12 @@ function createNewsCard(entry) {
           </p>
         </div>
 
-        <div class="card-footer bg-transparent border-0 pt-0 pb-3 px-3 d-flex justify-content-between align-items-center text-muted" style="font-size: 0.7rem;">
-          <span><i class="bi bi-person-circle me-1"></i>${entry.author || 'Anonymous'}</span>
-          <span><i class="bi bi-calendar-event me-1"></i>${formatDate(entry.date)}</span>
-          <span class="badge bg-secondary">${relativeTime}</span>
+         <div class="card-footer bg-transparent border-0 pt-0 pb-3 px-3 d-flex justify-content-between align-items-center text-muted" style="font-size: 0.7rem;">
+            <span><i class="bi bi-person-circle me-1"></i>${entry.author || 'Anonymous'}</span>
+            <div class="d-flex gap-3 ms-auto">
+               <span><i class="bi bi-calendar-event me-1"></i>${formatDate(entry.date)}</span>
+               <span class="badge bg-secondary">${relativeTime}</span>
+            </div>
         </div>
 
       </div>
