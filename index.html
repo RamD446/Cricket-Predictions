@@ -103,7 +103,16 @@
   .title-hover:hover {
     color: #dc3545 !important; /* Bootstrap red */
   }
-  
+  .hover-glow-effect {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.hover-glow-effect:hover {
+  box-shadow: 0 0 12px rgba(255, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+  border-color: #f8d7da;
+}
+
 </style>
 
 </head>

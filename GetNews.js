@@ -51,27 +51,25 @@ function createNewsCard(entry) {
   const relativeTime = formatRelativeTime(entry.date);
   const cleanContent = entry.content.replace(/<[^>]+>/g, '').slice(0, 100);
 
-  // Create full clickable card using <a> wrapping entire card
   div.innerHTML = `
     <a href="details.html?tabType=${entry.tabType}&id=${guid}" class="text-decoration-none text-dark h-100 d-block">
-      <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden card-hover-effect">
+      <div class="card h-100 border border-light-subtle rounded-4 bg-white shadow-sm hover-glow-effect overflow-hidden">
 
         <div class="card-body d-flex flex-column">
           <h6 class="fw-bold mb-2 text-primary" style="font-size: 1rem;">
-           <span class="tick-red">✅</span>
- ${entry.title}
+            <span class="text-danger">✅</span> ${entry.title}
           </h6>
           <p class="text-muted flex-grow-1 mb-2" style="font-size: 0.85rem;">
             ${cleanContent}...
           </p>
         </div>
 
-         <div class="card-footer bg-transparent border-0 pt-0 pb-3 px-3 d-flex justify-content-between align-items-center text-muted" style="font-size: 0.7rem;">
-            <span><i class="bi bi-person-circle me-1"></i>${entry.author || 'Anonymous'}</span>
-            <div class="d-flex gap-3 ms-auto">
-               <span><i class="bi bi-calendar-event me-1"></i>${formatDate(entry.date)}</span>
-               <span class="badge bg-secondary">${relativeTime}</span>
-            </div>
+        <div class="card-footer bg-transparent border-0 pt-0 pb-3 px-3 d-flex justify-content-between align-items-center text-muted" style="font-size: 0.7rem;">
+          <span><i class="bi bi-person-circle me-1"></i>${entry.author || 'Anonymous'}</span>
+          <div class="d-flex gap-3 ms-auto">
+            <span><i class="bi bi-calendar-event me-1"></i>${formatDate(entry.date)}</span>
+            <span class="badge bg-secondary">${relativeTime}</span>
+          </div>
         </div>
 
       </div>
