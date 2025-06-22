@@ -115,49 +115,78 @@
 
 </style>
 
+<!-- ✅ Optional: Ensure scroll sections don't hide under navbar -->
+<style>
+  section {
+    scroll-margin-top: 80px;
+  }
+</style>
+
 </head>
 
 <body>
 
 
 
-<!-- ✅ Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-danger sticky-top shadow-sm py-2">
-  <div class="container-fluid px-3 d-flex justify-content-between align-items-center">
+  <div class="container-fluid d-flex align-items-center px-2">
 
-    <!-- Offcanvas Toggle -->
-    <button class="btn btn-sm btn-light me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" title="Open menu">
+    <!-- Offcanvas Toggle Button -->
+    <button class="btn btn-sm btn-light rounded-circle d-flex align-items-center justify-content-center me-2"
+      type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" title="Open menu" style="width: 32px; height: 32px;">
       <i class="bi bi-list fs-5"></i>
     </button>
 
-    <!-- Desktop Tabs -->
-    <div class="d-none d-lg-flex flex-grow-1 justify-content-center overflow-auto">
-      <ul class="navbar-nav flex-row gap-2 small mb-0">
-        <li class="nav-item"><a class="nav-link text-white py-1 px-2" href="#rdm-tab-prediction"><i class="bi bi-stars me-1"></i>Sports Predictions</a></li>
-        <li class="nav-item"><a class="nav-link text-white py-1 px-2" href="#rdm-tab-news"><i class="bi bi-newspaper me-1"></i>Latest News</a></li>
-        <li class="nav-item"><a class="nav-link text-white py-1 px-2" href="#rdm-tab-jobs"><i class="bi bi-megaphone me-1"></i>Jobs Notifications</a></li>
-        <li class="nav-item"><a class="nav-link text-white py-1 px-2" href="#rdm-tab-movie"><i class="bi bi-film me-1"></i>Movies Reviews</a></li>
-      </ul>
-    </div>
+    <!-- All Left-Aligned Buttons Group -->
+    <div class="d-flex flex-wrap align-items-center gap-2">
+      <!-- Tab Buttons -->
+      <div class="btn-group btn-group-sm" role="group">
+        <button class="btn btn-outline-warning rounded-pill tab-btn px-3 py-1" data-tab="prediction">
+          <i class="bi bi-stars me-1"></i>Predictions
+        </button>
+        <button class="btn btn-outline-warning rounded-pill tab-btn px-3 py-1" data-tab="news">
+          <i class="bi bi-newspaper me-1"></i>News
+        </button>
+        <button class="btn btn-outline-warning rounded-pill tab-btn px-3 py-1" data-tab="jobs">
+          <i class="bi bi-megaphone me-1"></i>Jobs
+        </button>
+        <button class="btn btn-outline-warning rounded-pill tab-btn px-3 py-1" data-tab="movie">
+          <i class="bi bi-film me-1"></i>Movies
+        </button>
+      </div>
 
-    <!-- Login Button -->
-    <div class="ms-auto">
-      <button class="btn btn-sm btn-light" data-bs-toggle="modal" data-bs-target="#loginModal">
+      <!-- Login Button -->
+      <button class="btn btn-sm btn-light rounded-pill d-flex align-items-center px-3 py-1 ms-2" data-bs-toggle="modal" data-bs-target="#loginModal">
         <i class="bi bi-person-circle me-1"></i>Login
       </button>
     </div>
+
   </div>
 </nav>
 
+
+
 <!-- ✅ Mobile Tabs -->
-<div class="d-lg-none bg-white border-bottom py-2">
-  <div class="d-flex overflow-auto px-2 gap-2 scroll-mobile-tabs">
-    <a class="btn btn-outline-danger btn-sm active" href="#rdm-tab-prediction"><i class="bi bi-stars me-1"></i>Prediction</a>
-    <a class="btn btn-outline-danger btn-sm" href="#rdm-tab-news"><i class="bi bi-newspaper me-1"></i>News</a>
-    <a class="btn btn-outline-danger btn-sm" href="#rdm-tab-jobs"><i class="bi bi-megaphone me-1"></i>Jobs</a>
-    <a class="btn btn-outline-danger btn-sm" href="#rdm-tab-movie"><i class="bi bi-film me-1"></i>Movies</a>
+<div class="d-lg-none bg-white border-bottom shadow-sm py-2">
+  <div class="d-flex justify-content-around px-2 gap-2 flex-nowrap overflow-auto scroll-mobile-tabs">
+    <button class="btn btn-outline-warning btn-sm rounded-pill tab-btn active" data-tab="prediction">
+      <i class="bi bi-stars me-1"></i>Prediction
+    </button>
+    <button class="btn btn-outline-warning btn-sm rounded-pill tab-btn" data-tab="news">
+      <i class="bi bi-newspaper me-1"></i>News
+    </button>
+    <button class="btn btn-outline-warning btn-sm rounded-pill tab-btn" data-tab="jobs">
+      <i class="bi bi-megaphone me-1"></i>Jobs
+    </button>
+    <button class="btn btn-outline-warning btn-sm rounded-pill tab-btn" data-tab="movie">
+      <i class="bi bi-film me-1"></i>Movies
+    </button>
   </div>
 </div>
+
+
+
+
 
 
 
@@ -278,7 +307,7 @@
     <div class="pagination-controls mt-3 d-flex justify-content-center"></div>
   </section>
 
-  <section class="my-2">
+  <section id="content-news" class="my-2">
     <h2 class="text-success mb-3">
       <button type="button" class="btn btn-warning" disabled>
       Latest News
@@ -504,7 +533,23 @@
     }
   });
 </script>
+<!-- ✅ JavaScript for Smooth Scroll -->
+<script>
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tab = btn.getAttribute('data-tab');
+      const target = document.getElementById(`content-${tab}`);
 
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        // Optional: Update active state
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      }
+    });
+  });
+</script>
 
 
 <!-- ✅ Load external JS (e.g., Firebase, Quill, etc.) -->

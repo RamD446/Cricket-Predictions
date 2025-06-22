@@ -52,7 +52,7 @@ function createPredictionCard(entry) {
     <a href="details.html?tabType=prediction&id=${guid}" class="text-decoration-none text-dark h-100 d-block">
       <div class="card h-100 border border-light-subtle rounded-4 bg-white shadow-sm hover-glow-effect overflow-hidden">
         <div class="card-body d-flex flex-column">
-          <h6 class="fw-bold mb-2 text-success" style="font-size: 1rem;">
+          <h6 class="fw-bold mb-2 text-primary" style="font-size: 1rem;">
             ✅ ${entry.title || 'Untitled Prediction'}
           </h6>
           <p class="text-muted flex-grow-1 mb-2" style="font-size: 0.85rem;">
