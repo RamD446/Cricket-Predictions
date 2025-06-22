@@ -182,12 +182,10 @@
     <!-- Desktop Tabs -->
     <div class="d-none d-lg-flex flex-grow-1 justify-content-center overflow-auto">
       <ul class="navbar-nav flex-row gap-2 small mb-0">
-        <li class="nav-item"><a class="nav-link text-white py-1 px-2" href="#rdm-tab-prediction"><i class="bi bi-stars me-1"></i>Prediction</a></li>
-        <li class="nav-item"><a class="nav-link text-white py-1 px-2" href="#rdm-tab-news"><i class="bi bi-newspaper me-1"></i>News</a></li>
-        <li class="nav-item"><a class="nav-link text-white py-1 px-2" href="#rdm-tab-dreamteam"><i class="bi bi-lightbulb me-1"></i>Dream Team</a></li>
-        <li class="nav-item"><a class="nav-link text-white py-1 px-2" href="#rdm-tab-current"><i class="bi bi-calendar-event me-1"></i>Info</a></li>
-        <li class="nav-item"><a class="nav-link text-white py-1 px-2" href="#rdm-tab-jobs"><i class="bi bi-megaphone me-1"></i>Jobs</a></li>
-        <li class="nav-item"><a class="nav-link text-white py-1 px-2" href="#rdm-tab-movie"><i class="bi bi-film me-1"></i>Movies</a></li>
+        <li class="nav-item"><a class="nav-link text-white py-1 px-2" href="#rdm-tab-prediction"><i class="bi bi-stars me-1"></i>Sports Predictions</a></li>
+        <li class="nav-item"><a class="nav-link text-white py-1 px-2" href="#rdm-tab-news"><i class="bi bi-newspaper me-1"></i>Latest News</a></li>
+        <li class="nav-item"><a class="nav-link text-white py-1 px-2" href="#rdm-tab-jobs"><i class="bi bi-megaphone me-1"></i>Jobs Notifications</a></li>
+        <li class="nav-item"><a class="nav-link text-white py-1 px-2" href="#rdm-tab-movie"><i class="bi bi-film me-1"></i>Movies Reviews</a></li>
       </ul>
     </div>
 
@@ -205,8 +203,6 @@
   <div class="d-flex overflow-auto px-2 gap-2 scroll-mobile-tabs">
     <a class="btn btn-outline-danger btn-sm active" href="#rdm-tab-prediction"><i class="bi bi-stars me-1"></i>Prediction</a>
     <a class="btn btn-outline-danger btn-sm" href="#rdm-tab-news"><i class="bi bi-newspaper me-1"></i>News</a>
-    <a class="btn btn-outline-danger btn-sm" href="#rdm-tab-dreamteam"><i class="bi bi-lightbulb me-1"></i>Dream Team</a>
-    <a class="btn btn-outline-danger btn-sm" href="#rdm-tab-current"><i class="bi bi-calendar-event me-1"></i>Info</a>
     <a class="btn btn-outline-danger btn-sm" href="#rdm-tab-jobs"><i class="bi bi-megaphone me-1"></i>Jobs</a>
     <a class="btn btn-outline-danger btn-sm" href="#rdm-tab-movie"><i class="bi bi-film me-1"></i>Movies</a>
   </div>
@@ -221,38 +217,31 @@
 
     <!-- Heading -->
     <h2 class="fw-bold display-6 text-warning animate__animated animate__fadeInDown">
-      🎯 Welcome to RDM 11
+      🎯 Entertainment & Sports in One Place
     </h2>
     <p class="lead text-white-50 animate__animated animate__fadeInUp mb-4">
-      <strong>RDM 11  Your ultimate hub for sports predictions, news, fantasy tips, job updates, and movie reviews.</strong>
+      <strong>Get the latest movie reviews, cricket predictions, and trending news all curated just for you..</strong>
     </p>
 
     <!-- Icon Grid -->
     <div class="row g-4 justify-content-center animate__animated animate__zoomIn">
       <div class="col-6 col-md-4 col-lg-2 text-center">
+        <i class="bi bi-film fs-1 text-light"></i>
+        <div class="small mt-2">Movies Reviews</div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2 text-center">
         <i class="bi bi-stars fs-1 text-warning"></i>
-        <div class="small mt-2">Prediction</div>
+        <div class="small mt-2">Cricket Predictions</div>
       </div>
       <div class="col-6 col-md-4 col-lg-2 text-center">
         <i class="bi bi-newspaper fs-1 text-info"></i>
-        <div class="small mt-2">News</div>
-      </div>
-      <div class="col-6 col-md-4 col-lg-2 text-center">
-        <i class="bi bi-lightbulb-fill fs-1 text-success"></i>
-        <div class="small mt-2">Dream Team</div>
-      </div>
-      <div class="col-6 col-md-4 col-lg-2 text-center">
-        <i class="bi bi-calendar-event-fill fs-1 text-primary"></i>
-        <div class="small mt-2">Current Info</div>
+        <div class="small mt-2">Latest News</div>
       </div>
       <div class="col-6 col-md-4 col-lg-2 text-center">
         <i class="bi bi-megaphone-fill fs-1 text-danger"></i>
-        <div class="small mt-2">Jobs</div>
+        <div class="small mt-2">Jobs Notifications</div>
       </div>
-      <div class="col-6 col-md-4 col-lg-2 text-center">
-        <i class="bi bi-film fs-1 text-light"></i>
-        <div class="small mt-2">Movies</div>
-      </div>
+      
     </div>
 
   </div>
@@ -292,8 +281,6 @@
             <select class="form-select" id="tabType" required>
               <option value="news">News</option>
               <option value="prediction">Prediction</option>
-              <option value="dreamteam">Dream Team</option>
-              <option value="current">Current Affairs</option>
               <option value="jobs">Job Notifications</option>
               <option value="movie">Movie Reviews</option>
             </select>
@@ -318,111 +305,49 @@
 </div>
 
 
-<div class="container py-2">
+<div class="container py-4">
 
-    <!-- 🟠 Movie Reviews -->
-  <div class="rdm-tab" id="rdm-tab-movie">
-    <div class="rdm-tab-header" onclick="toggleTab('movie')">
-      <span>🎬 Latest movie reviews</span>
-      <i class="bi bi-plus rdm-tab-icon" id="icon-movie"></i>
+  <!-- 🎬 Movie Reviews Section -->
+  <section class="mb-5">
+    <h2 class="text-danger mb-3"><i class="bi bi-film"></i> Latest Movie Reviews</h2>
+    <div class="row" id="movie-reviews">
+      <!-- Movie review cards go here -->
     </div>
-    <div class="rdm-tab-content" id="content-movie">
-      <div class="row"></div>
-    </div>
-    <div id="content-movie">
-  <div class="row"></div>
-  <div class="pagination-controls"></div>
-</div>
+    <div class="pagination-controls mt-3 d-flex justify-content-center"></div>
+  </section>
 
-  </div>
-  <!-- 🟠 Prediction -->
-  <div class="rdm-tab" id="rdm-tab-prediction">
-    <div class="rdm-tab-header" onclick="toggleTab('prediction')">
-      <span>🔮 Sports Prediction</span>
-      <i class="bi bi-dash rdm-tab-icon" id="icon-prediction"></i>
-    </div>
-    <div class="rdm-tab-content show" id="content-prediction">
-      <div class="container px-0">
-        <div class="row" id="rdm-match-accordion">
+  <!-- 🔮 Sports Predictions Section -->
+  <section class="mb-5">
+    <h2 class="text-primary mb-3"><i class="bi bi-bar-chart-line-fill"></i> Sports Predictions</h2>
+    <div class="row" id="rdm-match-accordion">
       <p class="text-muted">Latest Prediction and updates will be shown here.</p>
-        </div>
-      </div>
-      <div id="content-prediction">
-      <div class="row"></div>
-      <div class="pagination-controls mt-3"></div>
+    </div>
+    <div class="pagination-controls mt-3 d-flex justify-content-center"></div>
+  </section>
+
+  <!-- 📰 News Section -->
+ <!-- 📰 News Section -->
+<section class="mb-5">
+  <h2 class="text-success mb-3"><i class="bi bi-newspaper"></i> Latest News</h2>
+  <div class="row" id="news-updates">
+    
+    <!-- News cards go here -->
+  </div>
+  <div class="pagination-controls mt-3 d-flex justify-content-center"></div>
+</section>
+
+
+  <!-- 📢 Job Notifications Section -->
+  <section class="mb-5">
+    <h2 class="text-warning mb-3"><i class="bi bi-briefcase-fill"></i> Latest Job Notifications</h2>
+    <div class="row" id="job-notifications">
+      <!-- Job cards go here -->
+    </div>
+    <div class="pagination-controls mt-3 d-flex justify-content-center"></div>
+  </section>
+
 </div>
 
-    </div>
-  </div>
-
-   <!-- 🟠 Dream Team -->
-  <div class="rdm-tab" id="rdm-tab-dreamteam">
-    <div class="rdm-tab-header" onclick="toggleTab('dreamteam')">
-      <span>Fantasy Dream Team Tips</span>
-      <i class="bi bi-plus rdm-tab-icon" id="icon-dreamteam"></i>
-    </div>
-    <div class="rdm-tab-content" id="content-dreamteam">
-      <div class="row"></div>
-    </div>
-    <div id="content-dreamteam">
-  <div class="row"></div>
-  <div class="pagination-controls mt-3"></div>
-</div>
-
-  </div>
-
-  <!-- 🟠 News -->
-  <div class="rdm-tab" id="rdm-tab-news">
-    <div class="rdm-tab-header" onclick="toggleTab('news')">
-      <span>📰 Latest news</span>
-      <i class="bi bi-plus rdm-tab-icon" id="icon-news"></i>
-    </div>
-    <div class="rdm-tab-content" id="content-news">
-      <section class="mb-3">
-        <div class="row">
-        </div>
-      </section>
-      <div class="pagination-controls d-flex justify-content-center align-items-center mt-3"></div>
-    </div>
-  </div>
-
-  
-
-  <!-- 🟠 Job Notifications -->
-  <div class="rdm-tab" id="rdm-tab-jobs">
-    <div class="rdm-tab-header" onclick="toggleTab('jobs')">
-      <span>📢 Latest Job Notifications</span>
-      <i class="bi bi-plus rdm-tab-icon" id="icon-jobs"></i>
-    </div>
-    <div class="rdm-tab-content" id="content-jobs">
-      <div class="row"></div>
-    </div>
-    <div id="content-jobs">
-  <div class="row"></div>
-  <div class="pagination-controls mt-3"></div>
-</div>
-
-  </div>
-
-
-  <!-- 🟠 Current Info -->
-  <div class="rdm-tab" id="rdm-tab-current">
-    <div class="rdm-tab-header" onclick="toggleTab('current')">
-      <span>📅 Current Info</span>
-      <i class="bi bi-plus rdm-tab-icon" id="icon-current"></i>
-    </div>
-    <div class="rdm-tab-content" id="content-current">
-      <p class="text-muted">Latest real-time updates and insights.</p>
-      <div class="row"></div>
-    </div>
-    <div id="content-current">
-  <div class="row"></div>
-  <div class="pagination-controls mt-3"></div>
-</div>
-
-  </div>
-
-</div>
 
 
 
@@ -483,16 +408,6 @@
       <li class="nav-item mb-2">
         <a class="nav-link tab-link text-dark fw-medium d-flex align-items-center gap-2" href="#" data-tab="prediction">
           <i class="bi bi-trophy-fill text-danger fs-5"></i> Prediction
-        </a>
-      </li>
-      <li class="nav-item mb-2">
-        <a class="nav-link tab-link text-dark fw-medium d-flex align-items-center gap-2" href="#" data-tab="dreamteam">
-          <i class="bi bi-star-fill text-danger fs-5"></i> Dream Team
-        </a>
-      </li>
-      <li class="nav-item mb-2">
-        <a class="nav-link tab-link text-dark fw-medium d-flex align-items-center gap-2" href="#" data-tab="current">
-          <i class="bi bi-globe text-danger fs-5"></i> Current Affairs
         </a>
       </li>
       <li class="nav-item mb-2">
@@ -592,16 +507,16 @@
       });
     }
 
-    // ✅ Date/Time Updater
-    function updateDateTime() {
-      const now = new Date();
-      document.getElementById('currentDate').textContent = now.toLocaleDateString(undefined, {
-        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-      });
-      document.getElementById('currentTime').textContent = now.toLocaleTimeString();
-    }
-    updateDateTime();
-    setInterval(updateDateTime, 1000);
+    // // ✅ Date/Time Updater
+    // function updateDateTime() {
+    //   const now = new Date();
+    //   document.getElementById('currentDate').textContent = now.toLocaleDateString(undefined, {
+    //     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+    //   });
+    //   document.getElementById('currentTime').textContent = now.toLocaleTimeString();
+    // }
+    // updateDateTime();
+    // setInterval(updateDateTime, 1000);
 
     // ✅ Accordion-like Tab Toggle (if used)
     document.querySelectorAll('.tab-link').forEach(link => {

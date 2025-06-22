@@ -7,8 +7,8 @@ let totalPages = 1;
 let allEntries = [];
 
 export async function loadNews(page = 1) {
-  const newsContainer = document.querySelector('#content-news .row');
-  const paginationContainer = document.querySelector('#content-news .pagination-controls');
+  const newsContainer = document.querySelector('#news-updates');
+  const paginationContainer = document.querySelector('.pagination-controls');
 
   if (!newsContainer) return;
 
@@ -45,64 +45,37 @@ export async function loadNews(page = 1) {
 
 function createNewsCard(entry) {
   const div = document.createElement('div');
-  div.className = 'col-12 mb-2';
+  div.className = 'col-md-4 col-sm-6 mb-4'; // Card grid layout
 
   const guid = entry.id || `news-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
   const relativeTime = formatRelativeTime(entry.date);
 
   div.innerHTML = `
-    <div class="card shadow-sm border-0 rounded-3 bg-light">
-      <div class="row g-0 align-items-center">
+    <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
+      
+      <!-- 📄 Content Section -->
+      <div class="card-body d-flex flex-column">
+        <h6 class="fw-bold mb-2" style="font-size: 1rem;">
+          <a href="details.html?tabType=${entry.tabType}&id=${guid}" class="text-decoration-none" style="color: #007bff;">
+            ✅ ${entry.title}
+          </a>
+        </h6>
+        <p class="text-muted flex-grow-1 mb-2" style="font-size: 0.85rem;">
+          ${entry.content.replace(/<[^>]+>/g, '').slice(0, 100)}...
+        </p>
+      </div>
 
-        <!-- 🟥 Very small square block -->
-        <div class="col-1 d-flex align-items-center justify-content-center">
-          <div style="
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, #ff4d4d, #ff9999);
-            border-radius: 0.4rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-align: center;
-            text-transform: uppercase;
-          ">
-            ${entry.tabType || 'News'}
-          </div>
-        </div>
-
-        <!-- 📄 Text part -->
-        <div class="col-11">
-          <div class="card-body py-1 px-2">
-            <p class="mb-1 fw-semibold text-truncate" style="font-size: 0.8rem;">
-              <a href="details.html?tabType=${entry.tabType}&id=${guid}" class="text-decoration-none text-dark title-hover">
-                ${entry.title}
-              </a>
-            </p>
-            <p class="text-muted mb-1 small" style="font-size: 0.7rem;">${entry.content.slice(0, 60)}...</p>
-            <small class="text-muted d-block" style="font-size: 0.65rem;">
-              <i class="bi bi-person-circle me-1"></i> ${entry.author || 'Anonymous'}<br>
-              <i class="bi bi-calendar-event me-1"></i> ${formatDate(entry.date)}
-              <span class="badge bg-secondary ms-1">${relativeTime}</span>
-            </small>
-          </div>
-        </div>
-
+      <!-- 📅 Footer Section -->
+      <div class="card-footer bg-transparent border-0 pt-0 pb-3 px-3 d-flex justify-content-between align-items-center text-muted" style="font-size: 0.7rem;">
+        <span><i class="bi bi-person-circle me-1"></i>${entry.author || 'Anonymous'}</span>
+        <span><i class="bi bi-calendar-event me-1"></i>${formatDate(entry.date)}</span>
+        <span class="badge bg-secondary">${relativeTime}</span>
       </div>
     </div>
   `;
 
   return div;
 }
-
-
-
-
-
-
 
 
 

@@ -5,16 +5,12 @@ import { ref, set } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-dat
 // Loaders
 import { loadNews } from './GetNews.js';
 import { loadPredictions } from './GetPrediction.js';
-import { loadDreamTeam } from './GetDreamTeam.js';
-import { loadCurrent } from './GetCurrent.js';
 import { loadJobs } from './GetJobs.js';
 import { loadMovies } from './GetMovies.js';
 
 // Initial Load
 loadNews();
 loadPredictions();
-loadDreamTeam();
-loadCurrent();
 loadJobs();
 loadMovies();
 
