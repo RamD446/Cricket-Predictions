@@ -307,46 +307,64 @@
 
 <div class="container py-4">
 
-  <!-- 🎬 Movie Reviews Section -->
-  <section class="mb-5">
-    <h2 class="text-danger mb-3"><i class="bi bi-film"></i> Latest Movie Reviews</h2>
-    <div class="row" id="movie-reviews">
-      <!-- Movie review cards go here -->
+  <!-- 🎬 All Movie Reviews Section -->
+  <section id="content-movie" class="my-5">
+    <h2 class="mb-4 text-danger fw-bold">
+      <button type="button" class="btn btn-warning" disabled> <i class="bi bi-collection-play-fill"></i> All Latest Movie Reviews</button>
+    </h2>
+    <div class="row">
+      <!-- Movie cards will be injected here -->
     </div>
-    <div class="pagination-controls mt-3 d-flex justify-content-center"></div>
+    <div class="pagination-controls d-flex justify-content-center align-items-center mt-4">
+      <!-- Pagination controls will be injected here -->
+    </div>
   </section>
 
-  <!-- 🔮 Sports Predictions Section -->
-  <section class="mb-5">
-    <h2 class="text-primary mb-3"><i class="bi bi-bar-chart-line-fill"></i> Sports Predictions</h2>
-    <div class="row" id="rdm-match-accordion">
-      <p class="text-muted">Latest Prediction and updates will be shown here.</p>
-    </div>
-    <div class="pagination-controls mt-3 d-flex justify-content-center"></div>
-  </section>
-
-  <!-- 📰 News Section -->
- <!-- 📰 News Section -->
-<section class="mb-5">
-  <h2 class="text-success mb-3"><i class="bi bi-newspaper"></i> Latest News</h2>
-  <div class="row" id="news-updates">
-    
-    <!-- News cards go here -->
+ <!-- 🔮 Sports Predictions Section -->
+<section id="content-prediction" class="my-5">
+  <div class="d-flex align-items-center mb-3">
+    <button type="button" class="btn btn-danger fw-semibold" disabled>
+      <i class="bi bi-graph-up-arrow me-2"></i> Sports Predictions
+    </button>
   </div>
+
+  <div class="row"><!-- Cards injected here --></div>
+
   <div class="pagination-controls mt-3 d-flex justify-content-center"></div>
 </section>
 
 
-  <!-- 📢 Job Notifications Section -->
-  <section class="mb-5">
-    <h2 class="text-warning mb-3"><i class="bi bi-briefcase-fill"></i> Latest Job Notifications</h2>
-    <div class="row" id="job-notifications">
-      <!-- Job cards go here -->
+
+
+  <!-- 📰 News Section -->
+  <section class="my-5">
+    <h2 class="text-success mb-3">
+      <button type="button" class="btn btn-success" disabled> <i class="bi bi-newspaper"></i> Latest News</button>
+    </h2>
+    <div class="row" id="news-updates">
+      <!-- News cards go here -->
     </div>
     <div class="pagination-controls mt-3 d-flex justify-content-center"></div>
   </section>
 
+<section class="my-5" id="content-jobs">
+  <h2 class="text-warning mb-3">
+    <button type="button" class="btn btn-danger" disabled>
+      <i class="bi bi-briefcase-fill"></i> Job Notifications
+    </button>
+  </h2>
+
+  <!-- Job cards will be injected here -->
+  <div class="row"></div>
+
+  <!-- Pagination controls -->
+  <div class="pagination-controls d-flex justify-content-center align-items-center mt-4"></div>
+</section>
+
+
+
 </div>
+
 
 
 

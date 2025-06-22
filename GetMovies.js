@@ -45,43 +45,35 @@ export async function loadMovies(page = 1) {
 
 function createMovieCard(entry) {
   const div = document.createElement('div');
-  div.className = 'col-12 mb-2';
+  div.className = 'col-md-4 col-sm-6 mb-4';
 
   const guid = entry.id || `movie-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
   const relativeTime = formatRelativeTime(entry.date);
+  const content = entry.content.replace(/<[^>]+>/g, '').slice(0, 100); // Strip HTML
 
   div.innerHTML = `
-    <div class="card shadow-sm border-0 rounded-4 bg-light mb-1">
-      <div class="card-body py-2 px-3">
-        <div class="d-flex justify-content-between align-items-center">
-          <a href="details.html?tabType=movie&id=${guid}" 
-             class="text-decoration-none text-primary fw-semibold fs-6 d-flex align-items-center flex-grow-1 me-2 title-hover">
-            ${entry.title}
-          </a>
-          <button class="btn btn-sm btn-light border-0 show-more-btn p-1"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#content-${guid}"
-                  aria-expanded="false"
-                  aria-controls="content-${guid}"
-                  title="Toggle content">
-            <i class="bi bi-chevron-down small"></i>
-          </button>
+    <a href="details.html?tabType=movie&id=${guid}" class="text-decoration-none text-dark d-block h-100">
+      <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden card-hover-effect bg-white">
+        <div class="card-body d-flex flex-column">
+          <h6 class="fw-bold mb-2 text-primary" style="font-size: 1rem;">
+            🎬 ${entry.title}
+          </h6>
+          <p class="text-muted flex-grow-1 mb-2" style="font-size: 0.85rem;">
+            ${content}...
+          </p>
         </div>
-
-        <div id="content-${guid}" class="collapse mt-2">
-          <div class="text-dark mb-1 small">${entry.content}</div>
-          <small class="text-muted d-block">
-            <i class="bi bi-person-circle me-1"></i> ${entry.author || 'Anonymous'}
-            <i class="bi bi-calendar-event ms-2 me-1"></i> ${formatDate(entry.date)}
-            <span class="badge bg-secondary ms-2">${relativeTime}</span>
-          </small>
+        <div class="card-footer bg-transparent border-0 pt-0 pb-3 px-3 d-flex justify-content-between align-items-center text-muted" style="font-size: 0.7rem;">
+          <span><i class="bi bi-person-circle me-1"></i>${entry.author || 'Anonymous'}</span>
+          <span><i class="bi bi-calendar-event me-1"></i>${formatDate(entry.date)}</span>
+          <span class="badge bg-secondary">${relativeTime}</span>
         </div>
       </div>
-    </div>
+    </a>
   `;
 
   return div;
 }
+
 
 function renderPagination(container) {
   if (totalPages <= 1) return;

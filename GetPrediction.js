@@ -36,47 +36,39 @@ export async function loadPredictions(page = 1) {
     }
   } catch (err) {
     console.error('❌ Error loading predictions:', err);
-    container.innerHTML = `<p class="text-danger">Failed to load prediction data.</p>`;
+    showNoPrediction(container);
   }
 }
 
 function createPredictionCard(entry) {
   const div = document.createElement('div');
-  div.className = 'col-12 mb-3';
+  div.className = 'col-md-4 col-sm-6 mb-4';
 
   const guid = entry.id || `pred-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-  const timeAgo = getTimeAgo(entry.date);
+  const relativeTime = getTimeAgo(entry.date);
+  const cleanContent = (entry.content || '').replace(/<[^>]+>/g, '').slice(0, 100);
 
   div.innerHTML = `
-    <div class="card shadow-sm border-0 rounded-4 bg-light">
-      <div class="card-body p-3">
+    <a href="details.html?tabType=prediction&id=${guid}" class="text-decoration-none text-dark h-100 d-block">
+      <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden card-hover-effect">
 
-        <div class="d-flex justify-content-between align-items-center">
-          <a href="details.html?tabType=prediction&id=${guid}" 
-             class="text-decoration-none text-primary fw-semibold fs-6 d-flex align-items-center flex-grow-1 me-2 title-hover">
-            <i class="bi bi-graph-up-arrow me-2 text-success"></i>${entry.title}
-          </a>
-          <button class="btn btn-sm btn-light border-0 show-more-btn p-1"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#content-${guid}"
-                  aria-expanded="false"
-                  aria-controls="content-${guid}"
-                  title="Toggle content">
-            <i class="bi bi-chevron-down small"></i>
-          </button>
+        <div class="card-body d-flex flex-column">
+          <h6 class="fw-bold mb-2 text-success" style="font-size: 1rem;">
+            <i class="bi bi-graph-up-arrow me-2"></i>${entry.title || 'Untitled Prediction'}
+          </h6>
+          <p class="text-muted flex-grow-1 mb-2" style="font-size: 0.85rem;">
+            ${cleanContent}...
+          </p>
         </div>
 
-        <div id="content-${guid}" class="collapse mt-2">
-          <div class="card-text mb-2 small">${entry.content}</div>
-          <small class="text-muted d-block">
-            <i class="bi bi-person-circle me-1"></i> ${entry.author || 'Anonymous'}
-            <i class="bi bi-calendar-event ms-2 me-1"></i> ${formatDate(entry.date)}
-            <span class="badge bg-secondary ms-2">${timeAgo}</span>
-          </small>
+        <div class="card-footer bg-transparent border-0 pt-0 pb-3 px-3 d-flex justify-content-between align-items-center text-muted" style="font-size: 0.7rem;">
+          <span><i class="bi bi-person-circle me-1"></i>${entry.author || 'Anonymous'}</span>
+          <span><i class="bi bi-calendar-event me-1"></i>${formatDate(entry.date)}</span>
+          <span class="badge bg-secondary">${relativeTime}</span>
         </div>
 
       </div>
-    </div>
+    </a>
   `;
 
   return div;

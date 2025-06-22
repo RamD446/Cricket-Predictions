@@ -45,33 +45,34 @@ export async function loadNews(page = 1) {
 
 function createNewsCard(entry) {
   const div = document.createElement('div');
-  div.className = 'col-md-4 col-sm-6 mb-4'; // Card grid layout
+  div.className = 'col-md-4 col-sm-6 mb-4';
 
   const guid = entry.id || `news-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
   const relativeTime = formatRelativeTime(entry.date);
+  const cleanContent = entry.content.replace(/<[^>]+>/g, '').slice(0, 100);
 
+  // Create full clickable card using <a> wrapping entire card
   div.innerHTML = `
-    <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
-      
-      <!-- 📄 Content Section -->
-      <div class="card-body d-flex flex-column">
-        <h6 class="fw-bold mb-2" style="font-size: 1rem;">
-          <a href="details.html?tabType=${entry.tabType}&id=${guid}" class="text-decoration-none" style="color: #007bff;">
-            ✅ ${entry.title}
-          </a>
-        </h6>
-        <p class="text-muted flex-grow-1 mb-2" style="font-size: 0.85rem;">
-          ${entry.content.replace(/<[^>]+>/g, '').slice(0, 100)}...
-        </p>
-      </div>
+    <a href="details.html?tabType=${entry.tabType}&id=${guid}" class="text-decoration-none text-dark h-100 d-block">
+      <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden card-hover-effect">
 
-      <!-- 📅 Footer Section -->
-      <div class="card-footer bg-transparent border-0 pt-0 pb-3 px-3 d-flex justify-content-between align-items-center text-muted" style="font-size: 0.7rem;">
-        <span><i class="bi bi-person-circle me-1"></i>${entry.author || 'Anonymous'}</span>
-        <span><i class="bi bi-calendar-event me-1"></i>${formatDate(entry.date)}</span>
-        <span class="badge bg-secondary">${relativeTime}</span>
+        <div class="card-body d-flex flex-column">
+          <h6 class="fw-bold mb-2 text-primary" style="font-size: 1rem;">
+            ${entry.title}
+          </h6>
+          <p class="text-muted flex-grow-1 mb-2" style="font-size: 0.85rem;">
+            ${cleanContent}...
+          </p>
+        </div>
+
+        <div class="card-footer bg-transparent border-0 pt-0 pb-3 px-3 d-flex justify-content-between align-items-center text-muted" style="font-size: 0.7rem;">
+          <span><i class="bi bi-person-circle me-1"></i>${entry.author || 'Anonymous'}</span>
+          <span><i class="bi bi-calendar-event me-1"></i>${formatDate(entry.date)}</span>
+          <span class="badge bg-secondary">${relativeTime}</span>
+        </div>
+
       </div>
-    </div>
+    </a>
   `;
 
   return div;
