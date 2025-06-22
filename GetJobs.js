@@ -46,7 +46,7 @@ export async function loadJobs(page = 1) {
 
 function createJobCard(entry) {
   const div = document.createElement('div');
-  div.className = 'col-md-4 col-12 mb-4';
+  div.className = 'col-md-6 col-12 mb-4';
 
   const guid = entry.id || `job-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
   const relativeTime = getRelativeTime(entry.date);

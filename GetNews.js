@@ -45,7 +45,7 @@ export async function loadNews(page = 1) {
 
 function createNewsCard(entry) {
   const div = document.createElement('div');
-  div.className = 'col-md-4 col-sm-6 mb-4';
+  div.className = 'col-md-6 col-sm-6 mb-4';
 
   const guid = entry.id || `news-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
   const relativeTime = formatRelativeTime(entry.date);
@@ -58,7 +58,8 @@ function createNewsCard(entry) {
 
         <div class="card-body d-flex flex-column">
           <h6 class="fw-bold mb-2 text-primary" style="font-size: 1rem;">
-            ${entry.title}
+           <span class="tick-red">✅</span>
+ ${entry.title}
           </h6>
           <p class="text-muted flex-grow-1 mb-2" style="font-size: 0.85rem;">
             ${cleanContent}...

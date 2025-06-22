@@ -42,7 +42,7 @@ export async function loadPredictions(page = 1) {
 
 function createPredictionCard(entry) {
   const div = document.createElement('div');
-  div.className = 'col-md-4 col-sm-6 mb-4';
+  div.className = 'col-md-6 col-sm-6 mb-4';
 
   const guid = entry.id || `pred-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
   const relativeTime = getTimeAgo(entry.date);
@@ -54,7 +54,7 @@ function createPredictionCard(entry) {
 
         <div class="card-body d-flex flex-column">
           <h6 class="fw-bold mb-2 text-success" style="font-size: 1rem;">
-            <i class="bi bi-graph-up-arrow me-2"></i>${entry.title || 'Untitled Prediction'}
+            ✅${entry.title || 'Untitled Prediction'}
           </h6>
           <p class="text-muted flex-grow-1 mb-2" style="font-size: 0.85rem;">
             ${cleanContent}...
@@ -62,9 +62,12 @@ function createPredictionCard(entry) {
         </div>
 
         <div class="card-footer bg-transparent border-0 pt-0 pb-3 px-3 d-flex justify-content-between align-items-center text-muted" style="font-size: 0.7rem;">
-          <span><i class="bi bi-person-circle me-1"></i>${entry.author || 'Anonymous'}</span>
-          <span><i class="bi bi-calendar-event me-1"></i>${formatDate(entry.date)}</span>
-          <span class="badge bg-secondary">${relativeTime}</span>
+  <span><i class="bi bi-person-circle me-1"></i>${entry.author || 'Anonymous'}</span>
+  <div class="d-flex gap-3 ms-auto">
+    <span><i class="bi bi-calendar-event me-1"></i>${formatDate(entry.date)}</span>
+     <span class="badge bg-secondary">${relativeTime}</span>
+  </div>
+</div>
         </div>
 
       </div>

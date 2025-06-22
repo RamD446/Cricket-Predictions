@@ -45,7 +45,7 @@ export async function loadMovies(page = 1) {
 
 function createMovieCard(entry) {
   const div = document.createElement('div');
-  div.className = 'col-md-4 col-sm-6 mb-4';
+  div.className = 'col-md-6 col-sm-6 mb-4';
 
   const guid = entry.id || `movie-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
   const relativeTime = formatRelativeTime(entry.date);
