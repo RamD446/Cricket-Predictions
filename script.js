@@ -16,7 +16,7 @@ loadMovies();
 
 let quill; // Global instance
 
-// Initialize Quill when modal opens
+// Initialize Quill when modal is shown
 document.getElementById('createModal').addEventListener('shown.bs.modal', () => {
   if (!quill) {
     quill = new Quill('#quillEditor', {
@@ -34,27 +34,46 @@ document.getElementById('createModal').addEventListener('shown.bs.modal', () => 
         ]
       }
     });
+
+    // 🖼️ Resize images pasted into the editor
+    quill.root.addEventListener('paste', () => {
+      setTimeout(() => {
+        const images = quill.root.querySelectorAll('img');
+        images.forEach(img => {
+          img.style.maxWidth = '100%';
+          img.style.maxHeight = '300px';
+          img.style.objectFit = 'contain';
+        });
+      }, 50);
+    });
   }
 });
 
-// Generate unique ID
+// 🔁 Reset Quill content and form when modal is closed
+document.getElementById('createModal').addEventListener('hidden.bs.modal', () => {
+  if (quill) quill.setContents([]);
+  document.getElementById('createForm').reset();
+});
+
+// ✨ Helper: Generate unique ID
 function generateGuidFromTitle(title) {
   const base = title.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
   const unique = Date.now().toString(36);
   return `${base}-${unique}`;
 }
 
-// Form submission
+// 📝 Form submission
 document.getElementById('createForm').addEventListener('submit', async function (e) {
   e.preventDefault();
 
   const title = document.getElementById('titleInput').value.trim();
   const tabType = document.getElementById('tabType').value;
-  const content = quill.root.innerHTML.trim();
+  const content = quill?.root.innerHTML.trim();
+  const plainText = quill?.getText().trim();
   const date = new Date().toISOString();
   const author = 'Yalla Ramana';
 
-  if (!title || content === '' || content === '<p><br></p>') {
+  if (!title || !plainText || plainText === '') {
     alert('❗ Please enter a valid title and content.');
     return;
   }
@@ -74,33 +93,17 @@ document.getElementById('createForm').addEventListener('submit', async function 
     await set(ref(database, `${tabType}/${guid}`), newData);
     alert('✅ Entry submitted successfully.');
 
-    // Reset UI
-    this.reset();
-    if (quill) quill.setContents([]);
     bootstrap.Modal.getInstance(document.getElementById('createModal')).hide();
 
-    // ✅ Dynamically reload the correct tab
+    // Refresh tab
     switch (tabType) {
-      case 'news':
-        loadNews();
-        break;
-      case 'prediction':
-        loadPredictions();
-        break;
-      case 'dreamteam':
-        loadDreamTeam();
-        break;
-      case 'current':
-        loadCurrent();
-        break;
-      case 'jobs':
-        loadJobs();
-        break;
-      case 'movie':
-        loadMovies();
-        break;
-      default:
-        console.warn('❗ Unknown tabType:', tabType);
+      case 'news': loadNews(); break;
+      case 'prediction': loadPredictions(); break;
+      case 'dreamteam': loadDreamTeam(); break;
+      case 'current': loadCurrent(); break;
+      case 'jobs': loadJobs(); break;
+      case 'movie': loadMovies(); break;
+      default: console.warn('❗ Unknown tabType:', tabType);
     }
 
   } catch (err) {
