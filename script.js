@@ -16,7 +16,21 @@ loadMovies();
 
 let quill; // Global instance
 
-// Initialize Quill when modal is shown
+// 🧠 Helper to apply consistent image sizing inside Quill editor
+function enforceImageSizing() {
+  const images = quill?.root?.querySelectorAll('img') || [];
+  images.forEach(img => {
+    img.style.maxWidth = '100%';
+    img.style.maxHeight = '200px';
+    img.style.height = 'auto';
+    img.style.width = 'auto';
+    img.style.objectFit = 'contain';
+    img.style.display = 'block';
+    img.style.margin = '10px auto';
+  });
+}
+
+// 🖊️ Initialize Quill when modal is shown
 document.getElementById('createModal').addEventListener('shown.bs.modal', () => {
   if (!quill) {
     quill = new Quill('#quillEditor', {
@@ -35,35 +49,32 @@ document.getElementById('createModal').addEventListener('shown.bs.modal', () => 
       }
     });
 
-    // 🖼️ Resize images pasted into the editor
-quill.root.addEventListener('paste', () => {
-  setTimeout(() => {
-    const images = quill.root.querySelectorAll('img');
-    images.forEach(img => {
-      img.style.maxWidth = '100%';
-      img.style.maxHeight = '200px';
-      img.style.objectFit = 'contain';
+    // Enforce image sizing after image paste
+    quill.root.addEventListener('paste', () => {
+      setTimeout(enforceImageSizing, 50);
     });
-  }, 50); // slight delay to ensure image is inserted
-});
 
+    // Enforce image sizing on every text change (fallback)
+    quill.on('text-change', () => {
+      setTimeout(enforceImageSizing, 50);
+    });
   }
 });
 
-// 🔁 Reset Quill content and form when modal is closed
+// 🧼 Reset Quill content and form on modal close
 document.getElementById('createModal').addEventListener('hidden.bs.modal', () => {
   if (quill) quill.setContents([]);
   document.getElementById('createForm').reset();
 });
 
-// ✨ Helper: Generate unique ID
+// 🔧 Helper: Generate unique ID from title
 function generateGuidFromTitle(title) {
   const base = title.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
   const unique = Date.now().toString(36);
   return `${base}-${unique}`;
 }
 
-// 📝 Form submission
+// ✅ Form submission logic
 document.getElementById('createForm').addEventListener('submit', async function (e) {
   e.preventDefault();
 
@@ -96,12 +107,12 @@ document.getElementById('createForm').addEventListener('submit', async function 
 
     bootstrap.Modal.getInstance(document.getElementById('createModal')).hide();
 
-    // Refresh tab
+    // Refresh tab data
     switch (tabType) {
       case 'news': loadNews(); break;
       case 'prediction': loadPredictions(); break;
-      case 'dreamteam': loadDreamTeam(); break;
-      case 'current': loadCurrent(); break;
+      case 'dreamteam': loadDreamTeam?.(); break;
+      case 'current': loadCurrent?.(); break;
       case 'jobs': loadJobs(); break;
       case 'movie': loadMovies(); break;
       default: console.warn('❗ Unknown tabType:', tabType);
