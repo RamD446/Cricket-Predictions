@@ -36,16 +36,17 @@ document.getElementById('createModal').addEventListener('shown.bs.modal', () => 
     });
 
     // 🖼️ Resize images pasted into the editor
-    quill.root.addEventListener('paste', () => {
-      setTimeout(() => {
-        const images = quill.root.querySelectorAll('img');
-        images.forEach(img => {
-          img.style.maxWidth = '100%';
-          img.style.maxHeight = '300px';
-          img.style.objectFit = 'contain';
-        });
-      }, 50);
+quill.root.addEventListener('paste', () => {
+  setTimeout(() => {
+    const images = quill.root.querySelectorAll('img');
+    images.forEach(img => {
+      img.style.maxWidth = '100%';
+      img.style.maxHeight = '200px';
+      img.style.objectFit = 'contain';
     });
+  }, 50); // slight delay to ensure image is inserted
+});
+
   }
 });
 
