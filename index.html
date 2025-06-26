@@ -133,71 +133,75 @@
       scroll-margin-top: 80px;
     }
   </style>
+  <style>
+    /* Hide scrollbars but keep scrolling */
+.tab-scroll-wrapper .d-flex {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.tab-scroll-wrapper .d-flex::-webkit-scrollbar {
+  display: none;
+}
+
+/* Tab button style */
+.nav-tab-btn {
+  background-color: #fff;
+  color: #dc3545;
+  border: 1px solid #dee2e6;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  padding: 4px 12px;
+  white-space: nowrap;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  flex-shrink: 0;
+  line-height: 1.2;
+}
+
+/* Hover and Active */
+.nav-tab-btn:hover,
+.nav-tab-btn.active {
+  background-color: #f0f0f0;
+  color: #212529;
+  border-color: #ccc;
+}
+
+  </style>
 </head>
 <body>
 
-<!-- ✅ Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-danger sticky-top shadow-sm py-2">
-  <div class="container-fluid d-flex align-items-center justify-content-between px-2">
+<!-- ✅ Sticky Wrapper for Navbar + Tabs -->
+<div class="position-sticky top-0 bg-danger z-1030 shadow" style="z-index: 1030;">
+  <!-- Top Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-danger py-2">
+    <div class="container-fluid d-flex align-items-center justify-content-between px-2">
+      <!-- Menu Button -->
+      <button class="btn btn-sm btn-light rounded-circle d-flex align-items-center justify-content-center"
+        type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" title="Open menu"
+        style="width: 32px; height: 32px;">
+        <i class="bi bi-list fs-5 text-danger"></i>
+      </button>
 
-    <!-- Offcanvas Toggle Button -->
-    <button class="btn btn-sm btn-light rounded-circle d-flex align-items-center justify-content-center"
-      type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" title="Open menu"
-      style="width: 32px; height: 32px;">
-      <i class="bi bi-list fs-5"></i>
-    </button>
-
-    <!-- Desktop Tab Buttons -->
-    <div class="d-none d-lg-flex gap-2">
-      <button class="btn btn-outline-warning btn-sm rounded-pill tab-btn px-3 py-1" data-tab="prediction">
-        <i class="bi bi-stars me-1"></i>Predictions
-      </button>
-      <button class="btn btn-outline-warning btn-sm rounded-pill tab-btn px-3 py-1" data-tab="news">
-        <i class="bi bi-newspaper me-1"></i>News
-      </button>
-      <button class="btn btn-outline-warning btn-sm rounded-pill tab-btn px-3 py-1" data-tab="jobs">
-        <i class="bi bi-megaphone me-1"></i>Jobs
-      </button>
-      <button class="btn btn-outline-warning btn-sm rounded-pill tab-btn px-3 py-1" data-tab="movie">
-        <i class="bi bi-film me-1"></i>Movies
+      <!-- Login Button -->
+      <button class="btn btn-sm btn-light text-dark rounded-pill px-2 py-1"
+        data-bs-toggle="modal" data-bs-target="#loginModal">
+        <i class="bi bi-person-circle me-1"></i>Login
       </button>
     </div>
+  </nav>
 
-    <!-- Login Button -->
-    <button class="btn btn-sm btn-light rounded-pill d-flex align-items-center px-3 py-1" data-bs-toggle="modal" data-bs-target="#loginModal">
-      <i class="bi bi-person-circle me-1"></i>Login
-    </button>
-  </div>
-</nav>
-
-<!-- ✅ Mobile Tab Buttons (visible only on small screens) -->
-<div class="d-lg-none bg-white border-bottom shadow-sm py-2">
-  <div class="d-flex overflow-auto px-2 gap-2">
-    <button class="btn btn-outline-warning btn-sm rounded-pill tab-btn" data-tab="prediction">
-      <i class="bi bi-stars me-1"></i>Prediction
-    </button>
-    <button class="btn btn-outline-warning btn-sm rounded-pill tab-btn" data-tab="news">
-      <i class="bi bi-newspaper me-1"></i>News
-    </button>
-    <button class="btn btn-outline-warning btn-sm rounded-pill tab-btn" data-tab="jobs">
-      <i class="bi bi-megaphone me-1"></i>Jobs
-    </button>
-    <button class="btn btn-outline-warning btn-sm rounded-pill tab-btn" data-tab="movie">
-      <i class="bi bi-film me-1"></i>Movies
-    </button>
+  <!-- Tab Buttons Bar -->
+  <div class="bg-white border-top border-bottom shadow-sm">
+    <div class="container-fluid px-2">
+      <div class="d-flex overflow-auto gap-2 py-2" id="tabButtons">
+        <button class="btn nav-tab-btn btn-sm" data-tab="content-movie">Movie Reviews</button>
+        <button class="btn nav-tab-btn btn-sm" data-tab="content-news">News</button>
+        <button class="btn nav-tab-btn btn-sm" data-tab="content-prediction">Prediction</button>
+        <button class="btn nav-tab-btn btn-sm" data-tab="content-jobs">Job Notifications</button>
+      </div>
+    </div>
   </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
 
 
 <!-- Create New Entry Header -->
@@ -348,43 +352,29 @@
   </div>
 
   <div class="offcanvas-body d-flex flex-column justify-content-between p-3">
-    <!-- Nav List -->
-    <ul class="nav flex-column overflow-auto offcanvas-menu-list">
-      <li class="nav-item mb-2">
-        <a class="nav-link tab-link text-dark fw-medium d-flex align-items-center gap-2" href="#" data-tab="movie">
-          <i class="bi bi-film text-danger fs-5"></i> Movie Reviews
-        </a>
-      </li>
-      <li class="nav-item mb-2">
-        <a class="nav-link tab-link text-dark fw-medium d-flex align-items-center gap-2" href="#" data-tab="news">
-          <i class="bi bi-newspaper text-danger fs-5"></i> News
-        </a>
-      </li>
-      <li class="nav-item mb-2">
-        <a class="nav-link tab-link text-dark fw-medium d-flex align-items-center gap-2" href="#" data-tab="prediction">
-          <i class="bi bi-trophy-fill text-danger fs-5"></i> Prediction
-        </a>
-      </li>
-      <li class="nav-item mb-2">
-        <a class="nav-link tab-link text-dark fw-medium d-flex align-items-center gap-2" href="#" data-tab="jobs">
-          <i class="bi bi-briefcase-fill text-danger fs-5"></i> Job Notifications
-        </a>
-      </li>
-    </ul>
+    <!-- Navigation Buttons -->
+    <div class="d-flex flex-column gap-2">
+      <button class="btn btn-outline-danger w-100 text-start tab-link" data-tab="content-movie">
+        🎬 Movie Reviews
+      </button>
+      <button class="btn btn-outline-danger w-100 text-start tab-link" data-tab="content-news">
+        📰 News
+      </button>
+      <button class="btn btn-outline-danger w-100 text-start tab-link" data-tab="content-prediction">
+        🏆 Prediction
+      </button>
+      <button class="btn btn-outline-danger w-100 text-start tab-link" data-tab="content-jobs">
+        💼 Job Notifications
+      </button>
+    </div>
 
     <!-- Footer -->
     <div class="border-top pt-3 mt-3 small text-muted">
-      <div class="d-flex justify-content-start gap-3 mb-2">
-        <!-- Optional social icons -->
-        <!-- <a href="#" class="text-danger" title="Twitter"><i class="bi bi-twitter"></i></a>
-        <a href="#" class="text-danger" title="Facebook"><i class="bi bi-facebook"></i></a>
-        <a href="#" class="text-danger" title="Email"><i class="bi bi-envelope"></i></a> -->
-      </div>
-      <div>Developed by <br><strong class="text-danger">Yalla Ramana</strong></div>
-      <!-- <div>📧 <a href="mailto:ramana9000r@gmail.com">ramana9000r@gmail.com</a></div> -->
+      <div>Developed by<br><strong class="text-danger">Yalla Ramana</strong></div>
     </div>
   </div>
 </div>
+
 
 
 
@@ -408,33 +398,51 @@
 <!-- ✅ Quill Editor (Only one version needed) -->
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
+<!-- ✅ Load external JS (e.g., Firebase, Quill, etc.) -->
+<script type="module" src="script.js"></script>
+
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const offset = 70;
-    // ✅ Scroll & Highlight Tabs (Desktop + Mobile)
-    const tabs = document.querySelectorAll('.nav-link, .scroll-mobile-tabs a');
-    tabs.forEach(tab => {
-      tab.addEventListener('click', function (e) {
-        tabs.forEach(t => t.classList.remove('active'));
-        this.classList.add('active');
 
-        const href = this.getAttribute('href');
-        if (href && href.startsWith('#')) {
-          e.preventDefault();
-          const target = document.querySelector(href);
-          if (target) {
-            const top = target.getBoundingClientRect().top + window.scrollY - offset;
-            window.scrollTo({ top, behavior: 'smooth' });
-          }
+    // ✅ Unified Tab Buttons: mobile, desktop, offcanvas
+    const allTabButtons = document.querySelectorAll('.tab-btn, .nav-tab-btn, .tab-link');
+
+    allTabButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        const tab = btn.getAttribute('data-tab');
+        const section = document.getElementById(`content-${tab}`) || document.getElementById(tab);
+
+        if (section) {
+          const top = section.getBoundingClientRect().top + window.scrollY - offset;
+          window.scrollTo({ top, behavior: 'smooth' });
         }
+
+        // Highlight active tab
+        allTabButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        // Optional: Scroll tab button into view (for overflow tab bar)
+        btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+
+        // Close offcanvas menu if open
+        const offcanvas = bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasMenu'));
+        if (offcanvas) offcanvas.hide();
       });
     });
 
-    // ✅ Default active tab
-    const firstTab = document.querySelector('.scroll-mobile-tabs a');
-    if (firstTab) firstTab.classList.add('active');
+    // ✅ Set default active tab on load
+    const defaultSection = document.getElementById("content-prediction");
+    if (defaultSection) {
+      defaultSection.classList.add("show");
+      const defaultBtn = document.querySelector('[data-tab="prediction"]');
+      if (defaultBtn) defaultBtn.classList.add("active");
+    }
 
-    // ✅ Admin Login
+    // ✅ Admin Login Handling
     const loginForm = document.getElementById("loginForm");
     if (loginForm) {
       loginForm.addEventListener("submit", function (e) {
@@ -460,73 +468,8 @@
         }
       });
     }
-
-   
-    document.querySelectorAll('.tab-link').forEach(link => {
-      link.addEventListener('click', function (e) {
-        e.preventDefault();
-        const tab = this.getAttribute('data-tab');
-        const content = document.getElementById(`content-${tab}`);
-        const icon = document.getElementById(`icon-${tab}`);
-        const isOpen = content.classList.contains('show');
-
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('show'));
-        document.querySelectorAll('.tab-icon').forEach(i => {
-          i.classList.remove('bi-dash');
-          i.classList.add('bi-plus');
-        });
-
-        if (!isOpen) {
-          content.classList.add('show');
-          if (icon) {
-            icon.classList.remove('bi-plus');
-            icon.classList.add('bi-dash');
-          }
-        }
-
-        // Close offcanvas menu if open
-        const offcanvas = bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasMenu'));
-        if (offcanvas) offcanvas.hide();
-
-        // Scroll to section
-        const tabElement = document.getElementById(`tab-${tab}`);
-        if (tabElement) tabElement.scrollIntoView({ behavior: 'smooth' });
-      });
-    });
-
-    // Set default open tab section
-    if (document.getElementById("content-prediction")) {
-      document.getElementById("content-prediction").classList.add("show");
-      const defaultIcon = document.getElementById("icon-prediction");
-      if (defaultIcon) {
-        defaultIcon.classList.remove("bi-plus");
-        defaultIcon.classList.add("bi-dash");
-      }
-    }
   });
 </script>
-<!-- ✅ JavaScript for Smooth Scroll -->
-<script>
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const tab = btn.getAttribute('data-tab');
-      const target = document.getElementById(`content-${tab}`);
-
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-        // Optional: Update active state
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-      }
-    });
-  });
-</script>
-
-
-<!-- ✅ Load external JS (e.g., Firebase, Quill, etc.) -->
-<script type="module" src="script.js"></script>
-
 
 
 </body>
