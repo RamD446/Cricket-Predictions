@@ -55,32 +55,39 @@ function createMovieCard(entry) {
   const imageURL = imgTagMatch ? imgTagMatch[1] : 'https://via.placeholder.com/400x225?text=No+Image';
 
   const textOnlyContent = rawContent.replace(/<img[^>]*>/gi, '').replace(/<[^>]+>/g, '');
-  const previewText = textOnlyContent.slice(0, 120);
+  const previewText = textOnlyContent.slice(0, 100);
   const tabType = entry.tabType || 'General';
 
+  // Optional: Color by tabType (e.g., sports, news, etc.)
+  const tabColorMap = {
+    movie: 'primary',
+    sports: 'success',
+    news: 'danger',
+    general: 'secondary'
+  };
+  const badgeColor = tabColorMap[tabType.toLowerCase()] || 'secondary';
+
   div.innerHTML = `
-    <a href="details.html?tabType=movie&id=${guid}" class="text-decoration-none text-dark d-block h-100">
-      <div class="card h-100 border-0 rounded-4 shadow-sm d-flex flex-row overflow-hidden align-items-start hover-glow transition-all bg-light" style="min-height: 160px;">
+    <a href="details.html?tabType=${tabType}&id=${guid}" class="text-decoration-none text-dark d-block h-100">
+      <div class="card h-100 border-0 rounded-4 shadow-sm d-flex flex-row overflow-hidden align-items-start hover-glow bg-light transition-all" style="min-height: 160px;">
         
-        <!-- Thumbnail Image -->
+        <!-- Image -->
         <div class="p-2">
-          <img src="${imageURL}" alt="Image" style="width: 100px; height: 100px; object-fit: cover; border-radius: 0.75rem;" />
+          <img src="${imageURL}" alt="Image" style="width: 90px; height: 90px; object-fit: cover; border-radius: 0.75rem;" />
         </div>
 
         <!-- Content -->
         <div class="card-body d-flex flex-column justify-content-between ps-2 pe-2">
           <div>
-            <span class="badge bg-gradient bg-info text-dark mb-1 text-uppercase" style="font-size: 0.6rem;">${tabType}</span>
-            <h6 class="fw-bold mb-1 text-primary d-flex align-items-center" style="font-size: 1rem;">
-              <i class="bi bi-play-circle-fill me-1 text-danger"></i> ${entry.title}
+            <span class="badge bg-${badgeColor} mb-1 text-uppercase" style="font-size: 0.6rem;">${tabType}</span>
+            <h6 class="fw-bold mb-1 text-primary" style="font-size: 0.9rem;">
+              <i class="bi bi-play-btn-fill me-1 text-${badgeColor}"></i> ${entry.title}
             </h6>
-            <p class="text-muted mb-2" style="font-size: 0.8rem;">
-              ${previewText}...
-            </p>
+            <p class="text-muted mb-1" style="font-size: 0.75rem;">${previewText}...</p>
           </div>
           <div class="d-flex justify-content-between align-items-center">
-            <small class="text-muted" style="font-size: 0.65rem;">${formatDate(entry.date)} · ${relativeTime}</small>
-            <span class="btn btn-sm btn-outline-primary px-2 py-0" style="font-size: 0.65rem;">Read More</span>
+            <small class="text-muted" style="font-size: 0.6rem;">${formatDate(entry.date)}</small>
+            <span class="btn btn-sm btn-outline-${badgeColor} px-2 py-0" style="font-size: 0.55rem;">Read More</span>
           </div>
         </div>
 
@@ -90,6 +97,7 @@ function createMovieCard(entry) {
 
   return div;
 }
+
 
 
 function renderPagination(container) {
