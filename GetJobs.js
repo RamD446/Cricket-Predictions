@@ -29,11 +29,7 @@ export async function loadJobs(page = 1) {
       const end = start + ITEMS_PER_PAGE;
       const pageEntries = allJobs.slice(start, end);
 
-      pageEntries.forEach(entry => {
-        const card = createJobCard(entry);
-        container.appendChild(card);
-      });
-
+      pageEntries.forEach(entry => container.appendChild(createJobCard(entry)));
       renderPagination(pagination);
     } else {
       showNoJobs(container);
@@ -50,26 +46,35 @@ function createJobCard(entry) {
 
   const guid = entry.id || `job-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
   const relativeTime = getRelativeTime(entry.date);
-  const contentPreview = (entry.content || 'No description provided')
-    .replace(/<[^>]+>/g, '')
-    .slice(0, 120);
+
+  const rawContent = entry.content || '';
+  const imgMatch = rawContent.match(/<img[^>]+src="([^">]+)"/i);
+  const hasImage = !!imgMatch;
+  const imageURL = hasImage ? imgMatch[1] : 'https://via.placeholder.com/100x100?text=Job';
+
+  const cleanContent = rawContent.replace(/<img[^>]*>/gi, '').replace(/<[^>]+>/g, '').slice(0, 80);
+
+  const imageHTML = hasImage
+    ? `<div class="p-2 pt-3 pe-3" style="flex-shrink: 0;">
+         <img src="${imageURL}" alt="Job Image"
+              style="width: 80px; height: 80px; object-fit: cover; border-radius: 0.75rem;" />
+       </div>`
+    : '';
 
   div.innerHTML = `
     <a href="details.html?tabType=jobs&id=${guid}" class="text-decoration-none text-dark d-block h-100">
-      <div class="card h-100 border border-light-subtle rounded-4 bg-white shadow-sm hover-glow-effect overflow-hidden">
-        <div class="card-body d-flex flex-column">
+      <div class="card h-100 border border-light-subtle rounded-4 bg-white shadow-sm hover-glow-effect overflow-hidden d-flex flex-row align-items-start">
+        ${imageHTML}
+        <div class="card-body d-flex flex-column p-3">
           <h6 class="fw-bold mb-2 text-primary" style="font-size: 1rem;">
             🧑‍💼 ${entry.title || 'Untitled Job'}
           </h6>
           <p class="text-muted flex-grow-1 mb-2" style="font-size: 0.85rem;">
-            ${contentPreview}...
+            ${cleanContent}...
           </p>
-        </div>
-        <div class="card-footer bg-transparent border-0 pt-0 pb-3 px-3 d-flex justify-content-between align-items-center text-muted" style="font-size: 0.7rem;">
-          <span><i class="bi bi-person-circle me-1"></i>${entry.author || 'Anonymous'}</span>
-          <div class="d-flex gap-3 ms-auto">
+          <div class="d-flex justify-content-between align-items-center text-muted" style="font-size: 0.75rem;">
+            <span><i class="bi bi-person-circle me-1"></i>${entry.author || 'Anonymous'}</span>
             <span><i class="bi bi-calendar-event me-1"></i>${formatDate(entry.date)}</span>
-            <span class="badge bg-secondary">${relativeTime}</span>
           </div>
         </div>
       </div>
@@ -78,7 +83,6 @@ function createJobCard(entry) {
 
   return div;
 }
-
 
 function renderPagination(container) {
   if (totalPages <= 1) return;
