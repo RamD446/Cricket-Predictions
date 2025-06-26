@@ -38,16 +38,12 @@ export async function loadMovies(page = 1) {
   }
 }
 
-/** Create a Bootstrap-styled movie card from a single entry */
+/** Create a clean Bootstrap movie card */
 function createMovieCard(entry) {
   const div = document.createElement('div');
   div.className = 'col-6 mb-3';
 
   const guid = entry.id || `movie-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-  const tabType = entry.tabType || 'Movie';
-  const badgeColor = getBadgeColor(tabType);
-  const relativeTime = formatRelativeTime(entry.date);
-
   const rawContent = entry.content || '';
   const imgMatch = rawContent.match(/<img[^>]+src="([^">]+)"/i);
   const hasImage = !!imgMatch;
@@ -66,26 +62,20 @@ function createMovieCard(entry) {
     : '';
 
   div.innerHTML = `
-    <a href="details.html?tabType=${tabType}&id=${guid}" class="text-decoration-none text-dark h-100 d-block">
+    <a href="details.html?id=${guid}" class="text-decoration-none text-dark h-100 d-block">
       <div class="card h-100 border border-light-subtle rounded-4 bg-white shadow-sm hover-glow-effect overflow-hidden d-flex flex-row align-items-start">
-
         ${imageHTML}
-
         <div class="card-body d-flex flex-column p-3">
-
           <h6 class="fw-semibold text-primary mb-2" style="font-size: 0.95rem;">
-            <i class="bi bi-play-btn-fill me-1 text-${badgeColor}"></i> ${entry.title}
+            ${entry.title}
           </h6>
-
           <p class="text-muted flex-grow-1 mb-2" style="font-size: 0.8rem;">
             ${previewText}...
           </p>
-
           <div class="d-flex justify-content-between align-items-center text-muted" style="font-size: 0.7rem;">
             <span><i class="bi bi-calendar-event me-1"></i>${formatDate(entry.date)}</span>
           </div>
         </div>
-
       </div>
     </a>
   `;
@@ -93,8 +83,7 @@ function createMovieCard(entry) {
   return div;
 }
 
-
-/** Display a pagination control under the section */
+/** Display pagination control */
 function renderPagination(container) {
   if (totalPages <= 1) return;
 
@@ -108,7 +97,7 @@ function renderPagination(container) {
   container.append(prevBtn, pageInfo, nextBtn);
 }
 
-/** Create a simple Bootstrap button */
+/** Create a button for pagination */
 function createButton(label, style, onClick, disabled = false) {
   const btn = document.createElement('button');
   btn.className = `btn btn-sm btn-${style} me-2`;
@@ -123,7 +112,7 @@ function showNoMovies(container) {
   container.innerHTML = `<p class="text-muted">No movie reviews at the moment.</p>`;
 }
 
-/** Get readable "x time ago" from timestamp */
+/** Format human-readable relative time */
 function formatRelativeTime(dateStr) {
   const now = new Date();
   const then = new Date(dateStr);
@@ -146,15 +135,4 @@ function formatDate(dateStr) {
     hour: '2-digit',
     minute: '2-digit'
   });
-}
-
-/** Get Bootstrap badge color class */
-function getBadgeColor(tabType) {
-  const map = {
-    movie: 'primary',
-    sports: 'success',
-    news: 'danger',
-    general: 'secondary'
-  };
-  return map[tabType.toLowerCase()] || 'secondary';
 }
