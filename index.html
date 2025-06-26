@@ -167,6 +167,28 @@
 }
 
   </style>
+  <style>
+   .dot-loader {
+  display: flex;
+  gap: 8px;
+}
+.dot-loader span {
+  width: 12px;
+  height: 12px;
+  background-color: #dc3545;
+  border-radius: 50%;
+  animation: bounce 0.6s infinite alternate;
+}
+.dot-loader span:nth-child(2) { animation-delay: 0.2s; }
+.dot-loader span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes bounce {
+  from { transform: translateY(0); opacity: 0.6; }
+  to { transform: translateY(-10px); opacity: 1; }
+}
+
+
+  </style>
 </head>
 <body>
 
@@ -202,6 +224,23 @@
     </div>
   </div>
 </div>
+
+<!-- Custom Fullscreen Loader -->
+<div id="globalLoader" class="d-none" style="
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(255, 255, 255, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;">
+  <div class="dot-loader">
+    <span></span><span></span><span></span>
+  </div>
+</div>
+
+
 
 
 <!-- Create New Entry Header -->
@@ -401,13 +440,11 @@
 
 <!-- ✅ Load external JS (e.g., Firebase, Quill, etc.) -->
 <script type="module" src="script.js"></script>
-
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const offset = 70;
-
-    // ✅ Unified Tab Buttons: mobile, desktop, offcanvas
     const allTabButtons = document.querySelectorAll('.tab-btn, .nav-tab-btn, .tab-link');
+    const loader = document.getElementById('globalLoader');
 
     allTabButtons.forEach(btn => {
       btn.addEventListener('click', (e) => {
@@ -416,31 +453,48 @@
         const tab = btn.getAttribute('data-tab');
         const section = document.getElementById(`content-${tab}`) || document.getElementById(tab);
 
-        if (section) {
+        if (!section) return;
+
+        // ✅ Show loader briefly
+        if (loader) loader.classList.remove('d-none');
+
+        setTimeout(() => {
+          // ✅ Hide loader after 1s
+          if (loader) loader.classList.add('d-none');
+
+          // ✅ Scroll to section
           const top = section.getBoundingClientRect().top + window.scrollY - offset;
           window.scrollTo({ top, behavior: 'smooth' });
-        }
 
-        // Highlight active tab
-        allTabButtons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+          // ✅ Highlight active tab
+          allTabButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
 
-        // Optional: Scroll tab button into view (for overflow tab bar)
-        btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+          // ✅ Scroll button into view (for overflow tabs)
+          btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
 
-        // Close offcanvas menu if open
-        const offcanvas = bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasMenu'));
-        if (offcanvas) offcanvas.hide();
+          // ✅ Close offcanvas if open
+          const offcanvas = bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasMenu'));
+          if (offcanvas) offcanvas.hide();
+        }, 1000); // ⏱️ 1 second delay
       });
     });
 
-    // ✅ Set default active tab on load
+    // ✅ Set default tab on load
     const defaultSection = document.getElementById("content-prediction");
     if (defaultSection) {
       defaultSection.classList.add("show");
       const defaultBtn = document.querySelector('[data-tab="prediction"]');
       if (defaultBtn) defaultBtn.classList.add("active");
     }
+  });
+</script>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const offset = 70;
+
 
     // ✅ Admin Login Handling
     const loginForm = document.getElementById("loginForm");

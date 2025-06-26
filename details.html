@@ -24,25 +24,74 @@
       color: #6c757d;
       font-size: 0.875rem;
     }
+
+    /* 🔄 Fullscreen Loader */
+    #globalLoader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(255, 255, 255, 0.9);
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .dot-loader {
+      display: flex;
+      gap: 8px;
+    }
+    .dot-loader span {
+      width: 12px;
+      height: 12px;
+      background-color: #dc3545;
+      border-radius: 50%;
+      animation: bounce 0.6s infinite alternate;
+    }
+    .dot-loader span:nth-child(2) { animation-delay: 0.2s; }
+    .dot-loader span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes bounce {
+      from { transform: translateY(0); opacity: 0.5; }
+      to { transform: translateY(-12px); opacity: 1; }
+    }
   </style>
 </head>
 <body>
 
-  <!-- 🔺 Custom Header -->
+  <!-- 🔄 Global Page Loader -->
+  <div id="globalLoader">
+    <div class="dot-loader"><span></span><span></span><span></span></div>
+  </div>
+
+  <!-- 🔺 Header -->
   <nav class="navbar navbar-custom shadow-sm">
     <div class="container-fluid d-flex align-items-center py-2">
-      <button class="btn btn-light rounded-circle back-btn me-3" onclick="location.href='index.html'" title="Back to Home">
+      <button class="btn btn-light rounded-circle back-btn me-2" id="topBackBtn" title="Back">
         <i class="bi bi-arrow-left text-danger"></i>
       </button>
-      <h5 class="text-white mb-0"><i class="bi bi-info-circle me-2"></i>Details Page</h5>
+      <h5 class="text-white mb-0 me-auto"><i class="bi bi-info-circle me-2"></i>Details Page</h5>
+      <button class="btn btn-outline-light btn-sm" id="homeBtn">
+        <i class="bi bi-house-door-fill me-1"></i>Home
+      </button>
     </div>
   </nav>
 
   <!-- 🔽 Main content -->
   <main class="container py-5">
-    <div id="detailsContainer" class="card p-4 bg-white shadow-sm border-0 rounded-4">
+    <div id="detailsContainer" class="card p-4 bg-white shadow-sm border-0 rounded-4 mb-4">
       <p class="text-muted">Loading content...</p>
     </div>
+
+    <!-- 🔗 Related Section (Separate Block) -->
+    <div id="relatedContainer" class="card p-4 bg-white shadow-sm border-0 rounded-4 d-none">
+      <h5 class="text-danger mb-3"><i class="bi bi-link-45deg me-1"></i>Related More</h5>
+      <div id="relatedItemsList" class="list-group list-group-flush"></div>
+    </div>
+
+    <div id="tabTypeDisplay" class="text-center mt-4 text-secondary small"></div>
   </main>
 
   <!-- 🔻 Footer -->
@@ -50,42 +99,88 @@
     <div>© 2025 RDM11.com All rights reserved.</div>
   </footer>
 
-  <!-- ✅ Firebase logic -->
+  <!-- ✅ Firebase & Loader Script -->
   <script type="module">
     import { database } from './firebase.js';
     import { ref, get } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
+
+    const loader = document.getElementById("globalLoader");
+    const container = document.getElementById("detailsContainer");
+    const tabDisplay = document.getElementById("tabTypeDisplay");
+    const relatedContainer = document.getElementById("relatedContainer");
+    const relatedList = document.getElementById("relatedItemsList");
+
+    // Loader for 2 seconds
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        loader.style.display = 'none';
+      }, 2000);
+    });
 
     const params = new URLSearchParams(location.search);
     const id = params.get("id");
     const tabType = params.get("tabType");
 
-    const container = document.getElementById("detailsContainer");
+    if (tabType) {
+      tabDisplay.textContent = `📌 Current Category: ${tabType}`;
+    }
 
     if (id && tabType) {
-      const dataRef = ref(database, `${tabType}/${id}`);
+      const dataRef = ref(database, `${tabType}`);
       get(dataRef)
         .then(snapshot => {
           if (snapshot.exists()) {
-            const data = snapshot.val();
-            container.innerHTML = `
-              <h3 class="text-primary mb-3"><i class="bi bi-file-text me-2"></i>${data.title}</h3>
-              <p class="mb-4">${data.content}</p>
-              <div class="text-muted small mb-4">
-                <i class="bi bi-person-circle me-1"></i> <strong>${data.author || 'Anonymous'}</strong><br>
-                <i class="bi bi-calendar-event me-1"></i> ${new Date(data.date).toLocaleString()}
-              </div>
-              <div class="row mb-3">
-            <div class="col-auto">
-           <a href="index.html" class="btn btn-sm btn-outline-primary px-2 py-1">
-           <i class="bi bi-arrow-left me-1"></i>Back
-    </a>
-  </div>
-</div>
+            const allData = snapshot.val();
+            const currentItem = allData[id];
 
+            if (currentItem) {
+              // Main item content
+              container.innerHTML = `
+                <h3 class="text-primary mb-3"><i class="bi bi-file-text me-2"></i>${currentItem.title}</h3>
+                <p class="mb-4">${currentItem.content}</p>
+                <div class="text-muted small mb-4">
+                  <i class="bi bi-person-circle me-1"></i> <strong>${currentItem.author || 'Anonymous'}</strong><br>
+                  <i class="bi bi-calendar-event me-1"></i> ${new Date(currentItem.date).toLocaleString()}
+                </div>
+                <div class="row mb-3">
+                  <div class="col-auto">
+                    <button id="bottomBackBtn" class="btn btn-sm btn-outline-primary px-2 py-1">
+                      <i class="bi bi-arrow-left me-1"></i>Back
+                    </button>
+                  </div>
+                </div>
+              `;
 
-            `;
+              // Related items
+              relatedList.innerHTML = ""; // Clear before appending
+              let hasRelated = false;
+
+              for (const key in allData) {
+                if (key !== id) {
+                  hasRelated = true;
+                  const item = allData[key];
+                  const listItem = document.createElement("a");
+                  listItem.href = `details.html?id=${key}&tabType=${tabType}`;
+                  listItem.className = "list-group-item list-group-item-action";
+                  listItem.innerHTML = `
+                    <strong>${item.title}</strong><br>
+                    <small class="text-muted">${new Date(item.date).toLocaleDateString()}</small>
+                  `;
+                  relatedList.appendChild(listItem);
+                }
+              }
+
+              // Show related section if related items exist
+              if (hasRelated) {
+                relatedContainer.classList.remove("d-none");
+              }
+
+              attachBackEvents();
+            } else {
+              container.innerHTML = `<p class="text-danger">❌ No data found for ID: ${id}</p>`;
+            }
           } else {
-            container.innerHTML = `<p class="text-danger">❌ No data found for the provided ID.</p>`;
+            container.innerHTML = `<p class="text-danger">❌ No data found for tabType: ${tabType}</p>`;
           }
         })
         .catch(error => {
@@ -95,9 +190,29 @@
     } else {
       container.innerHTML = `<p class="text-warning">⚠️ Missing tabType or ID in the URL.</p>`;
     }
+
+    function attachBackEvents() {
+      const topBtn = document.getElementById("topBackBtn");
+      const bottomBtn = document.getElementById("bottomBackBtn");
+      const homeBtn = document.getElementById("homeBtn");
+
+      [topBtn, bottomBtn, homeBtn].forEach(btn => {
+        if (btn) {
+          btn.addEventListener("click", (e) => {
+            e.preventDefault();
+            loader.style.display = "flex";
+            setTimeout(() => {
+              window.location.href = "index.html";
+            }, 1000);
+          });
+        }
+      });
+    }
+
+    attachBackEvents(); // Bind on page load
   </script>
 
-  <!-- Bootstrap JS -->
+  <!-- Bootstrap Bundle -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
