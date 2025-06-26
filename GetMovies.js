@@ -45,17 +45,18 @@ export async function loadMovies(page = 1) {
 
 function createMovieCard(entry) {
   const div = document.createElement('div');
-  div.className = 'col-12 mb-2'; // Full-width on all devices, tighter margin
+  div.className = 'col-6 mb-2';
 
   const guid = entry.id || `movie-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
   const relativeTime = formatRelativeTime(entry.date);
 
   const rawContent = entry.content || '';
   const imgTagMatch = rawContent.match(/<img[^>]+src="([^">]+)"/i);
-  const imageURL = imgTagMatch ? imgTagMatch[1] : 'https://via.placeholder.com/400x225?text=No+Image';
+  const hasImage = !!imgTagMatch;
+  const imageURL = hasImage ? imgTagMatch[1] : '';
 
   const textOnlyContent = rawContent.replace(/<img[^>]*>/gi, '').replace(/<[^>]+>/g, '');
-  const previewText = textOnlyContent.slice(0, 80); // Shorter preview for tighter card
+  const previewText = textOnlyContent.slice(0, 80);
   const tabType = entry.tabType || 'General';
 
   const tabColorMap = {
@@ -66,17 +67,18 @@ function createMovieCard(entry) {
   };
   const badgeColor = tabColorMap[tabType.toLowerCase()] || 'secondary';
 
+  // Conditionally include image HTML only if available
+  const imageHTML = hasImage
+    ? `<div class="p-1 ps-2">
+         <img src="${imageURL}" alt="Image"
+              style="width: 70px; height: 70px; object-fit: cover; border-radius: 0.5rem;" />
+       </div>`
+    : '';
+
   div.innerHTML = `
     <a href="details.html?tabType=${tabType}&id=${guid}" class="text-decoration-none text-dark d-block">
       <div class="card border-0 shadow-sm d-flex flex-row align-items-start rounded-3 bg-light" style="min-height: 100px;">
-        
-        <!-- Image -->
-        <div class="p-1 ps-2">
-          <img src="${imageURL}" alt="Image"
-               style="width: 70px; height: 70px; object-fit: cover; border-radius: 0.5rem;" />
-        </div>
-
-        <!-- Content -->
+        ${imageHTML}
         <div class="card-body p-2 pt-1 pb-1">
           <span class="badge bg-${badgeColor} text-uppercase mb-1" style="font-size: 0.55rem;">${tabType}</span>
           <h6 class="fw-semibold text-primary mb-1" style="font-size: 0.85rem; line-height: 1.1;">
@@ -85,16 +87,15 @@ function createMovieCard(entry) {
           <p class="mb-1 text-muted" style="font-size: 0.65rem;">${previewText}...</p>
           <div class="d-flex justify-content-between align-items-center">
             <small class="text-muted" style="font-size: 0.55rem;">${formatDate(entry.date)}</small>
-            
           </div>
         </div>
-
       </div>
     </a>
   `;
 
   return div;
 }
+
 
 
 
