@@ -55,7 +55,7 @@ function createNewsCard(entry) {
   const hasImage = !!imgMatch;
   const imageURL = hasImage ? imgMatch[1] : 'https://via.placeholder.com/100x100?text=News';
 
-  const cleanContent = rawContent.replace(/<img[^>]*>/gi, '').replace(/<[^>]+>/g, '').slice(0, 100);
+  const cleanContent = rawContent.replace(/<img[^>]*>/gi, '').replace(/<[^>]+>/g, '').slice(0, 50);
 
   const imageHTML = hasImage
     ? `<div class="p-2 pt-3 pe-3" style="flex-shrink: 0;">
