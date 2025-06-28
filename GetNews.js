@@ -1,7 +1,8 @@
 import { database } from './firebase.js';
 import { ref, get, child } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js';
 
-const ITEMS_PER_PAGE = 20;
+const ITEMS_PER_PAGE = 20
+;
 let currentPage = 1;
 let totalPages = 1;
 let allEntries = [];

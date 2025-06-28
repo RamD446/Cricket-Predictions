@@ -24,47 +24,9 @@
       color: #6c757d;
       font-size: 0.875rem;
     }
-
-    /* 🔄 Fullscreen Loader */
-    #globalLoader {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(255, 255, 255, 0.9);
-      z-index: 9999;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .dot-loader {
-      display: flex;
-      gap: 8px;
-    }
-    .dot-loader span {
-      width: 12px;
-      height: 12px;
-      background-color: #dc3545;
-      border-radius: 50%;
-      animation: bounce 0.6s infinite alternate;
-    }
-    .dot-loader span:nth-child(2) { animation-delay: 0.2s; }
-    .dot-loader span:nth-child(3) { animation-delay: 0.4s; }
-
-    @keyframes bounce {
-      from { transform: translateY(0); opacity: 0.5; }
-      to { transform: translateY(-12px); opacity: 1; }
-    }
   </style>
 </head>
 <body>
-
-  <!-- 🔄 Global Page Loader -->
-  <div id="globalLoader">
-    <div class="dot-loader"><span></span><span></span><span></span></div>
-  </div>
 
   <!-- 🔺 Header -->
   <nav class="navbar navbar-custom shadow-sm">
@@ -85,7 +47,7 @@
       <p class="text-muted">Loading content...</p>
     </div>
 
-    <!-- 🔗 Related Section (Separate Block) -->
+    <!-- 🔗 Related Section -->
     <div id="relatedContainer" class="card p-4 bg-white shadow-sm border-0 rounded-4 d-none">
       <h5 class="text-danger mb-3"><i class="bi bi-link-45deg me-1"></i>Related More</h5>
       <div id="relatedItemsList" class="list-group list-group-flush"></div>
@@ -99,23 +61,15 @@
     <div>© 2025 RDM11.com All rights reserved.</div>
   </footer>
 
-  <!-- ✅ Firebase & Loader Script -->
+  <!-- ✅ Firebase & Content Loader Script -->
   <script type="module">
     import { database } from './firebase.js';
     import { ref, get } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
 
-    const loader = document.getElementById("globalLoader");
     const container = document.getElementById("detailsContainer");
     const tabDisplay = document.getElementById("tabTypeDisplay");
     const relatedContainer = document.getElementById("relatedContainer");
     const relatedList = document.getElementById("relatedItemsList");
-
-    // Loader for 2 seconds
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        loader.style.display = 'none';
-      }, 2000);
-    });
 
     const params = new URLSearchParams(location.search);
     const id = params.get("id");
@@ -134,7 +88,6 @@
             const currentItem = allData[id];
 
             if (currentItem) {
-              // Main item content
               container.innerHTML = `
                 <h3 class="text-primary mb-3"><i class="bi bi-file-text me-2"></i>${currentItem.title}</h3>
                 <p class="mb-4">${currentItem.content}</p>
@@ -152,7 +105,7 @@
               `;
 
               // Related items
-              relatedList.innerHTML = ""; // Clear before appending
+              relatedList.innerHTML = "";
               let hasRelated = false;
 
               for (const key in allData) {
@@ -170,7 +123,6 @@
                 }
               }
 
-              // Show related section if related items exist
               if (hasRelated) {
                 relatedContainer.classList.remove("d-none");
               }
@@ -200,16 +152,13 @@
         if (btn) {
           btn.addEventListener("click", (e) => {
             e.preventDefault();
-            loader.style.display = "flex";
-            setTimeout(() => {
-              window.location.href = "index.html";
-            }, 1000);
+            window.location.href = "index.html";
           });
         }
       });
     }
 
-    attachBackEvents(); // Bind on page load
+    attachBackEvents();
   </script>
 
   <!-- Bootstrap Bundle -->

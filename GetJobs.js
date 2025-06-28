@@ -72,10 +72,6 @@ function createJobCard(entry) {
           <p class="text-muted flex-grow-1 mb-2" style="font-size: 0.85rem;">
             ${cleanContent}...
           </p>
-          <div class="d-flex justify-content-between align-items-center text-muted" style="font-size: 0.75rem;">
-            <span><i class="bi bi-person-circle me-1"></i>${entry.author || 'Anonymous'}</span>
-            <span><i class="bi bi-calendar-event me-1"></i>${formatDate(entry.date)}</span>
-          </div>
         </div>
       </div>
     </a>

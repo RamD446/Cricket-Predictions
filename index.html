@@ -168,9 +168,21 @@
 
   </style>
   <style>
-   .dot-loader {
+   #globalLoader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.9);
+  z-index: 9999;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+.dot-loader {
   display: flex;
-  gap: 8px;
+  gap: 10px;
 }
 .dot-loader span {
   width: 12px;
@@ -183,8 +195,8 @@
 .dot-loader span:nth-child(3) { animation-delay: 0.4s; }
 
 @keyframes bounce {
-  from { transform: translateY(0); opacity: 0.6; }
-  to { transform: translateY(-10px); opacity: 1; }
+  from { transform: translateY(0); opacity: 0.5; }
+  to { transform: translateY(-12px); opacity: 1; }
 }
 
 
@@ -225,20 +237,13 @@
   </div>
 </div>
 
-<!-- Custom Fullscreen Loader -->
-<div id="globalLoader" class="d-none" style="
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: rgba(255, 255, 255, 0.85);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;">
+<!-- 🔄 Global Loader -->
+<div id="globalLoader">
   <div class="dot-loader">
     <span></span><span></span><span></span>
   </div>
 </div>
+
 
 
 
@@ -380,9 +385,6 @@
 </div>
 
 
-
-   
-
 <!-- Offcanvas Menu -->
 <div class="offcanvas offcanvas-start custom-offcanvas" tabindex="-1" id="offcanvasMenu">
   <div class="offcanvas-header border-bottom bg-danger text-white">
@@ -393,16 +395,16 @@
   <div class="offcanvas-body d-flex flex-column justify-content-between p-3">
     <!-- Navigation Buttons -->
     <div class="d-flex flex-column gap-2">
-      <button class="btn btn-outline-danger w-100 text-start tab-link" data-tab="content-movie">
+      <button class="btn btn-outline-danger btn-sm w-100 text-start tab-link" data-tab="content-movie">
         🎬 Movie Reviews
       </button>
-      <button class="btn btn-outline-danger w-100 text-start tab-link" data-tab="content-news">
+      <button class="btn btn-outline-danger btn-sm w-100 text-start tab-link" data-tab="content-news">
         📰 News
       </button>
-      <button class="btn btn-outline-danger w-100 text-start tab-link" data-tab="content-prediction">
+      <button class="btn btn-outline-danger btn-sm w-100 text-start tab-link" data-tab="content-prediction">
         🏆 Prediction
       </button>
-      <button class="btn btn-outline-danger w-100 text-start tab-link" data-tab="content-jobs">
+      <button class="btn btn-outline-danger btn-sm w-100 text-start tab-link" data-tab="content-jobs">
         💼 Job Notifications
       </button>
     </div>
@@ -413,6 +415,7 @@
     </div>
   </div>
 </div>
+
 
 
 
@@ -444,7 +447,6 @@
   document.addEventListener('DOMContentLoaded', () => {
     const offset = 70;
     const allTabButtons = document.querySelectorAll('.tab-btn, .nav-tab-btn, .tab-link');
-    const loader = document.getElementById('globalLoader');
 
     allTabButtons.forEach(btn => {
       btn.addEventListener('click', (e) => {
@@ -452,35 +454,26 @@
 
         const tab = btn.getAttribute('data-tab');
         const section = document.getElementById(`content-${tab}`) || document.getElementById(tab);
-
         if (!section) return;
 
-        // ✅ Show loader briefly
-        if (loader) loader.classList.remove('d-none');
+        // ✅ Scroll to section
+        const top = section.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top, behavior: 'smooth' });
 
-        setTimeout(() => {
-          // ✅ Hide loader after 1s
-          if (loader) loader.classList.add('d-none');
+        // ✅ Highlight active tab
+        allTabButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
 
-          // ✅ Scroll to section
-          const top = section.getBoundingClientRect().top + window.scrollY - offset;
-          window.scrollTo({ top, behavior: 'smooth' });
+        // ✅ Scroll button into view
+        btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
 
-          // ✅ Highlight active tab
-          allTabButtons.forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-
-          // ✅ Scroll button into view (for overflow tabs)
-          btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-
-          // ✅ Close offcanvas if open
-          const offcanvas = bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasMenu'));
-          if (offcanvas) offcanvas.hide();
-        }, 1000); // ⏱️ 1 second delay
+        // ✅ Close offcanvas if open
+        const offcanvas = bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasMenu'));
+        if (offcanvas) offcanvas.hide();
       });
     });
 
-    // ✅ Set default tab on load
+    // ✅ Set default tab on page load
     const defaultSection = document.getElementById("content-prediction");
     if (defaultSection) {
       defaultSection.classList.add("show");
@@ -489,6 +482,7 @@
     }
   });
 </script>
+
 
 
 <script>
