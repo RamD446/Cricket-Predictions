@@ -8,60 +8,95 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
   <style>
     body {
-      background-color: #f8f9fa;
-      font-family: "Segoe UI", sans-serif;
+      background-color: #f4f6f9;
+      font-family: 'Segoe UI', sans-serif;
     }
-    .navbar-custom {
-      background: linear-gradient(90deg, #dc3545, #c82333);
+
+    .navbar-dark-custom {
+      background-color: #212529;
     }
-    .back-btn {
-      width: 48px;
-      height: 48px;
-      font-size: 1.25rem;
+
+    .navbar-dark-custom .navbar-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: white;
     }
-    footer {
-      background-color: #f1f3f5;
-      color: #6c757d;
+
+    .navbar-dark-custom .navbar-title i {
+      background: linear-gradient(to right, #0d6efd, #dc3545);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-right: 8px;
+    }
+
+    .back-btn, .home-btn {
+      width: 42px;
+      height: 42px;
+      padding: 0;
+      font-size: 1.2rem;
+    }
+
+    .card-title {
+      font-weight: 600;
+      color: #0d6efd;
+    }
+
+    .card-subtext {
       font-size: 0.875rem;
+      color: #6c757d;
+    }
+
+    .related-title {
+      color: #dc3545;
+      font-weight: 600;
+    }
+
+    footer {
+      font-size: 0.875rem;
+      background: #f8f9fa;
+      color: #6c757d;
+      border-top: 1px solid #dee2e6;
     }
   </style>
 </head>
 <body>
 
-  <!-- 🔺 Header -->
-  <nav class="navbar navbar-custom shadow-sm">
-    <div class="container-fluid d-flex align-items-center py-2">
-      <button class="btn btn-light rounded-circle back-btn me-2" id="topBackBtn" title="Back">
-        <i class="bi bi-arrow-left text-danger"></i>
+  <!-- Header -->
+  <nav class="navbar navbar-dark-custom shadow-sm py-2">
+    <div class="container-fluid d-flex align-items-center">
+      <button class="btn btn-outline-light rounded-circle me-3 back-btn" id="topBackBtn">
+        <i class="bi bi-arrow-left"></i>
       </button>
-      <h5 class="text-white mb-0 me-auto"><i class="bi bi-info-circle me-2"></i>Details Page</h5>
-      <button class="btn btn-outline-light btn-sm" id="homeBtn">
-        <i class="bi bi-house-door-fill me-1"></i>Home
+      <div class="navbar-title d-flex align-items-center">
+        <i class="bi bi-info-circle-fill"></i>Details
+      </div>
+      <button class="btn btn-outline-light rounded-circle ms-auto home-btn" id="homeBtn" title="Home">
+        <i class="bi bi-house-door-fill"></i>
       </button>
     </div>
   </nav>
 
-  <!-- 🔽 Main content -->
-  <main class="container py-5">
-    <div id="detailsContainer" class="card p-4 bg-white shadow-sm border-0 rounded-4 mb-4">
+  <!-- Main Content -->
+  <main class="container py-4">
+    <div id="detailsContainer" class="card shadow-sm p-4 border-0 rounded-4 mb-4 bg-white">
       <p class="text-muted">Loading content...</p>
     </div>
 
-    <!-- 🔗 Related Section -->
-    <div id="relatedContainer" class="card p-4 bg-white shadow-sm border-0 rounded-4 d-none">
-      <h5 class="text-danger mb-3"><i class="bi bi-link-45deg me-1"></i>Related More</h5>
+    <!-- Related Section -->
+    <div id="relatedContainer" class="card shadow-sm p-4 border-0 rounded-4 d-none bg-white">
+      <h5 class="related-title mb-3"><i class="bi bi-link-45deg me-2"></i>More Like This</h5>
       <div id="relatedItemsList" class="list-group list-group-flush"></div>
     </div>
 
     <div id="tabTypeDisplay" class="text-center mt-4 text-secondary small"></div>
   </main>
 
-  <!-- 🔻 Footer -->
-  <footer class="text-center py-3 border-top mt-auto">
-    <div>© 2025 RDM11.com All rights reserved.</div>
+  <!-- Footer -->
+  <footer class="text-center py-3 mt-auto">
+    © 2025 RDM11.com — All rights reserved.
   </footer>
 
-  <!-- ✅ Firebase & Content Loader Script -->
+  <!-- Firebase Script -->
   <script type="module">
     import { database } from './firebase.js';
     import { ref, get } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
@@ -75,10 +110,6 @@
     const id = params.get("id");
     const tabType = params.get("tabType");
 
-    if (tabType) {
-      tabDisplay.textContent = `📌 Current Category: ${tabType}`;
-    }
-
     if (id && tabType) {
       const dataRef = ref(database, `${tabType}`);
       get(dataRef)
@@ -89,22 +120,19 @@
 
             if (currentItem) {
               container.innerHTML = `
-                <h3 class="text-primary mb-3"><i class="bi bi-file-text me-2"></i>${currentItem.title}</h3>
-                <p class="mb-4">${currentItem.content}</p>
-                <div class="text-muted small mb-4">
-                  <i class="bi bi-person-circle me-1"></i> <strong>${currentItem.author || 'Anonymous'}</strong><br>
-                  <i class="bi bi-calendar-event me-1"></i> ${new Date(currentItem.date).toLocaleString()}
+                <h4 class="card-title mb-2"><i class="bi bi-journal-text me-2"></i>${currentItem.title}</h4>
+                <div class="card-subtext mb-3">
+                  <i class="bi bi-calendar-event me-1"></i>${new Date(currentItem.date).toLocaleString()} <br>
+                  <i class="bi bi-person-circle me-1"></i><strong>${currentItem.author || 'Anonymous'}</strong>
                 </div>
-                <div class="row mb-3">
-                  <div class="col-auto">
-                    <button id="bottomBackBtn" class="btn btn-sm btn-outline-primary px-2 py-1">
-                      <i class="bi bi-arrow-left me-1"></i>Back
-                    </button>
-                  </div>
+                <p>${currentItem.content}</p>
+                <div class="mt-4">
+                  <button id="bottomBackBtn" class="btn btn-outline-primary btn-sm">
+                    <i class="bi bi-arrow-left me-1"></i>Back
+                  </button>
                 </div>
               `;
 
-              // Related items
               relatedList.innerHTML = "";
               let hasRelated = false;
 
