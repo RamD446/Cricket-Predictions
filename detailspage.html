@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Review Details</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+</head>
+<body>
+  <div class="site-wrapper">
+    <div id="header-container"></div>
+
+    <div class="container my-5">
+      <!-- Small Loading Spinner -->
+      <div id="loading-spinner" class="d-flex flex-column justify-content-center align-items-center" style="min-height: 200px;">
+        <div class="spinner-border spinner-border-sm text-primary" role="status" style="width: 1.5rem; height: 1.5rem;">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-2 text-muted small">Loading, please wait...</p>
+      </div>
+
+      <!-- Review Card -->
+      <div id="review-card" class="card shadow-sm mb-4 d-none">
+        <div class="card-body">
+          <h3 id="review-title" class="fw-bold text-primary"></h3>
+          <p id="review-meta" class="text-muted small mb-3"></p>
+          <div id="review-content" class="mb-3"></div>
+        </div>
+      </div>
+
+      <!-- More to see -->
+      <div id="more-card" class="card shadow-sm d-none">
+        <div class="card-header bg-warning text-dark fw-semibold">
+          <i class="bi bi-list-stars me-1"></i> More to See
+        </div>
+        <ul id="more-reviews" class="list-group list-group-flush"></ul>
+      </div>
+    </div>
+
+    <div class="footer-container"></div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, doc, getDoc, collection, query, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD_4rFTGZn-I7xYwS9SQIhI4KM7P0I2msE",
+      authDomain: "rdm11-34fb1.firebaseapp.com",
+      projectId: "rdm11-34fb1",
+      storageBucket: "rdm11-34fb1.firebasestorage.app",
+      messagingSenderId: "46810528643",
+      appId: "1:46810528643:web:406a9ebee9c8a5762954b6",
+      measurementId: "G-MP86EYWQE0"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    function getParam(name) {
+      return new URLSearchParams(window.location.search).get(name);
+    }
+
+    function formatDate(timestamp) {
+      if (!timestamp || !timestamp.toDate) return "";
+      const d = timestamp.toDate();
+      return d.toLocaleDateString() + " " + d.toLocaleTimeString();
+    }
+
+    async function loadReviewDetail(id, type) {
+      const docRef = doc(db, "Predictions", id);
+      const docSnap = await getDoc(docRef);
+
+      if (!docSnap.exists()) {
+        document.getElementById("review-title").textContent = "Review not found.";
+        return;
+      }
+
+      const data = docSnap.data();
+      const title = type === "Sports Review"
+        ? `${data.teamA || "Team A"} vs ${data.teamB || "Team B"}`
+        : data.title || data.movieTitle || "Untitled";
+
+      document.getElementById("review-title").textContent = title;
+
+      const createdBy = data.createdBy || "Yalla Ramana";
+      const createdDate = formatDate(data.createddate);
+      document.getElementById("review-meta").textContent = `Created by: ${createdBy} | Created on: ${createdDate}`;
+
+      document.getElementById("review-content").innerHTML = data.content || "";
+    }
+
+    async function loadMoreReviews(currentId) {
+      const moreContainer = document.getElementById("more-reviews");
+      const q = query(collection(db, "Predictions"), orderBy("createddate", "desc"));
+      const snapshot = await getDocs(q);
+
+      if (snapshot.empty) {
+        moreContainer.innerHTML = `<li class="list-group-item text-center text-muted">No other reviews found.</li>`;
+        return;
+      }
+
+      snapshot.forEach(docSnap => {
+        if (docSnap.id === currentId) return;
+        const data = docSnap.data();
+        const title = data.type === "Sports Review"
+          ? `${data.teamA || "Team A"} vs ${data.teamB || "Team B"}`
+          : data.title || data.movieTitle || "Untitled";
+        moreContainer.innerHTML += `
+          <li class="list-group-item d-flex align-items-center">
+            <i class="bi bi-star-fill text-primary me-2"></i>
+            <a href="detailspage.html?id=${docSnap.id}&type=${encodeURIComponent(data.type)}" 
+               class="text-decoration-none text-primary">
+              ${title}
+            </a>
+          </li>`;
+      });
+    }
+
+    (async () => {
+      const id = getParam("id");
+      const type = getParam("type");
+
+      if (!id || !type) {
+        document.getElementById("review-title").textContent = "Invalid review parameters.";
+        return;
+      }
+
+      // Show spinner
+      document.getElementById("loading-spinner").classList.remove("d-none");
+
+      await loadReviewDetail(id, type);
+      await loadMoreReviews(id);
+
+      // Hide spinner and show cards
+      document.getElementById("loading-spinner").classList.add("d-none");
+      document.getElementById("review-card").classList.remove("d-none");
+      document.getElementById("more-card").classList.remove("d-none");
+    })();
+  </script>
+
+  <script src="header.js"></script>
+  <script src="footer.js"></script>
+</body>
+</html>

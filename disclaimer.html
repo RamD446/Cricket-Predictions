@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Disclaimer - RDM Jobs</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+  <div class="site-wrapper">
+
+    <!-- Header will be injected -->
+     <div id="header-container"></div>
+
+    <!-- Main Content -->
+    <main class="main-content p-4 mt-5">
+      <div id="disclaimerContent" class="bg-light p-4 rounded shadow-sm text-muted text-center">
+        <div class="spinner-border text-success mb-3" role="status"></div><br />
+        Loading Disclaimer...
+      </div>
+    </main>
+
+    <!-- Footer will be injected -->
+    <div class="footer-container"></div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="header.js"></script>
+  <script src="footer.js"></script>
+  <script>
+    // Navigate to filtered job types
+    function navigateToType(type) {
+      const encodedType = encodeURIComponent(type);
+      window.location.href = `jobinformation.html?type=${encodedType}`;
+    }
+
+    // Load Disclaimer content after a short delay
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        document.getElementById("disclaimerContent").innerHTML = `
+          <h3 class="mb-3"> <button class="btn btn-outline-success btn-sm fw-bold" disabled>Disclaimer</button></h3>
+          <p>RDM Jobs is not affiliated with any government or private organization. All content on this site is published in good faith and for general information purposes only.</p>
+          <p>We make every effort to ensure the information is accurate and up-to-date, but we do not make any warranties about the completeness or reliability of the data.</p>
+          <p>Any action you take based on the information found on RDM Jobs is strictly at your own risk.</p>
+          <p>Always verify details from the official website of the respective organization or recruiter before applying.</p>
+        `;
+      }, 1000);
+    });
+  </script>
+</body>
+</html>

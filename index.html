@@ -13,14 +13,14 @@
   <!-- ✅ Favicon -->
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
 
-  <!-- ✅ Open Graph Meta (Facebook, LinkedIn) -->
+  <!-- ✅ Open Graph Meta -->
   <meta property="og:title" content="RDM11 - Cricket & Movie Predictions, News, Jobs" />
   <meta property="og:description" content="Cricket & fantasy tips, movie reviews, box office reports, and job alerts – all in one place at RDM11.com." />
   <meta property="og:url" content="https://rdm11.com/" />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://rdm11.com/assets/banner.jpg" />
 
-  <!-- ✅ Twitter Card Meta -->
+  <!-- ✅ Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="RDM11 - Cricket, Movies & Jobs" />
   <meta name="twitter:description" content="Daily cricket predictions, fantasy team tips, latest movie reviews, and govt job updates." />
@@ -38,488 +38,48 @@
 
   <!-- ✅ Quill Editor -->
   <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
-  <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
   <!-- ✅ Custom CSS -->
   <link rel="stylesheet" href="style.css" />
-
-  <!-- ✅ Firebase / JavaScript Module -->
-  <script type="module" src="./script.js"></script>
-
-  <!-- ✅ Custom Styles -->
-  <style>
-    .custom-offcanvas .nav-link {
-      transition: all 0.2s ease-in-out;
-      border-radius: 0.375rem;
-      padding: 0.5rem 0.75rem;
-    }
-
-    .custom-offcanvas .nav-link:hover {
-      background-color: #ffe5e5;
-      color: #dc3545;
-      transform: translateX(4px);
-    }
-
-    .custom-offcanvas .nav-link.active {
-      background-color: #dc3545;
-      color: #fff !important;
-    }
-
-    .custom-offcanvas .offcanvas-title {
-      font-size: 0.80rem;
-      font-weight: 600;
-    }
-
-    #offcanvasMenu {
-      width: 220px !important;
-    }
-
-    @media (max-width: 576px) {
-      #offcanvasMenu {
-        width: 200px !important;
-      }
-    }
-
-    .offcanvas .nav-link {
-      font-size: 0.85rem;
-      padding: 0.4rem 0.5rem;
-      display: flex;
-      align-items: center;
-    }
-
-    .offcanvas .nav-link i {
-      font-size: 1rem;
-      color: red;
-    }
-
-    .offcanvas-body small a {
-      color: #dc3545;
-    }
-
-    #quillEditor {
-      height: 200px;
-    }
-
-    .ql-editor img {
-      max-width: 100%;
-      max-height: 200px;
-      height: auto;
-      width: auto;
-      object-fit: contain;
-      display: block;
-      margin: 10px auto;
-    }
-
-    .title-hover {
-      cursor: pointer;
-      transition: color 0.2s ease;
-    }
-
-    .title-hover:hover {
-      color: #dc3545 !important;
-    }
-
-    .hover-glow-effect {
-      transition: box-shadow 0.3s ease, transform 0.3s ease;
-    }
-
-    .hover-glow-effect:hover {
-      box-shadow: 0 0 12px rgba(255, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.1);
-      transform: translateY(-2px);
-      border-color: #f8d7da;
-    }
-
-    section {
-      scroll-margin-top: 80px;
-    }
-  </style>
-  <style>
-    /* Hide scrollbars but keep scrolling */
-.tab-scroll-wrapper .d-flex {
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-}
-
-.tab-scroll-wrapper .d-flex::-webkit-scrollbar {
-  display: none;
-}
-
-/* Tab button style */
-.nav-tab-btn {
-  background-color: #fff;
-  color: #dc3545;
-  border: 1px solid #dee2e6;
-  border-radius: 999px;
-  font-size: 0.9rem;
-  padding: 4px 12px;
-  white-space: nowrap;
-  transition: background-color 0.2s ease, color 0.2s ease;
-  flex-shrink: 0;
-  line-height: 1.2;
-}
-
-/* Hover and Active */
-.nav-tab-btn:hover,
-.nav-tab-btn.active {
-  background-color: #f0f0f0;
-  color: #212529;
-  border-color: #ccc;
-}
-
-  </style>
-  <style>
-   #globalLoader {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(255, 255, 255, 0.9);
-  z-index: 9999;
-  display: none;
-  justify-content: center;
-  align-items: center;
-}
-.dot-loader {
-  display: flex;
-  gap: 10px;
-}
-.dot-loader span {
-  width: 12px;
-  height: 12px;
-  background-color: #dc3545;
-  border-radius: 50%;
-  animation: bounce 0.6s infinite alternate;
-}
-.dot-loader span:nth-child(2) { animation-delay: 0.2s; }
-.dot-loader span:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes bounce {
-  from { transform: translateY(0); opacity: 0.5; }
-  to { transform: translateY(-12px); opacity: 1; }
-}
-
-
-  </style>
 </head>
 <body>
 
-<!-- ✅ Sticky Wrapper for Navbar + Tabs -->
-<div class="position-sticky top-0 bg-danger z-1030 shadow" style="z-index: 1030;">
-  <!-- Top Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-danger py-2">
-    <div class="container-fluid d-flex align-items-center justify-content-between px-2">
-      <!-- Menu Button -->
-      <button class="btn btn-sm btn-light rounded-circle d-flex align-items-center justify-content-center"
-        type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" title="Open menu"
-        style="width: 32px; height: 32px;">
-        <i class="bi bi-list fs-5 text-danger"></i>
-      </button>
-
-      <!-- Login Button -->
-      <button class="btn btn-sm btn-light text-dark rounded-pill px-2 py-1"
-        data-bs-toggle="modal" data-bs-target="#loginModal">
-        <i class="bi bi-person-circle me-1"></i>Login
-      </button>
-    </div>
-  </nav>
-
-  <!-- Tab Buttons Bar -->
-<div class="bg-white border-top border-bottom shadow-sm">
-  <div class="container-fluid px-2">
-    <div class="d-flex overflow-auto gap-2 py-2" id="tabButtons">
-      <button class="btn nav-tab-btn btn-sm text-danger" data-tab="content-movie">Movie Reviews</button>
-      <button class="btn nav-tab-btn btn-sm text-danger" data-tab="content-news">News</button>
-      <button class="btn nav-tab-btn btn-sm text-danger" data-tab="content-prediction">Prediction</button>
-      <button class="btn nav-tab-btn btn-sm text-danger" data-tab="content-jobs">Job Notifications</button>
-    </div>
-  </div>
-</div>
-
-</div>
-
-<!-- 🔄 Global Loader -->
-<div id="globalLoader">
-  <div class="dot-loader">
-    <span></span><span></span><span></span>
-  </div>
-</div>
+  <!-- Header -->
+  <div id="header-container"></div>
 
 
 
+  <!-- Main Content -->
+<main class="container" style="min-height: 70vh;">
+  <div id="sportsReviewsContainer" class="mt-5"></div>
+  <div id="movieReviewsContainer"></div>
+
+</main>
 
 
-<!-- Create New Entry Header -->
-<div id="createEntryContainer" class="d-none container bg-light border rounded-4 py-3 px-4 my-3 shadow-sm d-flex justify-content-between align-items-center">
-  <span class="text-muted fw-semibold">Only logged-in users can create new entries</span>
-  <button id="createBtn" class="btn btn-outline-primary btn-sm d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#createModal">
-    <i class="bi bi-plus-circle me-1"></i> Create New
-  </button>
-</div>
+  <!-- Footer -->
+  <div class="footer-container"></div>
 
+  <!-- ✅ Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+  <!-- ✅ Quill JS -->
+  <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-<!-- Modal for Creating Entry -->
-<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content border-0 shadow">
-      <div class="modal-header bg-primary text-white">
-        <h5 class="modal-title" id="createModalLabel">
-          <i class="bi bi-pencil-square me-2"></i> Create New Entry
-        </h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form id="createForm">
-          <div class="mb-3">
-            <label for="titleInput" class="form-label">Title Name</label>
-            <input type="text" class="form-control" id="titleInput" placeholder="Enter title" required>
-          </div>
+<script type="module">
+  import { loadSportsReviews, loadMovieReviews } from './Getsportsreviews.js';
 
-          <div class="mb-3">
-            <label for="tabType" class="form-label">Type of Tab</label>
-            <select class="form-select" id="tabType" required>
-              <option value="news">News</option>
-              <option value="prediction">Prediction</option>
-              <option value="jobs">Job Notifications</option>
-              <option value="movie">Movie Reviews</option>
-            </select>
-          </div>
-
-          <div class="mb-3">
-            <label for="quillEditor" class="form-label">Content</label>
-            <div id="quillEditor"></div>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-success" form="createForm">
-          <i class="bi bi-cloud-upload me-1"></i> Submit
-        </button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          <i class="bi bi-x-circle me-1"></i> Cancel
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<div class="container py-4">
-
-<section id="content-movie" class="my-2">
-  <h2 class="text-danger mb-3">
-    <button type="button" class="btn btn-warning" disabled>
-      <i class="bi bi-collection-play-fill"></i> All Movie Reviews
-    </button>
-  </h2>
-  <div class="row" id="movie-updates"></div>
-  <div class="pagination-controls mt-3 d-flex justify-content-center"></div>
-</section>
-
-
-  <section id="content-prediction" class="my-2">
-    <div class="d-flex align-items-center mb-3">
-      <button type="button" class="btn btn-warning fw-semibold" disabled>
-         Sports Predictions
-      </button>
-    </div>
-    <div class="row"></div>
-    <div class="pagination-controls mt-3 d-flex justify-content-center"></div>
-  </section>
-
-  <section id="content-news" class="my-2">
-    <h2 class="text-success mb-3">
-      <button type="button" class="btn btn-warning" disabled>
-      Latest News
-      </button>
-    </h2>
-    <div class="row" id="news-updates"></div>
-    <div class="pagination-controls mt-3 d-flex justify-content-center"></div>
-  </section>
-
-  <section class="my-2" id="content-jobs">
-    <h2 class="text-warning mb-3">
-      <button type="button" class="btn btn-warning" disabled>
-         Job Notifications
-      </button>
-    </h2>
-    <div class="row"></div>
-    <div class="pagination-controls d-flex justify-content-center align-items-center mt-4"></div>
-  </section>
-
-</div>
-
-
-
-
-
-
-<!-- ✅ Login Modal -->
-<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h5 class="modal-title" id="loginModalLabel">Admin Login</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-
-      <!-- Modal Body -->
-      <div class="modal-body">
-        <form id="loginForm">
-          <div class="mb-3">
-            <label for="usernameInput" class="form-label">Username</label>
-            <input type="text" class="form-control" id="usernameInput" placeholder="Enter username" required />
-          </div>
-          <div class="mb-3">
-            <label for="passwordInput" class="form-label">Password</label>
-            <input type="password" class="form-control" id="passwordInput" placeholder="Enter password" required />
-          </div>
-          <div id="loginError" class="text-danger small mb-2"></div>
-          <button type="submit" class="btn btn-primary w-100">Login</button>
-        </form>
-        <div class="text-warning mt-3 small text-center">IMP: Only admin user allowed</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- Offcanvas Menu -->
-<div class="offcanvas offcanvas-start custom-offcanvas" tabindex="-1" id="offcanvasMenu">
-  <div class="offcanvas-header border-bottom bg-danger text-white">
-    <h5 class="offcanvas-title">🚀 Welcome to RDM 11</h5>
-    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-
-  <div class="offcanvas-body d-flex flex-column justify-content-between p-3">
-    <!-- Navigation Buttons -->
-    <div class="d-flex flex-column gap-2">
-      <button class="btn btn-outline-danger btn-sm w-100 text-start tab-link" data-tab="content-movie">
-        🎬 Movie Reviews
-      </button>
-      <button class="btn btn-outline-danger btn-sm w-100 text-start tab-link" data-tab="content-news">
-        📰 News
-      </button>
-      <button class="btn btn-outline-danger btn-sm w-100 text-start tab-link" data-tab="content-prediction">
-        🏆 Prediction
-      </button>
-      <button class="btn btn-outline-danger btn-sm w-100 text-start tab-link" data-tab="content-jobs">
-        💼 Job Notifications
-      </button>
-    </div>
-
-    <!-- Footer -->
-    <div class="border-top pt-3 mt-3 small text-muted">
-      <div>Developed by<br><strong class="text-danger">Yalla Ramana</strong></div>
-    </div>
-  </div>
-</div>
-
-
-
-
-
-   <!-- Footer -->
-<!-- Footer -->
-<footer class="footer py-3 mt-4 bg-dark text-light">
-  <div class="container text-center">
-    <small class="d-block mb-1">
-      &copy; 2025 <strong>RDM11.com</strong> All rights reserved.
-    </small>
-    <small>
-      📧 <a href="mailto:Ramana9000r@gmail.com" class="text-light text-decoration-none">Ramana9000r@gmail.com</a>
-    </small>
-  </div>
-</footer>
-
-
-<!-- ✅ Bootstrap JS (Load only once) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- ✅ Quill Editor (Only one version needed) -->
-<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
-
-<!-- ✅ Load external JS (e.g., Firebase, Quill, etc.) -->
-<script type="module" src="script.js"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const offset = 70;
-    const allTabButtons = document.querySelectorAll('.tab-btn, .nav-tab-btn, .tab-link');
-
-    allTabButtons.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-
-        const tab = btn.getAttribute('data-tab');
-        const section = document.getElementById(`content-${tab}`) || document.getElementById(tab);
-        if (!section) return;
-
-        // ✅ Scroll to section
-        const top = section.getBoundingClientRect().top + window.scrollY - offset;
-        window.scrollTo({ top, behavior: 'smooth' });
-
-        // ✅ Highlight active tab
-        allTabButtons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
-        // ✅ Scroll button into view
-        btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-
-        // ✅ Close offcanvas if open
-        const offcanvas = bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasMenu'));
-        if (offcanvas) offcanvas.hide();
-      });
-    });
-
-    // ✅ Set default tab on page load
-    const defaultSection = document.getElementById("content-prediction");
-    if (defaultSection) {
-      defaultSection.classList.add("show");
-      const defaultBtn = document.querySelector('[data-tab="prediction"]');
-      if (defaultBtn) defaultBtn.classList.add("active");
-    }
+  window.addEventListener('DOMContentLoaded', () => {
+    loadSportsReviews('sportsReviewsContainer');
+    loadMovieReviews('movieReviewsContainer');
   });
 </script>
 
 
-
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const offset = 70;
-
-
-    // ✅ Admin Login Handling
-    const loginForm = document.getElementById("loginForm");
-    if (loginForm) {
-      loginForm.addEventListener("submit", function (e) {
-        e.preventDefault();
-        const username = document.getElementById("usernameInput").value.trim();
-        const password = document.getElementById("passwordInput").value.trim();
-        const loginError = document.getElementById("loginError");
-        const createEntryContainer = document.getElementById("createEntryContainer");
-        const footerNote = document.getElementById("footerNote");
-
-        if (username === "446" && password === "446") {
-          bootstrap.Modal.getInstance(document.getElementById("loginModal")).hide();
-          loginForm.reset();
-          loginError.textContent = "";
-          if (createEntryContainer) createEntryContainer.classList.remove("d-none");
-          if (footerNote) {
-            footerNote.textContent = "✔️ Logged in as Admin.";
-            footerNote.classList.remove("text-danger");
-            footerNote.classList.add("text-success");
-          }
-        } else {
-          loginError.textContent = "❌ Invalid admin credentials.";
-        }
-      });
-    }
-  });
-</script>
-
-
+  <!-- ✅ Firebase & App Scripts -->
+  <script type="module" src="script.js"></script>
+  <script src="header.js"></script>
+  <script src="footer.js"></script>
 </body>
 </html>
