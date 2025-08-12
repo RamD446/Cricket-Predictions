@@ -81,11 +81,13 @@ style.textContent = `
     justify-content: flex-start;
     padding: 0.75rem 1rem;
   }
-  .review-title {
-    font-weight: 600;
-    font-size: 1rem;
-    margin-bottom: 0.25rem;
-  }
+ .review-title {
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+  color: #0d6efd;
+}
+
   .review-sub {
     font-size: 0.8rem;
     color: #6c757d;
