@@ -3,82 +3,46 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>RDM11 - Cricket & Movie Predictions, Fantasy Tips, News and Latest Job Notifications</title>
-  <meta name="description" content="Daily updates on cricket predictions, fantasy tips, movie reviews, entertainment news, and job alerts. Stay informed with RDM11.com." />
-  <meta name="keywords" content="RDM11, Cricket predictions, fantasy tips, movie reviews, entertainment news, job notifications, IPL 2025, Tollywood news" />
-  <meta name="author" content="RDM11 Team" />
-  <link rel="canonical" href="https://rdm11.com/" />
-
-  <!-- ✅ Favicon -->
+  <meta name="description" content="Daily updates on cricket predictions, fantasy tips, movie reviews, entertainment news, and job alerts." />
+  <meta name="keywords" content="RDM11, Cricket predictions, fantasy tips, movie reviews, news, jobs" />
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
-
-  <!-- ✅ Open Graph Meta -->
-  <meta property="og:title" content="RDM11 - Cricket & Movie Predictions, News, Jobs" />
-  <meta property="og:description" content="Cricket & fantasy tips, movie reviews, box office reports, and job alerts – all in one place at RDM11.com." />
-  <meta property="og:url" content="https://rdm11.com/" />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://rdm11.com/assets/banner.jpg" />
-
-  <!-- ✅ Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="RDM11 - Cricket, Movies & Jobs" />
-  <meta name="twitter:description" content="Daily cricket predictions, fantasy team tips, latest movie reviews, and govt job updates." />
-  <meta name="twitter:image" content="https://rdm11.com/assets/banner.jpg" />
-
-  <!-- ✅ Google AdSense -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7838170698012799" crossorigin="anonymous"></script>
-
-  <!-- ✅ Bootstrap & Icons -->
+  <link rel="canonical" href="https://rdm11.com/" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
-
-  <!-- ✅ Animate.css -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-
-  <!-- ✅ Quill Editor -->
-  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
-
-  <!-- ✅ Custom CSS -->
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body class="bg-light">
 
   <!-- Header -->
   <div id="header-container"></div>
 
-
-
   <!-- Main Content -->
-<main class="container" style="min-height: 70vh;">
-  <div id="sportsReviewsContainer" class="mt-5"></div>
-  <div id="movieReviewsContainer"></div>
+  <main class="container py-4" style="min-height: 80vh;">
+    <!-- ONE small Spinner -->
+    <div id="mainSpinner" class="text-center py-4">
+      <div class="spinner-border text-primary" style="width: 2rem; height: 2rem;" role="status"></div>
+      <p class="mt-2 text-muted small">Please wait...</p>
+    </div>
 
-</main>
+    <!-- Sports Reviews -->
+    <div id="sportsReviewsContainer" class="mt-4"></div>
 
+    <!-- Movies Reviews -->
+    <div id="movieReviewsContainer" class="mt-5"></div>
+  </main>
 
   <!-- Footer -->
   <div class="footer-container"></div>
 
-  <!-- ✅ Bootstrap JS -->
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-  <!-- ✅ Quill JS -->
-  <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-
-<script type="module">
-  import { loadSportsReviews, loadMovieReviews } from './Getsportsreviews.js';
-
-  window.addEventListener('DOMContentLoaded', () => {
-    loadSportsReviews('sportsReviewsContainer');
-    loadMovieReviews('movieReviewsContainer');
-  });
-</script>
-
-
-  <!-- ✅ Firebase & App Scripts -->
-  <script type="module" src="script.js"></script>
+  <script type="module">
+    import { loadAllReviews } from './Getsportsreviews.js';
+    window.addEventListener('DOMContentLoaded', () => {
+      loadAllReviews('sportsReviewsContainer', 'movieReviewsContainer', 'mainSpinner');
+    });
+  </script>
   <script src="header.js"></script>
   <script src="footer.js"></script>
 </body>

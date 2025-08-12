@@ -1,6 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, getDocs, query, where, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyD_4rFTGZn-I7xYwS9SQIhI4KM7P0I2msE",
   authDomain: "rdm11-34fb1.firebaseapp.com",
@@ -14,219 +15,118 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Small spinner HTML
-const smallSpinner = `
-  <div class="d-flex flex-column justify-content-center align-items-center" style="min-height:150px;">
-    <div class="spinner-border spinner-border-sm text-primary" role="status" style="width:1.5rem;height:1.5rem;">
-      <span class="visually-hidden">Loading...</span>
-    </div>
-    <p class="mt-2 text-muted small">Loading, please wait...</p>
-  </div>
-`;
-
-// --- Custom CSS for better UI ---
+// --- Styles ---
 const style = document.createElement('style');
 style.textContent = `
-  /* --- SPORTS REVIEWS HORIZONTAL ROW --- */
-  .cards-row {
-    display: flex;
-    gap: 1rem;
-    overflow-x: auto;
-    padding: 0.75rem 1rem;
-    margin: 1rem auto 2rem auto;
-    max-width: 1090px;
-    white-space: nowrap;
-    scroll-behavior: smooth;
+  .section-wrapper {
+    border: 2px solid #dee2e6;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-top: 2rem;
+    background: #fff;
   }
-  .cards-row::-webkit-scrollbar {
-    height: 8px;
-  }
-  .cards-row::-webkit-scrollbar-thumb {
-    background: #007bffaa;
-    border-radius: 4px;
-  }
-  .cards-row .card {
-    min-width: 180px;
-    flex-shrink: 0;
-    cursor: pointer;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-    border-radius: 0.5rem;
-  }
-  .cards-row .card:hover {
-    transform: scale(1.07);
-    box-shadow: 0 0.75rem 1.5rem rgba(0, 123, 255, 0.3);
-  }
-  .cards-row .card-body {
-    padding: 1.25rem 1rem;
-  }
-  .cards-row .card-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #004085;
-    margin-bottom: 0.25rem;
-  }
-  .cards-row .card-subtitle {
-    font-size: 0.85rem;
-    color: #6c757d;
-    margin-bottom: 1rem;
-  }
-  .cards-row .btn {
-    font-size: 0.85rem;
-    padding: 0.35rem 0.8rem;
-  }
-
-  /* --- MOVIE REVIEWS GRID --- */
-  .movie-card-img {
-    width: 150px;
-    height: 100%;
-    object-fit: cover;
-    border-top-left-radius: 0.5rem;
-    border-bottom-left-radius: 0.5rem;
-  }
-  .movie-card-details {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 1rem 1.25rem;
-  }
-  .movie-card-details .card-title {
+  .section-header {
     font-weight: 700;
     font-size: 1.25rem;
-    margin-bottom: 0.5rem;
-    color: #155724;
-  }
-  .movie-card-details .text-muted {
-    font-size: 0.9rem;
     margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
   }
-  .movie-card-details .btn {
-    align-self: flex-start;
-    font-weight: 600;
+  .section-header.sports { color: #0069d9; }
+  .section-header.movies { color: #28a745; }
+  .custom-card {
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    background: #ffffff;
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
   }
-
-  /* --- SECTION HEADERS --- */
-  h3.section-header {
+  .custom-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  }
+  .custom-card img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+  .review-title {
+    font-size: 1.1rem;
     font-weight: 700;
-    margin-top: 2.5rem;
-    margin-bottom: 1.5rem;
-    letter-spacing: 1px;
   }
-  h3.section-header.sports {
-    color: #0056b3;
+  .review-sub {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-bottom: 0.5rem;
   }
-  h3.section-header.movies {
-    color: #218838;
-  }
-
-  /* --- RESPONSIVE ADJUSTMENTS --- */
-  @media (max-width: 767.98px) {
-    .cards-row {
-      padding: 0.5rem;
-      max-width: 100%;
-      gap: 0.8rem;
-    }
-    .cards-row .card {
-      min-width: 140px;
-    }
-    .movie-card-img {
-      width: 120px;
-    }
-    .movie-card-details .card-title {
-      font-size: 1.1rem;
-    }
+  .btn-details {
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 0.75rem;
   }
 `;
 document.head.appendChild(style);
 
-// --- Create horizontal cards row for sports reviews ---
-async function createCardsRow(snapshot, isSports) {
-  const cardsRow = document.createElement("div");
-  cardsRow.className = "cards-row";
-
-  snapshot.forEach(docSnap => {
-    const data = docSnap.data();
-
-    const title = isSports
-      ? `${data.teamA || "Team A"} vs ${data.teamB || "Team B"}`
-      : data.movieTitle || "Untitled Movie";
-
-    let createdDateStr = "";
-    if (data.createddate && data.createddate.toDate) {
-      const dateObj = data.createddate.toDate();
-      createdDateStr = dateObj.toLocaleDateString() + " " + dateObj.toLocaleTimeString();
-    }
-
-    const card = document.createElement("div");
-    card.className = "card shadow-sm";
-
-    card.innerHTML = `
-      <div class="card-body text-center">
-        <h6 class="card-title">${title}</h6>
-        <p class="card-subtitle">${createdDateStr}</p>
-        <button class="btn btn-sm btn-primary preview-btn" data-id="${docSnap.id}">Preview</button>
-      </div>
-    `;
-
-    cardsRow.appendChild(card);
-  });
-
-  cardsRow.querySelectorAll(".preview-btn").forEach(button => {
-    button.addEventListener("click", () => {
-      const id = button.dataset.id;
-      const type = "Sports Review";
-      window.location.href = `detailspage.html?id=${encodeURIComponent(id)}&type=${encodeURIComponent(type)}`;
-    });
-  });
-
-  return cardsRow;
+// --- Extract first image from HTML ---
+function extractFirstImage(html) {
+  const tempDiv = document.createElement("div");
+  tempDiv.innerHTML = html || "";
+  const img = tempDiv.querySelector("img");
+  return img ? img.src : null;
 }
 
-// --- Create movie cards grid ---
-async function createMovieCardsGrid(snapshot) {
+// --- Create cards grid ---
+function createCardsGrid(snapshot, type) {
   const row = document.createElement("div");
-  row.className = "row g-4 mt-4 justify-content-center";
+  row.className = "row g-3";
 
   snapshot.forEach(docSnap => {
     const data = docSnap.data();
+    let imgSrc = extractFirstImage(data.content);
+    if (!imgSrc || imgSrc.trim() === "") imgSrc = "images/image1.jpeg";
 
     const col = document.createElement("div");
     col.className = "col-12 col-md-6";
 
     const card = document.createElement("div");
-    card.className = "card shadow-sm d-flex flex-row";
+    card.className = "card custom-card";
 
-    const imgSrc = (data.imageURL && data.imageURL.trim() !== "") ? data.imageURL : "images/image1.jpeg";
+    const innerRow = document.createElement("div");
+    innerRow.className = "row g-0";
 
-    const imgDiv = document.createElement("div");
-    imgDiv.className = "flex-shrink-0";
-    imgDiv.style.maxWidth = "150px";
-    imgDiv.innerHTML = `<img src="${imgSrc}" alt="Movie Image" class="movie-card-img">`;
+    const imgCol = document.createElement("div");
+    imgCol.className = "col-4";
+    imgCol.innerHTML = `<img src="${imgSrc}" alt="${type} Image">`;
 
-    const detailsDiv = document.createElement("div");
-    detailsDiv.className = "movie-card-details";
+    const textCol = document.createElement("div");
+    textCol.className = "col-8 d-flex flex-column justify-content-between p-3";
 
-    const title = data.title || "Untitled Movie";
-    const createdBy = data.createdBy || "Unknown";
+    // Always use title now
+    const title = data.title || "Untitled";
+    const seriesName = data.seriesname || "";
 
-    detailsDiv.innerHTML = `
-      <h5 class="card-title">${title}</h5>
-      <p class="text-muted">Created by: ${createdBy}</p>
+    textCol.innerHTML = `
+      <div>
+        <div class="review-title">${title}</div>
+        ${seriesName ? `<div class="review-sub">${seriesName}</div>` : ""}
+      </div>
     `;
 
     const btn = document.createElement("button");
-    btn.className = "btn btn-success btn-sm";
+    btn.className = `btn ${type === 'Sports Review' ? 'btn-primary' : 'btn-success'} btn-details align-self-start`;
     btn.textContent = "Full Details";
     btn.addEventListener("click", () => {
       const id = docSnap.id;
-      const type = "Movie Review";
       window.location.href = `detailspage.html?id=${encodeURIComponent(id)}&type=${encodeURIComponent(type)}`;
     });
 
-    detailsDiv.appendChild(btn);
+    textCol.appendChild(btn);
 
-    card.appendChild(imgDiv);
-    card.appendChild(detailsDiv);
+    innerRow.appendChild(imgCol);
+    innerRow.appendChild(textCol);
+    card.appendChild(innerRow);
     col.appendChild(card);
     row.appendChild(col);
   });
@@ -234,74 +134,72 @@ async function createMovieCardsGrid(snapshot) {
   return row;
 }
 
-// --- Section header creation ---
-function createSectionHeader(text, type) {
-  const header = document.createElement("h3");
-  header.textContent = text;
+// --- Section wrapper ---
+function createSection(text, type, link, snapshot) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "section-wrapper";
+
+  const header = document.createElement("div");
   header.className = `section-header ${type}`;
-  return header;
+  header.innerHTML = type === "sports"
+    ? `<i class="bi bi-trophy-fill"></i> ${text}`
+    : `<i class="bi bi-film"></i> ${text}`;
+  header.addEventListener("click", () => {
+    window.location.href = link;
+  });
+
+  wrapper.appendChild(header);
+  wrapper.appendChild(createCardsGrid(snapshot, type === "sports" ? "Sports Review" : "Movie Review"));
+  return wrapper;
 }
 
-// --- Load Sports Reviews ---
-export async function loadSportsReviews(containerId) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
-  container.innerHTML = smallSpinner;
+// --- Load reviews ---
+export async function loadAllReviews(sportsContainerId, moviesContainerId, spinnerId) {
+  const sportsContainer = document.getElementById(sportsContainerId);
+  const moviesContainer = document.getElementById(moviesContainerId);
+  const spinner = document.getElementById(spinnerId);
+  if (!sportsContainer || !moviesContainer || !spinner) return;
+
+  sportsContainer.innerHTML = "";
+  moviesContainer.innerHTML = "";
 
   try {
-    const q = query(
+    const sportsQuery = query(
       collection(db, "Predictions"),
       where("type", "==", "Sports Review"),
       orderBy("createddate", "desc"),
       limit(30)
     );
-    const snapshot = await getDocs(q);
-
-    container.innerHTML = "";
-    const sportsHeader = createSectionHeader("Latest Sports Reviews", "sports");
-    container.appendChild(sportsHeader);
-
-    if (snapshot.empty) {
-      container.innerHTML += "<p>No sports reviews found.</p>";
-      return;
-    }
-
-    const cardsRow = await createCardsRow(snapshot, true);
-    container.appendChild(cardsRow);
-
-  } catch (error) {
-    console.error("Failed to load sports reviews:", error);
-  }
-}
-
-// --- Load Movie Reviews ---
-export async function loadMovieReviews(containerId) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
-  container.innerHTML = smallSpinner;
-
-  try {
-    const q = query(
+    const moviesQuery = query(
       collection(db, "Predictions"),
       where("type", "==", "Movie Review"),
       orderBy("createddate", "desc"),
       limit(30)
     );
-    const snapshot = await getDocs(q);
 
-    container.innerHTML = "";
-    const movieHeader = createSectionHeader("Latest Movie Reviews", "movies");
-    container.appendChild(movieHeader);
+    const [sportsSnap, moviesSnap] = await Promise.all([
+      getDocs(sportsQuery),
+      getDocs(moviesQuery)
+    ]);
 
-    if (snapshot.empty) {
-      container.innerHTML += "<p>No movie reviews found.</p>";
-      return;
+    spinner.style.display = "none";
+
+    if (!sportsSnap.empty) {
+      sportsContainer.appendChild(createSection("Latest Sports Reviews", "sports", "sportsreview.html", sportsSnap));
+    } else {
+      sportsContainer.innerHTML = `<p class="text-muted">No sports reviews found.</p>`;
     }
 
-    const movieGrid = await createMovieCardsGrid(snapshot);
-    container.appendChild(movieGrid);
+    if (!moviesSnap.empty) {
+      moviesContainer.appendChild(createSection("Latest Movie Reviews", "movies", "moviereview.html", moviesSnap));
+    } else {
+      moviesContainer.innerHTML = `<p class="text-muted">No movie reviews found.</p>`;
+    }
 
   } catch (error) {
-    console.error("Failed to load movie reviews:", error);
+    console.error("Error loading reviews:", error);
+    spinner.style.display = "none";
+    sportsContainer.innerHTML = `<p class="text-danger">Failed to load sports reviews.</p>`;
+    moviesContainer.innerHTML = `<p class="text-danger">Failed to load movie reviews.</p>`;
   }
 }
