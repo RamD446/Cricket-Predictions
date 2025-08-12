@@ -1,0 +1,262 @@
+<!-- sportsreview.html -->
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sports Reviews</title>
+
+  <!-- Bootstrap CSS + Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Styles -->
+  <style>
+    body {
+      background: #f8f9fa;
+    }
+    .section-wrapper {
+      border: 2px solid #dee2e6;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-top: 2rem;
+      background: #fff;
+    }
+    .section-header {
+      font-weight: 700;
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #0d6efd;
+    }
+    .row.g-3 > [class*="col-"] {
+      display: flex;
+    }
+    .custom-card {
+      border: 1px solid #dee2e6;
+      border-radius: 12px;
+      background: #ffffff;
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+    .custom-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+    .custom-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 12px 12px 0 0;
+      transition: filter 0.3s ease;
+    }
+    .custom-card:hover img {
+      filter: brightness(0.9);
+    }
+    .card-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .review-title {
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+    .review-sub {
+      font-size: 0.85rem;
+      color: #6c757d;
+      margin-bottom: 0.5rem;
+    }
+    .review-preview {
+      font-size: 0.85rem;
+      color: #495057;
+      margin-bottom: auto;
+    }
+    .card-footer {
+      font-size: 0.75rem;
+      color: #6c757d;
+      border-top: 1px solid #dee2e6;
+      padding: 0.5rem 0.75rem;
+      background: #f8f9fa;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .btn-details {
+      border-radius: 20px;
+      padding: 5px 12px;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+ <div id="header-container"></div>
+<div class="container mt-5"  style="min-height: 80vh;">
+  <!-- Spinner -->
+  <div class="text-center my-4" id="spinner">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="text-muted mt-2">Loading Sports Reviews...</p>
+  </div>
+
+  <!-- Sports Reviews Section -->
+  <div id="sportsSection"></div>
+</div>
+ <div class="footer-container"></div>
+<!-- Firebase + Firestore -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, collection, getDocs, query, where, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  // Firebase Config
+  const firebaseConfig = {
+    apiKey: "AIzaSyD_4rFTGZn-I7xYwS9SQIhI4KM7P0I2msE",
+    authDomain: "rdm11-34fb1.firebaseapp.com",
+    projectId: "rdm11-34fb1",
+    storageBucket: "rdm11-34fb1.firebasestorage.app",
+    messagingSenderId: "46810528643",
+    appId: "1:46810528643:web:406a9ebee9c8a5762954b6",
+    measurementId: "G-MP86EYWQE0"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Helpers
+  function extractFirstImage(html) {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = html || "";
+    const img = tempDiv.querySelector("img");
+    return img ? img.src : null;
+  }
+
+  function extractTextPreview(html, length = 100) {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = html || "";
+    const text = tempDiv.textContent || tempDiv.innerText || "";
+    return text.length > length ? text.substring(0, length) + "..." : text;
+  }
+
+  function timeAgo(date) {
+    const seconds = Math.floor((new Date() - date) / 1000);
+    let interval = Math.floor(seconds / 31536000);
+    if (interval >= 1) return interval + " year" + (interval > 1 ? "s" : "") + " ago";
+    interval = Math.floor(seconds / 2592000);
+    if (interval >= 1) return interval + " month" + (interval > 1 ? "s" : "") + " ago";
+    interval = Math.floor(seconds / 86400);
+    if (interval >= 1) return interval + " day" + (interval > 1 ? "s" : "") + " ago";
+    interval = Math.floor(seconds / 3600);
+    if (interval >= 1) return interval + " hour" + (interval > 1 ? "s" : "") + " ago";
+    interval = Math.floor(seconds / 60);
+    if (interval >= 1) return interval + " min" + (interval > 1 ? "s" : "") + " ago";
+    return "Just now";
+  }
+
+  function createCardsGrid(snapshot) {
+    const row = document.createElement("div");
+    row.className = "row g-3";
+
+    snapshot.forEach(docSnap => {
+      const data = docSnap.data();
+      let imgSrc = extractFirstImage(data.content);
+      if (!imgSrc || imgSrc.trim() === "") imgSrc = "images/image1.jpeg";
+
+      const col = document.createElement("div");
+      col.className = "col-12 col-md-6 col-lg-4";
+
+      const card = document.createElement("div");
+      card.className = "card custom-card";
+
+      const img = document.createElement("img");
+      img.src = imgSrc;
+      img.alt = `Sports Review Image`;
+      card.appendChild(img);
+
+      const cardBody = document.createElement("div");
+      cardBody.className = "card-body";
+
+      const title = data.title || "Untitled";
+      const seriesName = data.seriesname || "";
+      const previewText = extractTextPreview(data.content, 100);
+
+      cardBody.innerHTML = `
+        <div class="review-title">${title}</div>
+        ${seriesName ? `<div class="review-sub">${seriesName}</div>` : ""}
+        <div class="review-preview">${previewText}</div>
+      `;
+
+      card.appendChild(cardBody);
+
+      const footer = document.createElement("div");
+      footer.className = "card-footer";
+
+      const dateText = document.createElement("span");
+      if (data.createddate?.toDate) {
+        dateText.textContent = timeAgo(data.createddate.toDate());
+      } else {
+        dateText.textContent = "Unknown date";
+      }
+
+      const btn = document.createElement("button");
+      btn.className = "btn btn-primary btn-details";
+      btn.textContent = "Full Preview";
+      btn.addEventListener("click", () => {
+        const id = docSnap.id;
+        window.location.href = `detailspage.html?id=${encodeURIComponent(id)}&type=Sports%20Review`;
+      });
+
+      footer.appendChild(dateText);
+      footer.appendChild(btn);
+
+      card.appendChild(footer);
+      col.appendChild(card);
+      row.appendChild(col);
+    });
+
+    return row;
+  }
+
+  async function loadSportsReviews() {
+    const sportsContainer = document.getElementById("sportsSection");
+    const spinner = document.getElementById("spinner");
+    sportsContainer.innerHTML = "";
+
+    try {
+      const sportsQuery = query(
+        collection(db, "Predictions"),
+        where("type", "==", "Sports Review"),
+        orderBy("createddate", "desc"),
+        limit(100)
+      );
+
+      const sportsSnap = await getDocs(sportsQuery);
+
+      spinner.style.display = "none";
+
+      if (!sportsSnap.empty) {
+        const wrapper = document.createElement("div");
+        wrapper.className = "section-wrapper";
+        wrapper.innerHTML = `<div class="section-header"><i class="bi bi-trophy-fill"></i> All Sports Reviews</div>`;
+        wrapper.appendChild(createCardsGrid(sportsSnap));
+        sportsContainer.appendChild(wrapper);
+      } else {
+        sportsContainer.innerHTML = `<p class="text-muted">No sports reviews found.</p>`;
+      }
+
+    } catch (error) {
+      console.error("Error loading sports reviews:", error);
+      spinner.style.display = "none";
+      sportsContainer.innerHTML = `<p class="text-danger">Failed to load sports reviews.</p>`;
+    }
+  }
+
+  loadSportsReviews();
+</script>
+  <script src="header.js"></script>
+  <script src="footer.js"></script>
+</body>
+</html>

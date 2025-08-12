@@ -31,50 +31,106 @@ style.textContent = `
     margin-bottom: 1rem;
     display: flex;
     align-items: center;
-    gap: 8px;
+    justify-content: space-between;
     cursor: pointer;
   }
-  .section-header.sports { color: #0069d9; }
-  .section-header.movies { color: #28a745; }
+  .section-header i.more-icon {
+    font-size: 1.1rem;
+    color: #6c757d;
+  }
   .custom-card {
     border: 1px solid #dee2e6;
-    border-radius: 10px;
+    border-radius: 12px;
     background: #ffffff;
     overflow: hidden;
     transition: transform 0.25s ease, box-shadow 0.25s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
   .custom-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 4px 10px rgba(0,0,0,0.08);
   }
   .custom-card img {
-    object-fit: cover;
     width: 100%;
-    height: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 12px 12px 0 0;
+    transition: filter 0.3s ease;
+    flex-shrink: 0;
+  }
+  .custom-card:hover img {
+    filter: brightness(0.9);
+  }
+  .card-body {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
   }
   .review-title {
+    font-weight: bold;
     font-size: 1.1rem;
-    font-weight: 700;
   }
   .review-sub {
     font-size: 0.85rem;
     color: #6c757d;
     margin-bottom: 0.5rem;
   }
+  .review-preview {
+    font-size: 0.85rem;
+    color: #495057;
+    margin-bottom: 0.75rem;
+    flex-grow: 1;
+  }
+  .card-footer {
+    font-size: 0.75rem;
+    color: #6c757d;
+    border-top: 1px solid #dee2e6;
+    padding: 0.5rem 0.75rem;
+    background: #f8f9fa;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+  }
   .btn-details {
     border-radius: 20px;
-    padding: 3px 10px;
-    font-size: 0.75rem;
+    padding: 5px 12px;
+    font-size: 0.8rem;
   }
 `;
 document.head.appendChild(style);
 
-// --- Extract first image from HTML ---
+// --- Helpers ---
 function extractFirstImage(html) {
   const tempDiv = document.createElement("div");
   tempDiv.innerHTML = html || "";
   const img = tempDiv.querySelector("img");
   return img ? img.src : null;
+}
+
+function extractTextPreview(html, length = 100) {
+  const tempDiv = document.createElement("div");
+  tempDiv.innerHTML = html || "";
+  const text = tempDiv.textContent || tempDiv.innerText || "";
+  return text.length > length ? text.substring(0, length) + "..." : text;
+}
+
+function timeAgo(date) {
+  const seconds = Math.floor((new Date() - date) / 1000);
+  let interval = Math.floor(seconds / 31536000);
+  if (interval >= 1) return interval + " year" + (interval > 1 ? "s" : "") + " ago";
+  interval = Math.floor(seconds / 2592000);
+  if (interval >= 1) return interval + " month" + (interval > 1 ? "s" : "") + " ago";
+  interval = Math.floor(seconds / 86400);
+  if (interval >= 1) return interval + " day" + (interval > 1 ? "s" : "") + " ago";
+  interval = Math.floor(seconds / 3600);
+  if (interval >= 1) return interval + " hour" + (interval > 1 ? "s" : "") + " ago";
+  interval = Math.floor(seconds / 60);
+  if (interval >= 1) return interval + " min" + (interval > 1 ? "s" : "") + " ago";
+  return "Just now";
 }
 
 // --- Create cards grid ---
@@ -88,45 +144,56 @@ function createCardsGrid(snapshot, type) {
     if (!imgSrc || imgSrc.trim() === "") imgSrc = "images/image1.jpeg";
 
     const col = document.createElement("div");
-    col.className = "col-12 col-md-6";
+    col.className = "col-12 col-md-6 col-lg-4 d-flex";
 
     const card = document.createElement("div");
-    card.className = "card custom-card";
+    card.className = "card custom-card flex-fill";
 
-    const innerRow = document.createElement("div");
-    innerRow.className = "row g-0";
+    // Image
+    const img = document.createElement("img");
+    img.src = imgSrc;
+    img.alt = `${type} Image`;
+    card.appendChild(img);
 
-    const imgCol = document.createElement("div");
-    imgCol.className = "col-4";
-    imgCol.innerHTML = `<img src="${imgSrc}" alt="${type} Image">`;
+    // Body
+    const cardBody = document.createElement("div");
+    cardBody.className = "card-body";
 
-    const textCol = document.createElement("div");
-    textCol.className = "col-8 d-flex flex-column justify-content-between p-3";
-
-    // Always use title now
     const title = data.title || "Untitled";
     const seriesName = data.seriesname || "";
+    const previewText = extractTextPreview(data.content, 100);
 
-    textCol.innerHTML = `
-      <div>
-        <div class="review-title">${title}</div>
-        ${seriesName ? `<div class="review-sub">${seriesName}</div>` : ""}
-      </div>
+    cardBody.innerHTML = `
+      <div class="review-title">${title}</div>
+      ${seriesName ? `<div class="review-sub">${seriesName}</div>` : ""}
+      <div class="review-preview">${previewText}</div>
     `;
 
+    card.appendChild(cardBody);
+
+    // Footer
+    const footer = document.createElement("div");
+    footer.className = "card-footer";
+
+    const dateText = document.createElement("span");
+    if (data.createddate?.toDate) {
+      dateText.textContent = timeAgo(data.createddate.toDate());
+    } else {
+      dateText.textContent = "Unknown date";
+    }
+
     const btn = document.createElement("button");
-    btn.className = `btn ${type === 'Sports Review' ? 'btn-primary' : 'btn-success'} btn-details align-self-start`;
-    btn.textContent = "Full Details";
+    btn.className = `btn ${type === 'Sports Review' ? 'btn-primary' : 'btn-success'} btn-details`;
+    btn.textContent = "Full Preview";
     btn.addEventListener("click", () => {
       const id = docSnap.id;
       window.location.href = `detailspage.html?id=${encodeURIComponent(id)}&type=${encodeURIComponent(type)}`;
     });
 
-    textCol.appendChild(btn);
+    footer.appendChild(dateText);
+    footer.appendChild(btn);
+    card.appendChild(footer);
 
-    innerRow.appendChild(imgCol);
-    innerRow.appendChild(textCol);
-    card.appendChild(innerRow);
     col.appendChild(card);
     row.appendChild(col);
   });
@@ -141,9 +208,10 @@ function createSection(text, type, link, snapshot) {
 
   const header = document.createElement("div");
   header.className = `section-header ${type}`;
-  header.innerHTML = type === "sports"
-    ? `<i class="bi bi-trophy-fill"></i> ${text}`
-    : `<i class="bi bi-film"></i> ${text}`;
+  header.innerHTML = `
+    <span>${type === "sports" ? `<i class="bi bi-trophy-fill"></i>` : `<i class="bi bi-film"></i>`} ${text}</span>
+    <i class="bi bi-arrow-right-circle more-icon"></i>
+  `;
   header.addEventListener("click", () => {
     window.location.href = link;
   });
@@ -168,13 +236,13 @@ export async function loadAllReviews(sportsContainerId, moviesContainerId, spinn
       collection(db, "Predictions"),
       where("type", "==", "Sports Review"),
       orderBy("createddate", "desc"),
-      limit(30)
+      limit(50)
     );
     const moviesQuery = query(
       collection(db, "Predictions"),
       where("type", "==", "Movie Review"),
       orderBy("createddate", "desc"),
-      limit(30)
+      limit(50)
     );
 
     const [sportsSnap, moviesSnap] = await Promise.all([

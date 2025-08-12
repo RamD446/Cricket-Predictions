@@ -14,8 +14,8 @@ document.addEventListener("DOMContentLoaded", function () {
         font-weight: bold;
         font-family: 'Orbitron', sans-serif;
         letter-spacing: 1px;
-        padding: 3px 10px; /* reduced padding */
-        font-size: 0.85rem; /* slightly smaller */
+        padding: 3px 10px;
+        font-size: 0.85rem;
         border-radius: 6px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
@@ -26,16 +26,15 @@ document.addEventListener("DOMContentLoaded", function () {
         box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2);
       }
       header.top-header .container-fluid {
-        padding-top: 0.4rem !important;  /* reduced from 0.8rem */
+        padding-top: 0.4rem !important;
         padding-bottom: 0.4rem !important;
       }
       header.top-header .btn-light,
       header.top-header .btn-outline-warning {
-        padding: 0.3rem 0.7rem !important;  /* reduced padding */
-        font-size: 0.75rem !important;    /* smaller font */
+        padding: 0.3rem 0.7rem !important;
+        font-size: 0.75rem !important;
         line-height: 1.1 !important;
       }
-      /* Reduce the font size of icons inside buttons */
       header.top-header .btn-light i,
       header.top-header .btn-outline-warning i {
         font-size: 0.85rem;
@@ -59,7 +58,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     </style>
 
-    <!-- Header -->
     <header class="top-header position-fixed top-0 start-0 end-0 shadow-sm"
       style="background: linear-gradient(to right, #343a40, #212529); color: #fff; z-index: 1030;">
       <div class="container-fluid d-flex justify-content-between align-items-center px-3">
@@ -74,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <!-- Mobile toggle -->
         <button class="btn btn-outline-light d-md-none" type="button" data-bs-toggle="offcanvas"
           data-bs-target="#mobileMenu" aria-controls="mobileMenu"
-          style="padding: 0.12rem 0.28rem; font-size: 0.7rem;">  <!-- smaller -->
+          style="padding: 0.12rem 0.28rem; font-size: 0.7rem;">
           <i class="bi bi-list"></i>
         </button>
 
@@ -83,10 +81,10 @@ document.addEventListener("DOMContentLoaded", function () {
           <button class="btn btn-light" onclick="location.href='index.html'">
             <i class="bi bi-house-door-fill me-1"></i> All
           </button>
-          <button class="btn btn-light" onclick="navigateToType('Moviereviews')">
+          <button class="btn btn-light" onclick="location.href='moviereview.html'">
             <i class="bi bi-film me-1"></i> Movie Reviews
           </button>
-          <button class="btn btn-light" onclick="navigateToType('Sportsreviews')">
+          <button class="btn btn-light" onclick="location.href='sportsreview.html'">
             <i class="bi bi-trophy-fill me-1"></i> Sports Reviews
           </button>
           <button class="btn btn-outline-warning" onclick="location.href='admin.html'">
@@ -108,10 +106,10 @@ document.addEventListener("DOMContentLoaded", function () {
           <button class="btn btn-sm btn-light text-start w-100" onclick="location.href='index.html'">
             <i class="bi bi-house-door-fill me-2"></i> All Reviews
           </button>
-          <button class="btn btn-sm btn-light text-start w-100" onclick="navigateToType('Moviereviews')">
+          <button class="btn btn-sm btn-light text-start w-100" onclick="location.href='moviereview.html'">
             <i class="bi bi-film me-2"></i> Movie Reviews
           </button>
-          <button class="btn btn-sm btn-light text-start w-100" onclick="navigateToType('Sportsreviews')">
+          <button class="btn btn-sm btn-light text-start w-100" onclick="location.href='sportsreview.html'">
             <i class="bi bi-trophy-fill me-2"></i> Sports Reviews
           </button>
           <button class="btn btn-sm btn-outline-warning text-start w-100" onclick="location.href='admin.html'">
