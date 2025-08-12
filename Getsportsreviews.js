@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, getDocs, query, where, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// Firebase config
+// ✅ Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyD_4rFTGZn-I7xYwS9SQIhI4KM7P0I2msE",
   authDomain: "rdm11-34fb1.firebaseapp.com",
@@ -15,11 +15,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// --- Styles ---
-const style = document.createElement('style');
+// ✅ Styles
+const style = document.createElement("style");
 style.textContent = `
   .section-wrapper {
-    border: 2px solid #dee2e6;
+    border: 1px solid #dee2e6;
     border-radius: 12px;
     padding: 1rem;
     margin-top: 2rem;
@@ -34,31 +34,42 @@ style.textContent = `
     justify-content: space-between;
     cursor: pointer;
   }
-  .section-header i.more-icon {
-    font-size: 1.1rem;
-    color: #6c757d;
+  /* Sports header color */
+  .section-header.sports {
+    color: #ffc107;
+  }
+  .section-header.sports i {
+    color: #ffc107;
+  }
+  /* Movies header color */
+  .section-header.movies {
+    color: #0dcaf0;
+  }
+  .section-header.movies i {
+    color: #0dcaf0;
+  }
+  .section-header:hover {
+    opacity: 0.85;
   }
   .custom-card {
-    border: 1px solid #dee2e6;
     border-radius: 12px;
-    background: #ffffff;
     overflow: hidden;
     transition: transform 0.25s ease, box-shadow 0.25s ease;
     height: 100%;
     display: flex;
     flex-direction: column;
+    border: 1px solid #dee2e6;
+    background: #fff;
   }
   .custom-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    transform: translateY(-4px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.1);
   }
   .custom-card img {
     width: 100%;
     height: 200px;
     object-fit: cover;
-    border-radius: 12px 12px 0 0;
     transition: filter 0.3s ease;
-    flex-shrink: 0;
   }
   .custom-card:hover img {
     filter: brightness(0.9);
@@ -68,19 +79,21 @@ style.textContent = `
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    padding: 0.75rem 1rem;
   }
   .review-title {
-    font-weight: bold;
-    font-size: 1.1rem;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
   }
   .review-sub {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: #6c757d;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
   }
   .review-preview {
-    font-size: 0.85rem;
-    color: #495057;
+    font-size: 0.78rem;
+    color: #555;
     margin-bottom: 0.75rem;
     flex-grow: 1;
   }
@@ -97,13 +110,18 @@ style.textContent = `
   }
   .btn-details {
     border-radius: 20px;
-    padding: 5px 12px;
-    font-size: 0.8rem;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+  .btn-details:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
   }
 `;
 document.head.appendChild(style);
 
-// --- Helpers ---
+// ✅ Helpers
 function extractFirstImage(html) {
   const tempDiv = document.createElement("div");
   tempDiv.innerHTML = html || "";
@@ -111,7 +129,7 @@ function extractFirstImage(html) {
   return img ? img.src : null;
 }
 
-function extractTextPreview(html, length = 100) {
+function extractTextPreview(html, length = 90) {
   const tempDiv = document.createElement("div");
   tempDiv.innerHTML = html || "";
   const text = tempDiv.textContent || tempDiv.innerText || "";
@@ -133,7 +151,7 @@ function timeAgo(date) {
   return "Just now";
 }
 
-// --- Create cards grid ---
+// ✅ Card creator
 function createCardsGrid(snapshot, type) {
   const row = document.createElement("div");
   row.className = "row g-3";
@@ -149,42 +167,31 @@ function createCardsGrid(snapshot, type) {
     const card = document.createElement("div");
     card.className = "card custom-card flex-fill";
 
-    // Image
     const img = document.createElement("img");
     img.src = imgSrc;
     img.alt = `${type} Image`;
     card.appendChild(img);
 
-    // Body
     const cardBody = document.createElement("div");
     cardBody.className = "card-body";
-
-    const title = data.title || "Untitled";
-    const seriesName = data.seriesname || "";
-    const previewText = extractTextPreview(data.content, 100);
-
     cardBody.innerHTML = `
-      <div class="review-title">${title}</div>
-      ${seriesName ? `<div class="review-sub">${seriesName}</div>` : ""}
-      <div class="review-preview">${previewText}</div>
+      <div class="review-title">${data.title || "Untitled"}</div>
+      ${data.seriesname ? `<div class="review-sub">${data.seriesname}</div>` : ""}
+      <div class="review-preview">${extractTextPreview(data.content)}</div>
     `;
-
     card.appendChild(cardBody);
 
-    // Footer
     const footer = document.createElement("div");
     footer.className = "card-footer";
 
     const dateText = document.createElement("span");
-    if (data.createddate?.toDate) {
-      dateText.textContent = timeAgo(data.createddate.toDate());
-    } else {
-      dateText.textContent = "Unknown date";
-    }
+    dateText.textContent = data.createddate?.toDate
+      ? timeAgo(data.createddate.toDate())
+      : "Unknown date";
 
     const btn = document.createElement("button");
     btn.className = `btn ${type === 'Sports Review' ? 'btn-primary' : 'btn-success'} btn-details`;
-    btn.textContent = "Full Preview";
+    btn.textContent = "Preview";
     btn.addEventListener("click", () => {
       const id = docSnap.id;
       window.location.href = `detailspage.html?id=${encodeURIComponent(id)}&type=${encodeURIComponent(type)}`;
@@ -201,7 +208,7 @@ function createCardsGrid(snapshot, type) {
   return row;
 }
 
-// --- Section wrapper ---
+// ✅ Section creator
 function createSection(text, type, link, snapshot) {
   const wrapper = document.createElement("div");
   wrapper.className = "section-wrapper";
@@ -221,7 +228,7 @@ function createSection(text, type, link, snapshot) {
   return wrapper;
 }
 
-// --- Load reviews ---
+// ✅ Main loader
 export async function loadAllReviews(sportsContainerId, moviesContainerId, spinnerId) {
   const sportsContainer = document.getElementById(sportsContainerId);
   const moviesContainer = document.getElementById(moviesContainerId);
