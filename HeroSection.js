@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
       /* Outer main container with border */
       .main-container {
         width: 100%;           /* full width of parent */
-        margin: 2rem 0;        /* smaller vertical margin */
+        margin: 0.1rem 0;      /* reduced vertical margin */
         padding: 0.5rem 1rem;  /* minimal padding */
         border: 2px solid #d6336c;
         border-radius: 12px;
@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
       @media (max-width: 720px) {
         .main-container {
           padding: 0.5rem 1rem;
-          margin: 1.5rem 0;
+          margin: 0.5rem 0; /* reduced vertical margin on mobile */
         }
         .hero-wrapper {
           flex-direction: column;
@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .divider {
           width: 100%;
           height: 3px;
-          margin: 1rem 0;
+          margin: 0.1rem 0;  /* reduced vertical gap between sections on mobile */
           border-radius: 3px;
         }
         .hero-section {

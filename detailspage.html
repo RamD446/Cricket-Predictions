@@ -78,9 +78,8 @@
       }
 
       const data = docSnap.data();
-      const title = type === "Sports Review"
-        ? `${data.teamA || "Team A"} vs ${data.teamB || "Team B"}`
-        : data.title || data.movieTitle || "Untitled";
+      // Use title or movieTitle directly, no fallback to teamA vs teamB
+      const title = data.title || data.movieTitle || "Untitled";
 
       document.getElementById("review-title").textContent = title;
 
@@ -104,9 +103,8 @@
       snapshot.forEach(docSnap => {
         if (docSnap.id === currentId) return;
         const data = docSnap.data();
-        const title = data.type === "Sports Review"
-          ? `${data.teamA || "Team A"} vs ${data.teamB || "Team B"}`
-          : data.title || data.movieTitle || "Untitled";
+        // Use title or movieTitle directly for all items
+        const title = data.title || data.movieTitle || "Untitled";
         moreContainer.innerHTML += `
           <li class="list-group-item d-flex align-items-center">
             <i class="bi bi-star-fill text-primary me-2"></i>
