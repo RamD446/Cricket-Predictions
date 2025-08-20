@@ -81,27 +81,37 @@ style.textContent = `
     justify-content: flex-start;
     padding: 0.75rem 1rem;
   }
- .review-title {
-  font-weight: 700;
-  font-size: 1rem;
-  margin-bottom: 0.25rem;
-  color: #0d6efd;
-}
 
-  .review-sub {
-    font-size: 0.8rem;
-    color: #6c757d;
-    margin-bottom: 0.4rem;
+  /* Title colors */
+  .review-title.sports {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    color: #dc3545; /* red */
   }
-  .review-preview {
+  .review-title.movies {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    color: #198754; /* green */
+  }
+
+  /* Preview text colors */
+  .review-preview.sports {
     font-size: 0.78rem;
-    color: #555;
     margin-bottom: 0.75rem;
     flex-grow: 1;
+    color: #856404; /* golden brown */
   }
+  .review-preview.movies {
+    font-size: 0.78rem;
+    margin-bottom: 0.75rem;
+    flex-grow: 1;
+    color: #0d6efd; /* blue */
+  }
+
   .card-footer {
     font-size: 0.75rem;
-    color: #6c757d;
     border-top: 1px solid #dee2e6;
     padding: 0.5rem 0.75rem;
     background: #f8f9fa;
@@ -110,6 +120,17 @@ style.textContent = `
     align-items: center;
     flex-shrink: 0;
   }
+
+  /* Time ago colors */
+  .time-ago.sports {
+    color: #fd7e14; /* orange */
+    font-weight: 500;
+  }
+  .time-ago.movies {
+    color: #6f42c1; /* purple */
+    font-weight: 500;
+  }
+
   .btn-details {
     border-radius: 20px;
     padding: 4px 10px;
@@ -177,9 +198,12 @@ function createCardsGrid(snapshot, type) {
     const cardBody = document.createElement("div");
     cardBody.className = "card-body";
     cardBody.innerHTML = `
-      <div class="review-title">${data.title || "Untitled"}</div>
-      ${data.seriesname ? `<div class="review-sub">${data.seriesname}</div>` : ""}
-      <div class="review-preview">${extractTextPreview(data.content)}</div>
+      <div class="review-title ${type.includes("Sports") ? "sports" : "movies"}">
+        ${data.title || "Untitled"}
+      </div>
+      <div class="review-preview ${type.includes("Sports") ? "sports" : "movies"}">
+        ${extractTextPreview(data.content)}
+      </div>
     `;
     card.appendChild(cardBody);
 
@@ -187,6 +211,7 @@ function createCardsGrid(snapshot, type) {
     footer.className = "card-footer";
 
     const dateText = document.createElement("span");
+    dateText.className = `time-ago ${type.includes("Sports") ? "sports" : "movies"}`;
     dateText.textContent = data.createddate?.toDate
       ? timeAgo(data.createddate.toDate())
       : "Unknown date";
