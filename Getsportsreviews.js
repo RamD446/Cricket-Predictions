@@ -18,128 +18,103 @@ const db = getFirestore(app);
 // ✅ Styles
 const style = document.createElement("style");
 style.textContent = `
-  .section-wrapper {
-    border: 1px solid #dee2e6;
-    border-radius: 12px;
-    padding: 1rem;
-    margin-top: 2rem;
-    background: #fff;
+  /* ===== Titles ===== */
+  .review-title.sports { 
+    color: #dc3545; 
+    font-weight: 700; 
+    font-size: 1rem; 
+    margin-bottom: 0.25rem; 
   }
-  .section-header {
-    font-weight: 700;
-    font-size: 1.25rem;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
-  }
-  /* Sports header color */
-  .section-header.sports {
-    color: #ffc107;
-  }
-  .section-header.sports i {
-    color: #ffc107;
-  }
-  /* Movies header color */
-  .section-header.movies {
-    color: #0dcaf0;
-  }
-  .section-header.movies i {
-    color: #0dcaf0;
-  }
-  .section-header:hover {
-    opacity: 0.85;
-  }
-  .custom-card {
-    border-radius: 12px;
-    overflow: hidden;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid #dee2e6;
-    background: #fff;
-  }
-  .custom-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 14px rgba(0,0,0,0.1);
-  }
-  .custom-card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    transition: filter 0.3s ease;
-  }
-  .custom-card:hover img {
-    filter: brightness(0.9);
-  }
-  .card-body {
-    flex: 1 1 auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    padding: 0.75rem 1rem;
+  .review-title.movies { 
+    color: #198754; 
+    font-weight: 700; 
+    font-size: 1rem; 
+    margin-bottom: 0.25rem; 
   }
 
-  /* Title colors */
-  .review-title.sports {
-    font-weight: 700;
-    font-size: 1rem;
-    margin-bottom: 0.25rem;
-    color: #dc3545; /* red */
+  /* ===== Preview Text ===== */
+  .review-preview.sports { 
+    font-size: 0.9rem; 
+    margin-bottom: 0.75rem; 
+    flex-grow: 1; 
+    color: #000000;       /* black text */
+    font-weight: 700;     /* bold */
   }
-  .review-title.movies {
-    font-weight: 700;
-    font-size: 1rem;
-    margin-bottom: 0.25rem;
-    color: #198754; /* green */
-  }
-
-  /* Preview text colors */
-  .review-preview.sports {
-    font-size: 0.78rem;
-    margin-bottom: 0.75rem;
-    flex-grow: 1;
-    color: #856404; /* golden brown */
-  }
-  .review-preview.movies {
-    font-size: 0.78rem;
-    margin-bottom: 0.75rem;
-    flex-grow: 1;
-    color: #0d6efd; /* blue */
+  .review-preview.movies { 
+    font-size: 0.9rem; 
+    margin-bottom: 0.75rem; 
+    flex-grow: 1; 
+    color: #0d47a1;       /* blue text */
+    font-weight: 400; 
   }
 
-  .card-footer {
-    font-size: 0.75rem;
-    border-top: 1px solid #dee2e6;
-    padding: 0.5rem 0.75rem;
-    background: #f8f9fa;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-shrink: 0;
+  /* ===== Time Ago ===== */
+  .time-ago.sports { 
+    color: #e65100; 
+    font-weight: 500; 
+  }
+  .time-ago.movies { 
+    color: #6f42c1; 
+    font-weight: 500; 
   }
 
-  /* Time ago colors */
-  .time-ago.sports {
-    color: #fd7e14; /* orange */
-    font-weight: 500;
+  /* ===== Cards ===== */
+  .custom-card { 
+    border-radius: 12px; 
+    overflow: hidden; 
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15); 
+    transition: transform 0.2s ease-in-out; 
   }
-  .time-ago.movies {
-    color: #6f42c1; /* purple */
-    font-weight: 500;
+  .custom-card:hover { 
+    transform: translateY(-3px); 
+    box-shadow: 0 6px 14px rgba(0,0,0,0.25); 
   }
 
-  .btn-details {
-    border-radius: 20px;
-    padding: 4px 10px;
-    font-size: 0.75rem;
-    transition: background-color 0.2s ease, transform 0.2s ease;
+  .custom-card img { 
+    height: 200px; 
+    object-fit: cover; 
+    border-bottom: 2px solid #eee; 
   }
-  .btn-details:hover {
-    transform: scale(1.05);
-    filter: brightness(1.1);
+
+  .card-body { 
+    padding: 0.9rem; 
+  }
+
+  .card-footer { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 0.6rem 0.9rem; 
+    background: #f8f9fa; 
+  }
+
+  /* ===== Section Header ===== */
+  .section-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 0.5rem 0.8rem; 
+    font-size: 1rem; 
+    font-weight: 700; 
+    margin-bottom: 0.7rem; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    transition: background 0.2s; 
+  }
+  .section-header.sports { 
+    background: #ffebee; 
+    color: #c62828; 
+  }
+  .section-header.movies { 
+    background: #e3f2fd; 
+    color: #1565c0; 
+  }
+  .section-header:hover { 
+    opacity: 0.9; 
+  }
+
+  .more-icon { 
+    font-size: 1.1rem; 
   }
 `;
 document.head.appendChild(style);
@@ -152,10 +127,8 @@ function extractFirstImage(html) {
   return img ? img.src : null;
 }
 
-function extractTextPreview(html, length = 90) {
-  const tempDiv = document.createElement("div");
-  tempDiv.innerHTML = html || "";
-  const text = tempDiv.textContent || tempDiv.innerText || "";
+function extractTextPreview(text, length = 200) {
+  if (!text) return "";
   return text.length > length ? text.substring(0, length) + "..." : text;
 }
 
@@ -197,12 +170,19 @@ function createCardsGrid(snapshot, type) {
 
     const cardBody = document.createElement("div");
     cardBody.className = "card-body";
+
+    // ✅ Sports = bold black (seriesname)
+    // ✅ Movies = blue normal (content)
+    const previewText = type.includes("Sports")
+      ? `<strong>${extractTextPreview(data.seriesname, 200)}</strong>`
+      : extractTextPreview(data.content, 200);
+
     cardBody.innerHTML = `
       <div class="review-title ${type.includes("Sports") ? "sports" : "movies"}">
         ${data.title || "Untitled"}
       </div>
       <div class="review-preview ${type.includes("Sports") ? "sports" : "movies"}">
-        ${extractTextPreview(data.content)}
+        ${previewText}
       </div>
     `;
     card.appendChild(cardBody);
