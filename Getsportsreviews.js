@@ -38,14 +38,14 @@ style.textContent = `
     margin-bottom: 0.75rem; 
     flex-grow: 1; 
     color: #000000;       /* black text */
-    font-weight: 700;     /* bold */
+    font-weight: 400;     /* normal */
   }
   .review-preview.movies { 
     font-size: 0.9rem; 
     margin-bottom: 0.75rem; 
     flex-grow: 1; 
     color: #0d47a1;       /* blue text */
-    font-weight: 400; 
+    font-weight: 400;     /* normal */
   }
 
   /* ===== Time Ago ===== */
@@ -171,10 +171,10 @@ function createCardsGrid(snapshot, type) {
     const cardBody = document.createElement("div");
     cardBody.className = "card-body";
 
-    // ✅ Sports = bold black (seriesname)
+    // ✅ Sports = black normal (seriesname)
     // ✅ Movies = blue normal (content)
     const previewText = type.includes("Sports")
-      ? `<strong>${extractTextPreview(data.seriesname, 200)}</strong>`
+      ? extractTextPreview(data.seriesname, 200)
       : extractTextPreview(data.content, 200);
 
     cardBody.innerHTML = `

@@ -236,10 +236,6 @@
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td>${d.matchid || ""}</td>
-          <td>${d.title || ""}</td>
-          <td>${d.type || ""}</td>
-          <td>${d.type === "Sports Review" ? (d.seriesname || "") : ""}</td>
-          <td>${d.createdby || ""}</td>
           <td>${d.createddate?.toDate ? d.createddate.toDate().toLocaleString() : ""}</td>
           <td><button class="btn btn-sm btn-danger icon-btn" data-id="${docSnap.id}"><i class="bi bi-trash"></i></button></td>
         `;
