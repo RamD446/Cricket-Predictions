@@ -1,55 +1,111 @@
+<!-- Disclaimer.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Disclaimer - RDM Jobs</title>
+  <title>Disclaimer - RDM11 Predictions & Movie Reviews</title>
+
+  <!-- Bootstrap + Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Custom Styles -->
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #fdfbfb, #ebedee);
+      color: #343a40;
+    }
+    .main-content {
+      min-height: 80vh;
+    }
+    #disclaimerContent {
+      background: #ffffff;
+      border-radius: 16px;
+      border: 1px solid #dee2e6;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      padding: 2rem;
+      color: #495057;
+      text-align: left;
+    }
+    #disclaimerContent h3 {
+      color: #198754;
+      font-weight: 700;
+      text-align: center;
+    }
+    #disclaimerContent p {
+      line-height: 1.6;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+    #disclaimerContent strong {
+      color: #d6336c;
+    }
+    .highlight-box {
+      background: #f8f9fa;
+      border-left: 4px solid #198754;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+    }
+  </style>
 </head>
 <body>
   <div class="site-wrapper">
 
-    <!-- Header will be injected -->
-     <div id="header-container"></div>
+    <!-- Header -->
+    <div id="header-container"></div>
 
     <!-- Main Content -->
-    <main class="main-content p-4 mt-5" style="min-height: 80vh;">
-      <div id="disclaimerContent" class="bg-light p-4 rounded shadow-sm text-muted text-center">
-        <div class="spinner-border text-success mb-3" role="status"></div><br />
-        Loading Disclaimer...
+    <main class="main-content p-4 mt-5">
+      <div class="container">
+        <div class="text-center mb-4" id="loadingBox">
+          <div class="spinner-border text-success mb-3" role="status"></div>
+          <p class="text-muted">Loading Disclaimer...</p>
+        </div>
+
+        <div id="disclaimerContent" class="d-none">
+          <h3 class="mb-3">
+            <button class="btn btn-success btn-sm fw-bold" disabled>Disclaimer</button>
+          </h3>
+          <p>
+            <strong>RDM11 Predictions & Movie Reviews</strong> is an independent platform. 
+            All content on this site is published in good faith and for informational and entertainment purposes only.
+          </p>
+          <p>
+            We make every effort to ensure the reviews, predictions, and analyses are accurate and up to date. 
+            However, we do not provide any guarantees about completeness, reliability, or outcomes.
+          </p>
+          <div class="highlight-box">
+            <p class="mb-0"><strong>⚠️ Important:</strong> Any decisions or actions you take based on the information 
+              from <strong>RDM11 Predictions & Movie Reviews</strong> are strictly at your own risk.
+            </p>
+          </div>
+          <p class="mt-3">
+            Sports predictions are subjective opinions and movie reviews reflect personal analysis. 
+            Always use your own judgment and discretion while interpreting content from this site.
+          </p>
+        </div>
       </div>
     </main>
 
-    <!-- Footer will be injected -->
+    <!-- Footer -->
     <div class="footer-container"></div>
-
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
   <!-- Scripts -->
   <script src="header.js"></script>
   <script src="footer.js"></script>
   <script>
-    // Navigate to filtered job types
-    function navigateToType(type) {
-      const encodedType = encodeURIComponent(type);
-      window.location.href = `jobinformation.html?type=${encodedType}`;
-    }
-
-    // Load Disclaimer content after a short delay
+    // Show Disclaimer after loading
     window.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
-        document.getElementById("disclaimerContent").innerHTML = `
-          <h3 class="mb-3"> <button class="btn btn-outline-success btn-sm fw-bold" disabled>Disclaimer</button></h3>
-          <p>RDM Jobs is not affiliated with any government or private organization. All content on this site is published in good faith and for general information purposes only.</p>
-          <p>We make every effort to ensure the information is accurate and up-to-date, but we do not make any warranties about the completeness or reliability of the data.</p>
-          <p>Any action you take based on the information found on RDM Jobs is strictly at your own risk.</p>
-          <p>Always verify details from the official website of the respective organization or recruiter before applying.</p>
-        `;
+        document.getElementById("loadingBox").classList.add("d-none");
+        document.getElementById("disclaimerContent").classList.remove("d-none");
       }, 1000);
     });
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

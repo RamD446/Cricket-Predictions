@@ -12,9 +12,7 @@
 
   <!-- Styles -->
   <style>
-    body {
-      background: #f8f9fa;
-    }
+    body { background: #f8f9fa; }
     .section-wrapper {
       border: 2px solid #dee2e6;
       border-radius: 12px;
@@ -31,15 +29,11 @@
       gap: 8px;
       color: #28a745;
     }
-    .row.g-3 > [class*="col-"] {
-      display: flex;
-    }
     .custom-card {
       border: 1px solid #dee2e6;
       border-radius: 12px;
       background: #ffffff;
       overflow: hidden;
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
       display: flex;
       flex-direction: column;
       width: 100%;
@@ -52,6 +46,7 @@
       font-weight: bold;
       font-size: 1.1rem;
       margin-bottom: 0.5rem;
+      color: hotpink;
     }
     .review-image {
       width: 100%;
@@ -60,33 +55,29 @@
       border-radius: 8px;
       margin-bottom: 0.5rem;
     }
-    .review-sub {
-      font-size: 0.85rem;
-      color: #6c757d;
-      margin-bottom: 0.5rem;
-    }
-    .review-preview {
-      font-size: 0.85rem;
-      color: #495057;
+    .review-content {
+      font-size: 0.9rem;
+      color: #212529;
       margin-bottom: 0.75rem;
     }
-    .btn-details {
-      border-radius: 20px;
-      font-size: 0.8rem;
-      padding: 4px 10px;
-    }
     .card-footer {
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       color: #6c757d;
-      text-align: right;
       background: #f8f9fa;
       border-top: 1px solid #dee2e6;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0.75rem;
+    }
+    .btn-details {
+      font-size: 0.85rem;
+      padding: 4px 10px;
     }
     /* Pagination */
     .pagination-controls {
       display: flex;
       justify-content: center;
-      gap: 10px;
       margin-top: 1rem;
     }
   </style>
@@ -106,8 +97,7 @@
 
   <!-- Pagination Controls -->
   <div class="pagination-controls">
-    <button id="prevBtn" class="btn btn-outline-success btn-sm" disabled>⏮ Prev</button>
-    <button id="nextBtn" class="btn btn-outline-success btn-sm" disabled>Next ⏭</button>
+    <ul id="pagination" class="pagination"></ul>
   </div>
 </div>
 <div class="footer-container"></div>
@@ -115,9 +105,8 @@
 <!-- Firebase + Firestore -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getFirestore, collection, getDocs, query, where, orderBy, limit, startAfter } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { getFirestore, collection, getDocs, query, where, orderBy, limit, startAfter, documentId, getCountFromServer } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-  // Firebase Config
   const firebaseConfig = {
     apiKey: "AIzaSyD_4rFTGZn-I7xYwS9SQIhI4KM7P0I2msE",
     authDomain: "rdm11-34fb1.firebaseapp.com",
@@ -131,13 +120,11 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  // Pagination State
-  const pageSize = 10;
+  const pageSize = 6;
   let lastVisible = null;
-  let firstVisible = null;
-  let pageStack = [];
+  let currentPage = 1;
+  let totalPages = 1;
 
-  // Helpers
   function extractFirstImage(html) {
     const tempDiv = document.createElement("div");
     tempDiv.innerHTML = html || "";
@@ -145,11 +132,10 @@
     return img ? img.src : null;
   }
 
-  function extractTextPreview(html, length = 120) {
+  function extractText(html) {
     const tempDiv = document.createElement("div");
     tempDiv.innerHTML = html || "";
-    const text = tempDiv.textContent || tempDiv.innerText || "";
-    return text.length > length ? text.substring(0, length) + "..." : text;
+    return tempDiv.textContent || tempDiv.innerText || "";
   }
 
   function timeAgo(date) {
@@ -185,38 +171,40 @@
       const cardBody = document.createElement("div");
       cardBody.className = "card-body";
 
+      // Title (pink)
       cardBody.innerHTML = `<div class="review-title">${data.title || "Untitled"}</div>`;
 
+      // Image
       const img = document.createElement("img");
       img.src = imgSrc;
       img.alt = "Movie Review Image";
       img.className = "review-image";
       cardBody.appendChild(img);
 
-      if (data.seriesname) {
-        cardBody.innerHTML += `<div class="review-sub">${data.seriesname}</div>`;
-      }
+      // Full Content
+      const contentText = extractText(data.content);
+      cardBody.innerHTML += `<div class="review-content">${contentText}</div>`;
 
-      const previewText = extractTextPreview(data.content, 120);
-      cardBody.innerHTML += `<div class="review-preview">${previewText}</div>`;
+      // Footer with Button + Time
+      const footer = document.createElement("div");
+      footer.className = "card-footer";
 
       const btn = document.createElement("button");
       btn.className = "btn btn-success btn-sm btn-details";
-      btn.textContent = "Read Post >>";
+      btn.textContent = "Read Post Details";
       btn.addEventListener("click", () => {
         const id = docSnap.id;
         window.location.href = `detailspage.html?id=${encodeURIComponent(id)}&type=Movie%20Review`;
       });
-      cardBody.appendChild(btn);
 
-      const footer = document.createElement("div");
-      footer.className = "card-footer";
       const dateText = document.createElement("span");
       if (data.createddate && typeof data.createddate.toDate === "function") {
         dateText.textContent = timeAgo(data.createddate.toDate());
       } else {
         dateText.textContent = "Unknown date";
       }
+
+      footer.appendChild(btn);
       footer.appendChild(dateText);
 
       card.appendChild(cardBody);
@@ -228,42 +216,35 @@
     return row;
   }
 
-  async function loadMovieReviews(nextPage = false, prevPage = false) {
+  async function getTotalPages() {
+    const q = query(collection(db, "Predictions"), where("type", "==", "Movie Review"));
+    const snapshot = await getCountFromServer(q);
+    totalPages = Math.ceil(snapshot.data().count / pageSize);
+  }
+
+  async function loadMovieReviews(page = 1) {
     const moviesContainer = document.getElementById("moviesSection");
     const spinner = document.getElementById("spinner");
-    const prevBtn = document.getElementById("prevBtn");
-    const nextBtn = document.getElementById("nextBtn");
+    const pagination = document.getElementById("pagination");
 
     moviesContainer.innerHTML = "";
     spinner.style.display = "block";
+    pagination.innerHTML = "";
 
     try {
-      let moviesQuery;
+      let moviesQuery = query(
+        collection(db, "Predictions"),
+        where("type", "==", "Movie Review"),
+        orderBy("createddate", "desc"),
+        limit(pageSize)
+      );
 
-      if (nextPage && lastVisible) {
-        pageStack.push(lastVisible);
+      if (page > 1 && lastVisible) {
         moviesQuery = query(
           collection(db, "Predictions"),
           where("type", "==", "Movie Review"),
           orderBy("createddate", "desc"),
           startAfter(lastVisible),
-          limit(pageSize)
-        );
-      } else if (prevPage && pageStack.length > 0) {
-        const prevCursor = pageStack.pop();
-        moviesQuery = query(
-          collection(db, "Predictions"),
-          where("type", "==", "Movie Review"),
-          orderBy("createddate", "desc"),
-          startAfter(prevCursor),
-          limit(pageSize)
-        );
-      } else {
-        pageStack = [];
-        moviesQuery = query(
-          collection(db, "Predictions"),
-          where("type", "==", "Movie Review"),
-          orderBy("createddate", "desc"),
           limit(pageSize)
         );
       }
@@ -272,7 +253,6 @@
       spinner.style.display = "none";
 
       if (!moviesSnap.empty) {
-        firstVisible = moviesSnap.docs[0];
         lastVisible = moviesSnap.docs[moviesSnap.docs.length - 1];
 
         const wrapper = document.createElement("div");
@@ -281,11 +261,19 @@
         wrapper.appendChild(createCardsGrid(moviesSnap));
         moviesContainer.appendChild(wrapper);
 
-        prevBtn.disabled = pageStack.length === 0;
-        nextBtn.disabled = moviesSnap.docs.length < pageSize;
+        // Pagination buttons
+        for (let i = 1; i <= totalPages; i++) {
+          const li = document.createElement("li");
+          li.className = "page-item " + (i === page ? "active" : "");
+          const a = document.createElement("button");
+          a.className = "page-link";
+          a.textContent = i;
+          a.addEventListener("click", () => loadMovieReviews(i));
+          li.appendChild(a);
+          pagination.appendChild(li);
+        }
       } else {
         moviesContainer.innerHTML = `<p class="text-muted">No movie reviews found.</p>`;
-        nextBtn.disabled = true;
       }
     } catch (error) {
       console.error("Error loading movie reviews:", error);
@@ -294,10 +282,10 @@
     }
   }
 
-  document.getElementById("nextBtn").addEventListener("click", () => loadMovieReviews(true, false));
-  document.getElementById("prevBtn").addEventListener("click", () => loadMovieReviews(false, true));
-
-  loadMovieReviews();
+  (async () => {
+    await getTotalPages();
+    loadMovieReviews(1);
+  })();
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

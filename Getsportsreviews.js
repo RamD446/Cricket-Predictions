@@ -18,9 +18,9 @@ const db = getFirestore(app);
 // ✅ Styles
 const style = document.createElement("style");
 style.textContent = `
-  /* ===== Titles (Sports + Movies same) ===== */
+  /* ===== Titles ===== */
   .review-title { 
-    color: #e91e63;   /* 🎨 Pink for all */
+    color: #e91e63;   
     font-weight: 700; 
     font-size: 1rem; 
     margin-bottom: 0.4rem; 
@@ -34,13 +34,13 @@ style.textContent = `
     margin-bottom: 0.3rem;
   }
 
-  /* ===== Preview Text (Unified color) ===== */
+  /* ===== Preview Text ===== */
   .review-preview { 
     font-size: 0.85rem; 
     margin: 0.4rem 0; 
     line-height: 1.3; 
-    color: #000;        /* Black for both */
-    font-weight: 400;   /* Normal weight */
+    color: #000;        
+    font-weight: 400;   
   }
 
   /* ===== Time Ago ===== */
@@ -82,13 +82,13 @@ style.textContent = `
   /* ===== Footer ===== */
   .card-footer { 
     display: flex; 
-    justify-content: flex-end; 
+    justify-content: space-between; /* time left, button right */
     align-items: center; 
     padding: 0.6rem 0.9rem; 
     background: #f8f9fa; 
   }
 
-  /* ===== Button (Same for Sports + Movies) ===== */
+  /* ===== Button ===== */
   .btn-read { 
     background: #28a745; 
     color: white; 
@@ -99,7 +99,6 @@ style.textContent = `
     font-weight: 600; 
     cursor: pointer; 
     transition: background 0.3s ease; 
-    align-self: flex-start;
   }
   .btn-read:hover { 
     background: #218838; 
@@ -143,7 +142,6 @@ function extractFirstImage(html) {
   return img ? img.src : null;
 }
 
-// ✅ Strip HTML + cut preview
 function extractTextPreview(text, length = 120) {
   if (!text) return "";
   const tempDiv = document.createElement("div");
@@ -216,19 +214,9 @@ function createCardsGrid(snapshot, type) {
     }
     cardBody.appendChild(previewEl);
 
-    // ✅ Button
-    const btn = document.createElement("button");
-    btn.className = "btn-read";
-    btn.textContent = "Read Post ➡️";   // 🔴 Updated here
-    btn.addEventListener("click", () => {
-      const id = docSnap.id;
-      window.location.href = `detailspage.html?id=${encodeURIComponent(id)}&type=${encodeURIComponent(type)}`;
-    });
-    cardBody.appendChild(btn);
-
     card.appendChild(cardBody);
 
-    // ✅ Footer with Time Ago
+    // ✅ Footer with Time Ago + Button
     const footer = document.createElement("div");
     footer.className = "card-footer";
 
@@ -238,7 +226,17 @@ function createCardsGrid(snapshot, type) {
       ? timeAgo(data.createddate.toDate())
       : "Unknown date";
 
+    // ✅ Button moved here
+    const btn = document.createElement("button");
+    btn.className = "btn-read";
+    btn.textContent = "Read Post Details";
+    btn.addEventListener("click", () => {
+      const id = docSnap.id;
+      window.location.href = `detailspage.html?id=${encodeURIComponent(id)}&type=${encodeURIComponent(type)}`;
+    });
+
     footer.appendChild(dateText);
+    footer.appendChild(btn);
     card.appendChild(footer);
 
     col.appendChild(card);

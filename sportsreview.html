@@ -53,7 +53,6 @@
       width: 100%;
       height: 200px;
       object-fit: cover;
-      border-radius: 0;
       transition: filter 0.3s ease;
     }
     .custom-card:hover img {
@@ -71,8 +70,9 @@
       margin: 0.75rem;
     }
     .review-sub {
-      font-size: 0.85rem;
-      color: #6c757d;
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: #dc3545; /* 🔴 Bold Red for seriesname */
       margin: 0.5rem 0.75rem;
     }
     .review-preview {
@@ -92,11 +92,11 @@
       align-items: center;
     }
     .btn-details {
-      border-radius: 20px;
-      padding: 4px 12px;
+      border: none;
+      padding: 4px 10px;
       font-size: 0.8rem;
       background-color: #198754;
-      border: none;
+      color: #fff;
       display: flex;
       align-items: center;
       gap: 4px;
@@ -109,7 +109,14 @@
       margin-top: 1rem;
       display: flex;
       justify-content: center;
-      gap: 0.5rem;
+    }
+    .pagination .page-item .page-link {
+      color: #0d6efd;
+    }
+    .pagination .page-item.active .page-link {
+      background-color: #0d6efd;
+      border-color: #0d6efd;
+      color: #fff;
     }
   </style>
 </head>
@@ -126,16 +133,11 @@
 
     <!-- Sports Reviews Section -->
     <div id="sportsSection"></div>
+
     <!-- Pagination Controls -->
-    <div class="pagination-controls">
-      <button id="prevPage" class="btn btn-outline-secondary btn-sm" disabled>
-        <i class="bi bi-chevron-left"></i> Previous
-      </button>
-      <span id="pageInfo" class="align-self-center text-muted small"></span>
-      <button id="nextPage" class="btn btn-outline-secondary btn-sm">
-        Next <i class="bi bi-chevron-right"></i>
-      </button>
-    </div>
+    <nav>
+      <ul id="pagination" class="pagination pagination-controls"></ul>
+    </nav>
   </div>
 
   <div class="footer-container"></div>
@@ -150,7 +152,7 @@
       apiKey: "AIzaSyD_4rFTGZn-I7xYwS9SQIhI4KM7P0I2msE",
       authDomain: "rdm11-34fb1.firebaseapp.com",
       projectId: "rdm11-34fb1",
-      storageBucket: "rdm11-34fb1.firebasestorage.app",
+      storageBucket: "rdm11-34fb1.appspot.com",
       messagingSenderId: "46810528643",
       appId: "1:46810528643:web:406a9ebee9c8a5762954b6",
       measurementId: "G-MP86EYWQE0"
@@ -220,7 +222,7 @@
 
         if (data.seriesname) {
           const sub = document.createElement("div");
-          sub.className = "review-sub";
+          sub.className = "review-sub"; // 🔴 Bold Red
           sub.textContent = data.seriesname;
           cardBody.appendChild(sub);
         }
@@ -238,7 +240,7 @@
 
         const btn = document.createElement("button");
         btn.className = "btn btn-success btn-details";
-        btn.innerHTML = `<i class="bi bi-book"></i> Read Post`;
+        btn.textContent = "Post Details"; // ✅ Renamed + no icon
         btn.addEventListener("click", () => {
           window.location.href = `detailspage.html?id=${encodeURIComponent(docSnap.id)}&type=Sports%20Review`;
         });
@@ -264,7 +266,7 @@
     // Pagination Variables
     let allDocs = [];
     let currentPage = 1;
-    const itemsPerPage = 10;
+    const itemsPerPage = 6;
 
     function renderPage() {
       const sportsContainer = document.getElementById("sportsSection");
@@ -280,10 +282,33 @@
       wrapper.appendChild(createCardsGrid(pageDocs));
       sportsContainer.appendChild(wrapper);
 
-      // Update pagination controls
-      document.getElementById("pageInfo").textContent = `Page ${currentPage} of ${Math.ceil(allDocs.length / itemsPerPage)}`;
-      document.getElementById("prevPage").disabled = currentPage === 1;
-      document.getElementById("nextPage").disabled = currentPage === Math.ceil(allDocs.length / itemsPerPage);
+      renderPagination();
+    }
+
+    function renderPagination() {
+      const pagination = document.getElementById("pagination");
+      pagination.innerHTML = "";
+      const totalPages = Math.ceil(allDocs.length / itemsPerPage);
+
+      function addPage(number, isActive = false) {
+        const li = document.createElement("li");
+        li.className = `page-item ${isActive ? "active" : ""}`;
+        const a = document.createElement("a");
+        a.className = "page-link";
+        a.href = "#";
+        a.textContent = number;
+        a.addEventListener("click", (e) => {
+          e.preventDefault();
+          currentPage = number;
+          renderPage();
+        });
+        li.appendChild(a);
+        pagination.appendChild(li);
+      }
+
+      for (let i = 1; i <= totalPages; i++) {
+        addPage(i, i === currentPage);
+      }
     }
 
     async function loadSportsReviews() {
@@ -310,20 +335,6 @@
         document.getElementById("sportsSection").innerHTML = `<p class="text-danger">Failed to load sports reviews.</p>`;
       }
     }
-
-    // Event Listeners for Pagination
-    document.getElementById("prevPage").addEventListener("click", () => {
-      if (currentPage > 1) {
-        currentPage--;
-        renderPage();
-      }
-    });
-    document.getElementById("nextPage").addEventListener("click", () => {
-      if (currentPage < Math.ceil(allDocs.length / itemsPerPage)) {
-        currentPage++;
-        renderPage();
-      }
-    });
 
     loadSportsReviews();
   </script>
