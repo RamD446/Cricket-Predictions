@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
+  <style>
+    body { background-color: #f8f9fa; }
+    .ql-editor { min-height: 150px; }
+    .icon-btn {
+      width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%;
+    }
+    footer { background-color: red !important; color: white !important; }
+    @media (max-width: 576px) {
+      .table-responsive { font-size: 0.85rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div id="header-container"></div>
+
+  <main class="container" style="padding-top: 6rem; padding-bottom: 4rem;">
+
+    <!-- Login Section -->
+    <div id="login-section" class="card p-4 shadow-sm mx-auto" style="max-width: 400px;">
+      <h5 class="mb-3 text-center">Login</h5>
+      <form id="loginForm">
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" id="email" class="form-control" placeholder="Enter email" required />
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" id="password" class="form-control" placeholder="Enter password" required />
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Login</button>
+      </form>
+    </div>
+
+    <!-- Admin Section -->
+    <div id="admin-section" style="display:none;">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3">
+        <p class="fw-bold mb-2 mb-md-0">Logged in as <span id="userEmail"></span></p>
+        <button id="logoutBtn" class="btn btn-outline-danger btn-sm">Logout</button>
+      </div>
+
+      <!-- Create Buttons -->
+      <div id="createButtons" class="mb-4 d-flex gap-2">
+        <button class="btn btn-success icon-btn" data-bs-toggle="modal" data-bs-target="#createMovieModal" title="Create Movie Review">
+          <i class="bi bi-film"></i>
+        </button>
+        <button class="btn btn-primary icon-btn" data-bs-toggle="modal" data-bs-target="#createSportsModal" title="Create Sports Review">
+          <i class="bi bi-trophy"></i>
+        </button>
+      </div>
+
+      <!-- Reviews Table -->
+      <div class="card shadow-sm p-3">
+        <h5>All Reviews</h5>
+        <div class="table-responsive">
+          <table class="table table-striped table-hover table-sm align-middle">
+            <thead class="table-dark">
+              <tr>
+                <th>Match ID</th>
+                <th>Date</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="reviewsTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <div class="footer-container"></div>
+
+  <!-- Movie Review Modal -->
+  <div class="modal fade" id="createMovieModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title">Create Movie Review</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="text" id="movie_title" placeholder="Title" class="form-control mb-3" required />
+          <div id="movie_editor"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="createMovieBtn" class="btn btn-success">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sports Review Modal -->
+  <div class="modal fade" id="createSportsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title">Create Sports Review</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="text" id="sports_title" placeholder="Title" class="form-control mb-2" required />
+          <input type="text" id="sports_series" placeholder="Series Name" class="form-control mb-3" />
+          <div id="sports_editor"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="createSportsBtn" class="btn btn-primary">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase + JS -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD_4rFTGZn-I7xYwS9SQIhI4KM7P0I2msE",
+      authDomain: "rdm11-34fb1.firebaseapp.com",
+      projectId: "rdm11-34fb1",
+      storageBucket: "rdm11-34fb1.firebasestorage.app",
+      messagingSenderId: "46810528643",
+      appId: "1:46810528643:web:406a9ebee9c8a5762954b6",
+      measurementId: "G-MP86EYWQE0"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const loginForm = document.getElementById("loginForm");
+    const loginSection = document.getElementById("login-section");
+    const adminSection = document.getElementById("admin-section");
+    const reviewsTable = document.getElementById("reviewsTable");
+    const userEmailSpan = document.getElementById("userEmail");
+
+    const toolbarOptions = [
+      ['bold'],
+      [{ 'color': [] }],
+      ['image']
+    ];
+
+    const movieEditor = new Quill("#movie_editor", {
+      theme: "snow",
+      modules: { toolbar: toolbarOptions }
+    });
+
+    const sportsEditor = new Quill("#sports_editor", {
+      theme: "snow",
+      modules: { toolbar: toolbarOptions }
+    });
+
+    function generateMatchIdFromTitle(title) {
+      const randomId = Math.random().toString(36).substring(2, 10);
+      return title.trim().replace(/\s+/g, "_").replace(/[^\w_]/g, "") + "_" + randomId;
+    }
+
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      try {
+        await signInWithEmailAndPassword(auth, email.value, password.value);
+        loginForm.reset();
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      await signOut(auth);
+    });
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        loginSection.style.display = "none";
+        adminSection.style.display = "block";
+        userEmailSpan.textContent = user.email;
+        loadReviews();
+      } else {
+        loginSection.style.display = "block";
+        adminSection.style.display = "none";
+      }
+    });
+
+    async function createReview(type, data) {
+      await addDoc(collection(db, "Predictions"), {
+        ...data,
+        matchid: generateMatchIdFromTitle(data.title),
+        type,
+        createdby: auth.currentUser.email,
+        createddate: serverTimestamp()
+      });
+      loadReviews();
+    }
+
+    document.getElementById("createMovieBtn").addEventListener("click", async () => {
+      await createReview("Movie Review", {
+        title: document.getElementById("movie_title").value,
+        content: movieEditor.root.innerHTML
+      });
+      bootstrap.Modal.getInstance(document.getElementById("createMovieModal")).hide();
+    });
+
+    document.getElementById("createSportsBtn").addEventListener("click", async () => {
+      await createReview("Sports Review", {
+        title: document.getElementById("sports_title").value,
+        seriesname: document.getElementById("sports_series").value,
+        content: sportsEditor.root.innerHTML
+      });
+      bootstrap.Modal.getInstance(document.getElementById("createSportsModal")).hide();
+    });
+
+    async function loadReviews() {
+      reviewsTable.innerHTML = "";
+      const q = query(collection(db, "Predictions"), orderBy("createddate", "desc"));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((docSnap) => {
+        const d = docSnap.data();
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${d.matchid || ""}</td>
+          <td>${d.createddate?.toDate ? d.createddate.toDate().toLocaleString() : ""}</td>
+          <td>
+            <button class="btn btn-sm btn-danger icon-btn" data-id="${docSnap.id}">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        `;
+        reviewsTable.appendChild(tr);
+      });
+
+      document.querySelectorAll("[data-id]").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          if (confirm("Delete this review?")) {
+            await deleteDoc(doc(db, "Predictions", btn.dataset.id));
+            loadReviews();
+          }
+        });
+      });
+    }
+  </script>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  <script src="header.js"></script>
+  <script src="footer.js"></script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Privacy Policy - RDM Jobs</title>
+
+  <!-- Styles -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="site-wrapper">
+
+    <!-- Header injected by header.js -->
+<div id="header-container"></div>
+
+
+    <!-- Main Content -->
+    <main class="main-content p-4 mt-5">
+      <div class="bg-light p-4 rounded shadow-sm">
+        <h3 class="mb-4">
+          <button class="btn btn-outline-success btn-sm fw-bold" disabled>Privacy Policy</button>
+        </h3>
+        <p>At <strong>RDM Jobs</strong>, we take your privacy seriously. Here's how we handle your data:</p>
+
+        <h5>Information We Collect</h5>
+        <ul>
+          <li>We do <strong>not collect or store personal data</strong> from users.</li>
+          <li>This website only publishes publicly available job notifications.</li>
+          <li>There is no login, registration, or user tracking.</li>
+        </ul>
+
+        <h5>Use of Information</h5>
+        <p>All job information shared here is for public benefit. We do not sell or share any user data. The site is purely informational and updated daily with job-related content.</p>
+
+        <h5>External Links</h5>
+        <p>RDM Jobs may contain links to external websites. We are not responsible for the privacy practices of those sites.</p>
+
+        <h5>Policy Updates</h5>
+        <p>This privacy policy may be revised without notice. Users are encouraged to review it periodically.</p>
+
+        <h5>Contact Us</h5>
+        <p>For questions, contact: <strong>rdm409446@gmail.com</strong></p>
+      </div>
+    </main>
+
+    <!-- Footer injected by footer.js -->
+    <div class="footer-container"></div>
+
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Scripts -->
+  <script src="header.js"></script>
+  <script src="footer.js"></script>
+  <script>
+    // Job category navigation
+    function navigateToType(type) {
+      const encodedType = encodeURIComponent(type);
+      window.location.href = `jobinformation.html?type=${encodedType}`;
+    }
+  </script>
+</body>
+</html>

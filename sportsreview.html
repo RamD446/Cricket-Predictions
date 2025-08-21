@@ -1,0 +1,335 @@
+<!-- sportsreview.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sports Reviews</title>
+
+  <!-- Bootstrap CSS + Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Styles -->
+  <style>
+    body {
+      background: #f8f9fa;
+      font-family: 'Poppins', sans-serif;
+    }
+    .section-wrapper {
+      border: 2px solid #dee2e6;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-top: 2rem;
+      background: #fff;
+    }
+    .section-header {
+      font-weight: 700;
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #0d6efd;
+    }
+    .row.g-3 > [class*="col-"] {
+      display: flex;
+    }
+    .custom-card {
+      border: 1px solid #dee2e6;
+      border-radius: 12px;
+      background: #ffffff;
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+    .custom-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+    .custom-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 0;
+      transition: filter 0.3s ease;
+    }
+    .custom-card:hover img {
+      filter: brightness(0.9);
+    }
+    .card-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .review-title {
+      font-weight: bold;
+      font-size: 1.1rem;
+      color: #d6336c; /* Pink */
+      margin: 0.75rem;
+    }
+    .review-sub {
+      font-size: 0.85rem;
+      color: #6c757d;
+      margin: 0.5rem 0.75rem;
+    }
+    .review-preview {
+      font-size: 0.85rem;
+      color: #495057;
+      margin: 0 0.75rem 0.75rem;
+      flex-grow: 1;
+    }
+    .card-footer {
+      font-size: 0.75rem;
+      color: #6c757d;
+      border-top: 1px solid #dee2e6;
+      padding: 0.5rem 0.75rem;
+      background: #f8f9fa;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .btn-details {
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 0.8rem;
+      background-color: #198754;
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .btn-details:hover {
+      background-color: #157347;
+    }
+    /* Pagination */
+    .pagination-controls {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div id="header-container"></div>
+  <br>
+
+  <div class="container mt-5" style="min-height: 80vh;">
+    <!-- Spinner -->
+    <div class="text-center my-4" id="spinner">
+      <div class="spinner-border text-primary" role="status"></div>
+      <p class="text-muted mt-2">SportsReviews...</p>
+    </div>
+
+    <!-- Sports Reviews Section -->
+    <div id="sportsSection"></div>
+    <!-- Pagination Controls -->
+    <div class="pagination-controls">
+      <button id="prevPage" class="btn btn-outline-secondary btn-sm" disabled>
+        <i class="bi bi-chevron-left"></i> Previous
+      </button>
+      <span id="pageInfo" class="align-self-center text-muted small"></span>
+      <button id="nextPage" class="btn btn-outline-secondary btn-sm">
+        Next <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="footer-container"></div>
+
+  <!-- Firebase + Firestore -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, where, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    // Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyD_4rFTGZn-I7xYwS9SQIhI4KM7P0I2msE",
+      authDomain: "rdm11-34fb1.firebaseapp.com",
+      projectId: "rdm11-34fb1",
+      storageBucket: "rdm11-34fb1.firebasestorage.app",
+      messagingSenderId: "46810528643",
+      appId: "1:46810528643:web:406a9ebee9c8a5762954b6",
+      measurementId: "G-MP86EYWQE0"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Helpers
+    function extractFirstImage(html) {
+      const tempDiv = document.createElement("div");
+      tempDiv.innerHTML = html || "";
+      const img = tempDiv.querySelector("img");
+      return img ? img.src : null;
+    }
+    function extractTextPreview(html, length = 120) {
+      const tempDiv = document.createElement("div");
+      tempDiv.innerHTML = html || "";
+      const text = tempDiv.textContent || tempDiv.innerText || "";
+      return text.length > length ? text.substring(0, length) + "..." : text;
+    }
+    function timeAgo(date) {
+      const seconds = Math.floor((new Date() - date) / 1000);
+      let interval = Math.floor(seconds / 31536000);
+      if (interval >= 1) return interval + " year" + (interval > 1 ? "s" : "") + " ago";
+      interval = Math.floor(seconds / 2592000);
+      if (interval >= 1) return interval + " month" + (interval > 1 ? "s" : "") + " ago";
+      interval = Math.floor(seconds / 86400);
+      if (interval >= 1) return interval + " day" + (interval > 1 ? "s" : "") + " ago";
+      interval = Math.floor(seconds / 3600);
+      if (interval >= 1) return interval + " hour" + (interval > 1 ? "s" : "") + " ago";
+      interval = Math.floor(seconds / 60);
+      if (interval >= 1) return interval + " min" + (interval > 1 ? "s" : "") + " ago";
+      return "Just now";
+    }
+
+    function createCardsGrid(docs) {
+      const row = document.createElement("div");
+      row.className = "row g-3";
+
+      docs.forEach(docSnap => {
+        const data = docSnap.data();
+        let imgSrc = extractFirstImage(data.content);
+        if (!imgSrc || imgSrc.trim() === "") imgSrc = "images/image1.jpeg";
+
+        const col = document.createElement("div");
+        col.className = "col-12 col-md-6 col-lg-4";
+
+        const card = document.createElement("div");
+        card.className = "card custom-card";
+
+        // Title
+        const titleDiv = document.createElement("div");
+        titleDiv.className = "review-title";
+        titleDiv.textContent = data.title || "Untitled";
+        card.appendChild(titleDiv);
+
+        // Image
+        const img = document.createElement("img");
+        img.src = imgSrc;
+        img.alt = "Sports Review Image";
+        card.appendChild(img);
+
+        // Body
+        const cardBody = document.createElement("div");
+        cardBody.className = "card-body";
+
+        if (data.seriesname) {
+          const sub = document.createElement("div");
+          sub.className = "review-sub";
+          sub.textContent = data.seriesname;
+          cardBody.appendChild(sub);
+        }
+
+        const preview = document.createElement("div");
+        preview.className = "review-preview";
+        preview.textContent = extractTextPreview(data.content, 120);
+        cardBody.appendChild(preview);
+
+        card.appendChild(cardBody);
+
+        // Footer
+        const footer = document.createElement("div");
+        footer.className = "card-footer";
+
+        const btn = document.createElement("button");
+        btn.className = "btn btn-success btn-details";
+        btn.innerHTML = `<i class="bi bi-book"></i> Read Post`;
+        btn.addEventListener("click", () => {
+          window.location.href = `detailspage.html?id=${encodeURIComponent(docSnap.id)}&type=Sports%20Review`;
+        });
+
+        const dateText = document.createElement("span");
+        if (data.createddate?.toDate) {
+          dateText.textContent = timeAgo(data.createddate.toDate());
+        } else {
+          dateText.textContent = "Unknown date";
+        }
+
+        footer.appendChild(btn);
+        footer.appendChild(dateText);
+
+        card.appendChild(footer);
+        col.appendChild(card);
+        row.appendChild(col);
+      });
+
+      return row;
+    }
+
+    // Pagination Variables
+    let allDocs = [];
+    let currentPage = 1;
+    const itemsPerPage = 10;
+
+    function renderPage() {
+      const sportsContainer = document.getElementById("sportsSection");
+      sportsContainer.innerHTML = "";
+
+      const start = (currentPage - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+      const pageDocs = allDocs.slice(start, end);
+
+      const wrapper = document.createElement("div");
+      wrapper.className = "section-wrapper";
+      wrapper.innerHTML = `<div class="section-header"><i class="bi bi-trophy-fill"></i> All Sports Reviews</div>`;
+      wrapper.appendChild(createCardsGrid(pageDocs));
+      sportsContainer.appendChild(wrapper);
+
+      // Update pagination controls
+      document.getElementById("pageInfo").textContent = `Page ${currentPage} of ${Math.ceil(allDocs.length / itemsPerPage)}`;
+      document.getElementById("prevPage").disabled = currentPage === 1;
+      document.getElementById("nextPage").disabled = currentPage === Math.ceil(allDocs.length / itemsPerPage);
+    }
+
+    async function loadSportsReviews() {
+      const spinner = document.getElementById("spinner");
+      try {
+        const sportsQuery = query(
+          collection(db, "Predictions"),
+          where("type", "==", "Sports Review"),
+          orderBy("createddate", "desc")
+        );
+
+        const sportsSnap = await getDocs(sportsQuery);
+        spinner.style.display = "none";
+
+        if (!sportsSnap.empty) {
+          allDocs = sportsSnap.docs;
+          renderPage();
+        } else {
+          document.getElementById("sportsSection").innerHTML = `<p class="text-muted">No sports reviews found.</p>`;
+        }
+      } catch (error) {
+        console.error("Error loading sports reviews:", error);
+        spinner.style.display = "none";
+        document.getElementById("sportsSection").innerHTML = `<p class="text-danger">Failed to load sports reviews.</p>`;
+      }
+    }
+
+    // Event Listeners for Pagination
+    document.getElementById("prevPage").addEventListener("click", () => {
+      if (currentPage > 1) {
+        currentPage--;
+        renderPage();
+      }
+    });
+    document.getElementById("nextPage").addEventListener("click", () => {
+      if (currentPage < Math.ceil(allDocs.length / itemsPerPage)) {
+        currentPage++;
+        renderPage();
+      }
+    });
+
+    loadSportsReviews();
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="header.js"></script>
+  <script src="footer.js"></script>
+</body>
+</html>
