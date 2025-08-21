@@ -14,6 +14,7 @@
   <style>
     body {
       background: #f8f9fa;
+      font-family: 'Poppins', sans-serif;
     }
     .section-wrapper {
       border: 2px solid #dee2e6;
@@ -52,7 +53,7 @@
       width: 100%;
       height: 200px;
       object-fit: cover;
-      border-radius: 12px 12px 0 0;
+      border-radius: 0;
       transition: filter 0.3s ease;
     }
     .custom-card:hover img {
@@ -66,16 +67,19 @@
     .review-title {
       font-weight: bold;
       font-size: 1.1rem;
+      color: #d6336c; /* Pink */
+      margin: 0.75rem;
     }
     .review-sub {
       font-size: 0.85rem;
       color: #6c757d;
-      margin-bottom: 0.5rem;
+      margin: 0.5rem 0.75rem;
     }
     .review-preview {
       font-size: 0.85rem;
       color: #495057;
-      margin-bottom: auto;
+      margin: 0 0.75rem 0.75rem;
+      flex-grow: 1;
     }
     .card-footer {
       font-size: 0.75rem;
@@ -89,8 +93,23 @@
     }
     .btn-details {
       border-radius: 20px;
-      padding: 5px 12px;
+      padding: 4px 12px;
       font-size: 0.8rem;
+      background-color: #198754;
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .btn-details:hover {
+      background-color: #157347;
+    }
+    /* Pagination */
+    .pagination-controls {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
     }
   </style>
 </head>
@@ -102,11 +121,21 @@
     <!-- Spinner -->
     <div class="text-center my-4" id="spinner">
       <div class="spinner-border text-primary" role="status"></div>
-      <p class="text-muted mt-2">Loading Sports Reviews...</p>
+      <p class="text-muted mt-2">SportsReviews...</p>
     </div>
 
     <!-- Sports Reviews Section -->
     <div id="sportsSection"></div>
+    <!-- Pagination Controls -->
+    <div class="pagination-controls">
+      <button id="prevPage" class="btn btn-outline-secondary btn-sm" disabled>
+        <i class="bi bi-chevron-left"></i> Previous
+      </button>
+      <span id="pageInfo" class="align-self-center text-muted small"></span>
+      <button id="nextPage" class="btn btn-outline-secondary btn-sm">
+        Next <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
   </div>
 
   <div class="footer-container"></div>
@@ -114,7 +143,7 @@
   <!-- Firebase + Firestore -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getFirestore, collection, getDocs, query, where, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, query, where, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     // Firebase Config
     const firebaseConfig = {
@@ -137,14 +166,12 @@
       const img = tempDiv.querySelector("img");
       return img ? img.src : null;
     }
-
-    function extractTextPreview(html, length = 100) {
+    function extractTextPreview(html, length = 120) {
       const tempDiv = document.createElement("div");
       tempDiv.innerHTML = html || "";
       const text = tempDiv.textContent || tempDiv.innerText || "";
       return text.length > length ? text.substring(0, length) + "..." : text;
     }
-
     function timeAgo(date) {
       const seconds = Math.floor((new Date() - date) / 1000);
       let interval = Math.floor(seconds / 31536000);
@@ -160,11 +187,11 @@
       return "Just now";
     }
 
-    function createCardsGrid(snapshot) {
+    function createCardsGrid(docs) {
       const row = document.createElement("div");
       row.className = "row g-3";
 
-      snapshot.forEach(docSnap => {
+      docs.forEach(docSnap => {
         const data = docSnap.data();
         let imgSrc = extractFirstImage(data.content);
         if (!imgSrc || imgSrc.trim() === "") imgSrc = "images/image1.jpeg";
@@ -175,28 +202,46 @@
         const card = document.createElement("div");
         card.className = "card custom-card";
 
+        // Title
+        const titleDiv = document.createElement("div");
+        titleDiv.className = "review-title";
+        titleDiv.textContent = data.title || "Untitled";
+        card.appendChild(titleDiv);
+
+        // Image
         const img = document.createElement("img");
         img.src = imgSrc;
-        img.alt = `Sports Review Image`;
+        img.alt = "Sports Review Image";
         card.appendChild(img);
 
+        // Body
         const cardBody = document.createElement("div");
         cardBody.className = "card-body";
 
-        const title = data.title || "Untitled";
-        const seriesName = data.seriesname || "";
-        const previewText = extractTextPreview(data.content, 100);
+        if (data.seriesname) {
+          const sub = document.createElement("div");
+          sub.className = "review-sub";
+          sub.textContent = data.seriesname;
+          cardBody.appendChild(sub);
+        }
 
-        cardBody.innerHTML = `
-          <div class="review-title">${title}</div>
-          ${seriesName ? `<div class="review-sub">${seriesName}</div>` : ""}
-          <div class="review-preview">${previewText}</div>
-        `;
+        const preview = document.createElement("div");
+        preview.className = "review-preview";
+        preview.textContent = extractTextPreview(data.content, 120);
+        cardBody.appendChild(preview);
 
         card.appendChild(cardBody);
 
+        // Footer
         const footer = document.createElement("div");
         footer.className = "card-footer";
+
+        const btn = document.createElement("button");
+        btn.className = "btn btn-success btn-details";
+        btn.innerHTML = `<i class="bi bi-book"></i> Read Post`;
+        btn.addEventListener("click", () => {
+          window.location.href = `detailspage.html?id=${encodeURIComponent(docSnap.id)}&type=Sports%20Review`;
+        });
 
         const dateText = document.createElement("span");
         if (data.createddate?.toDate) {
@@ -205,16 +250,8 @@
           dateText.textContent = "Unknown date";
         }
 
-        const btn = document.createElement("button");
-        btn.className = "btn btn-primary btn-details";
-        btn.textContent = "Preview"; // updated text
-        btn.addEventListener("click", () => {
-          const id = docSnap.id;
-          window.location.href = `detailspage.html?id=${encodeURIComponent(id)}&type=Sports%20Review`;
-        });
-
-        footer.appendChild(dateText);
         footer.appendChild(btn);
+        footer.appendChild(dateText);
 
         card.appendChild(footer);
         col.appendChild(card);
@@ -224,39 +261,69 @@
       return row;
     }
 
-    async function loadSportsReviews() {
+    // Pagination Variables
+    let allDocs = [];
+    let currentPage = 1;
+    const itemsPerPage = 10;
+
+    function renderPage() {
       const sportsContainer = document.getElementById("sportsSection");
-      const spinner = document.getElementById("spinner");
       sportsContainer.innerHTML = "";
 
+      const start = (currentPage - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+      const pageDocs = allDocs.slice(start, end);
+
+      const wrapper = document.createElement("div");
+      wrapper.className = "section-wrapper";
+      wrapper.innerHTML = `<div class="section-header"><i class="bi bi-trophy-fill"></i> All Sports Reviews</div>`;
+      wrapper.appendChild(createCardsGrid(pageDocs));
+      sportsContainer.appendChild(wrapper);
+
+      // Update pagination controls
+      document.getElementById("pageInfo").textContent = `Page ${currentPage} of ${Math.ceil(allDocs.length / itemsPerPage)}`;
+      document.getElementById("prevPage").disabled = currentPage === 1;
+      document.getElementById("nextPage").disabled = currentPage === Math.ceil(allDocs.length / itemsPerPage);
+    }
+
+    async function loadSportsReviews() {
+      const spinner = document.getElementById("spinner");
       try {
         const sportsQuery = query(
           collection(db, "Predictions"),
           where("type", "==", "Sports Review"),
-          orderBy("createddate", "desc"),
-          limit(100)
+          orderBy("createddate", "desc")
         );
 
         const sportsSnap = await getDocs(sportsQuery);
-
         spinner.style.display = "none";
 
         if (!sportsSnap.empty) {
-          const wrapper = document.createElement("div");
-          wrapper.className = "section-wrapper";
-          wrapper.innerHTML = `<div class="section-header"><i class="bi bi-trophy-fill"></i> All Sports Reviews</div>`;
-          wrapper.appendChild(createCardsGrid(sportsSnap));
-          sportsContainer.appendChild(wrapper);
+          allDocs = sportsSnap.docs;
+          renderPage();
         } else {
-          sportsContainer.innerHTML = `<p class="text-muted">No sports reviews found.</p>`;
+          document.getElementById("sportsSection").innerHTML = `<p class="text-muted">No sports reviews found.</p>`;
         }
-
       } catch (error) {
         console.error("Error loading sports reviews:", error);
         spinner.style.display = "none";
-        sportsContainer.innerHTML = `<p class="text-danger">Failed to load sports reviews.</p>`;
+        document.getElementById("sportsSection").innerHTML = `<p class="text-danger">Failed to load sports reviews.</p>`;
       }
     }
+
+    // Event Listeners for Pagination
+    document.getElementById("prevPage").addEventListener("click", () => {
+      if (currentPage > 1) {
+        currentPage--;
+        renderPage();
+      }
+    });
+    document.getElementById("nextPage").addEventListener("click", () => {
+      if (currentPage < Math.ceil(allDocs.length / itemsPerPage)) {
+        currentPage++;
+        renderPage();
+      }
+    });
 
     loadSportsReviews();
   </script>

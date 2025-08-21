@@ -6,7 +6,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyD_4rFTGZn-I7xYwS9SQIhI4KM7P0I2msE",
   authDomain: "rdm11-34fb1.firebaseapp.com",
   projectId: "rdm11-34fb1",
-  storageBucket: "rdm11-34fb1.firebasestorage.app",
+  storageBucket: "rdm11-34fb1.appspot.com",
   messagingSenderId: "46810528643",
   appId: "1:46810528643:web:406a9ebee9c8a5762954b6",
   measurementId: "G-MP86EYWQE0"
@@ -18,43 +18,35 @@ const db = getFirestore(app);
 // ✅ Styles
 const style = document.createElement("style");
 style.textContent = `
-  /* ===== Titles ===== */
-  .review-title.sports { 
-    color: #dc3545; 
+  /* ===== Titles (Sports + Movies same) ===== */
+  .review-title { 
+    color: #e91e63;   /* 🎨 Pink for all */
     font-weight: 700; 
     font-size: 1rem; 
-    margin-bottom: 0.25rem; 
-  }
-  .review-title.movies { 
-    color: #198754; 
-    font-weight: 700; 
-    font-size: 1rem; 
-    margin-bottom: 0.25rem; 
+    margin-bottom: 0.4rem; 
   }
 
-  /* ===== Preview Text ===== */
-  .review-preview.sports { 
-    font-size: 0.9rem; 
-    margin-bottom: 0.75rem; 
-    flex-grow: 1; 
-    color: #000000;       /* black text */
-    font-weight: 400;     /* normal */
+  /* ===== Series name (Sports only) ===== */
+  .series-name { 
+    font-size: 0.85rem; 
+    font-weight: 700; 
+    color: #000; 
+    margin-bottom: 0.3rem;
   }
-  .review-preview.movies { 
-    font-size: 0.9rem; 
-    margin-bottom: 0.75rem; 
-    flex-grow: 1; 
-    color: #0d47a1;       /* blue text */
-    font-weight: 400;     /* normal */
+
+  /* ===== Preview Text (Unified color) ===== */
+  .review-preview { 
+    font-size: 0.85rem; 
+    margin: 0.4rem 0; 
+    line-height: 1.3; 
+    color: #000;        /* Black for both */
+    font-weight: 400;   /* Normal weight */
   }
 
   /* ===== Time Ago ===== */
-  .time-ago.sports { 
-    color: #e65100; 
-    font-weight: 500; 
-  }
-  .time-ago.movies { 
-    color: #6f42c1; 
+  .time-ago { 
+    font-size: 0.75rem;
+    color: #666; 
     font-weight: 500; 
   }
 
@@ -64,6 +56,8 @@ style.textContent = `
     overflow: hidden; 
     box-shadow: 0 3px 8px rgba(0,0,0,0.15); 
     transition: transform 0.2s ease-in-out; 
+    display: flex;
+    flex-direction: column;
   }
   .custom-card:hover { 
     transform: translateY(-3px); 
@@ -74,18 +68,41 @@ style.textContent = `
     height: 200px; 
     object-fit: cover; 
     border-bottom: 2px solid #eee; 
+    margin-bottom: 0.6rem; 
+    border-radius: 12px; 
   }
 
   .card-body { 
     padding: 0.9rem; 
+    flex-grow: 1; 
+    display: flex; 
+    flex-direction: column; 
   }
 
+  /* ===== Footer ===== */
   .card-footer { 
     display: flex; 
-    justify-content: space-between; 
+    justify-content: flex-end; 
     align-items: center; 
     padding: 0.6rem 0.9rem; 
     background: #f8f9fa; 
+  }
+
+  /* ===== Button (Same for Sports + Movies) ===== */
+  .btn-read { 
+    background: #28a745; 
+    color: white; 
+    border: none; 
+    padding: 0.25rem 0.7rem; 
+    border-radius: 20px; 
+    font-size: 0.75rem; 
+    font-weight: 600; 
+    cursor: pointer; 
+    transition: background 0.3s ease; 
+    align-self: flex-start;
+  }
+  .btn-read:hover { 
+    background: #218838; 
   }
 
   /* ===== Section Header ===== */
@@ -112,7 +129,6 @@ style.textContent = `
   .section-header:hover { 
     opacity: 0.9; 
   }
-
   .more-icon { 
     font-size: 1.1rem; 
   }
@@ -127,9 +143,13 @@ function extractFirstImage(html) {
   return img ? img.src : null;
 }
 
-function extractTextPreview(text, length = 200) {
+// ✅ Strip HTML + cut preview
+function extractTextPreview(text, length = 120) {
   if (!text) return "";
-  return text.length > length ? text.substring(0, length) + "..." : text;
+  const tempDiv = document.createElement("div");
+  tempDiv.innerHTML = text;
+  const plainText = tempDiv.textContent || tempDiv.innerText || "";
+  return plainText.length > length ? plainText.substring(0, length) + "..." : plainText;
 }
 
 function timeAgo(date) {
@@ -163,49 +183,62 @@ function createCardsGrid(snapshot, type) {
     const card = document.createElement("div");
     card.className = "card custom-card flex-fill";
 
-    const img = document.createElement("img");
-    img.src = imgSrc;
-    img.alt = `${type} Image`;
-    card.appendChild(img);
-
     const cardBody = document.createElement("div");
     cardBody.className = "card-body";
 
-    // ✅ Sports = black normal (seriesname)
-    // ✅ Movies = blue normal (content)
-    const previewText = type.includes("Sports")
-      ? extractTextPreview(data.seriesname, 200)
-      : extractTextPreview(data.content, 200);
+    // ✅ Title
+    const titleEl = document.createElement("div");
+    titleEl.className = "review-title";
+    titleEl.textContent = data.title || "Untitled";
+    cardBody.appendChild(titleEl);
 
-    cardBody.innerHTML = `
-      <div class="review-title ${type.includes("Sports") ? "sports" : "movies"}">
-        ${data.title || "Untitled"}
-      </div>
-      <div class="review-preview ${type.includes("Sports") ? "sports" : "movies"}">
-        ${previewText}
-      </div>
-    `;
-    card.appendChild(cardBody);
+    // ✅ Image
+    const img = document.createElement("img");
+    img.src = imgSrc;
+    img.alt = `${type} Image`;
+    cardBody.appendChild(img);
 
-    const footer = document.createElement("div");
-    footer.className = "card-footer";
+    // ✅ Series Name (only for sports)
+    if (type === "Sports Review" && data.seriesname) {
+      const seriesEl = document.createElement("div");
+      seriesEl.className = "series-name";
+      seriesEl.textContent = data.seriesname;
+      cardBody.appendChild(seriesEl);
+    }
 
-    const dateText = document.createElement("span");
-    dateText.className = `time-ago ${type.includes("Sports") ? "sports" : "movies"}`;
-    dateText.textContent = data.createddate?.toDate
-      ? timeAgo(data.createddate.toDate())
-      : "Unknown date";
+    // ✅ Preview
+    const previewEl = document.createElement("div");
+    previewEl.className = "review-preview";
+    if (type === "Sports Review") {
+      previewEl.textContent = extractTextPreview(data.seriesname + " - " + data.content, 120);
+    } else {
+      previewEl.textContent = extractTextPreview(data.content, 120);
+    }
+    cardBody.appendChild(previewEl);
 
+    // ✅ Button
     const btn = document.createElement("button");
-    btn.className = `btn ${type === 'Sports Review' ? 'btn-primary' : 'btn-success'} btn-details`;
-    btn.textContent = "Preview";
+    btn.className = "btn-read";
+    btn.textContent = "Read Post ➡️";   // 🔴 Updated here
     btn.addEventListener("click", () => {
       const id = docSnap.id;
       window.location.href = `detailspage.html?id=${encodeURIComponent(id)}&type=${encodeURIComponent(type)}`;
     });
+    cardBody.appendChild(btn);
+
+    card.appendChild(cardBody);
+
+    // ✅ Footer with Time Ago
+    const footer = document.createElement("div");
+    footer.className = "card-footer";
+
+    const dateText = document.createElement("span");
+    dateText.className = "time-ago";
+    dateText.textContent = data.createddate?.toDate
+      ? timeAgo(data.createddate.toDate())
+      : "Unknown date";
 
     footer.appendChild(dateText);
-    footer.appendChild(btn);
     card.appendChild(footer);
 
     col.appendChild(card);

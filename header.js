@@ -7,10 +7,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
   headerContainer.innerHTML = `
     <style>
-      /* Brand Button */
+      /* 🔴 Common Red Button Style (applies to all menu buttons including admin) */
+      .custom-red-btn {
+        background: linear-gradient(135deg, #ff4d4d, #b30000);
+        color: #fff !important;
+        border: none;
+        font-weight: 600;
+        padding: 6px 14px;
+        font-size: 0.85rem;
+        border-radius: 6px;
+        transition: all 0.2s ease-in-out;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+      }
+      .custom-red-btn:hover {
+        transform: translateY(-2px);
+        background: linear-gradient(135deg, #ff1a1a, #990000);
+      }
+
+      /* Brand Special Button (slightly bigger) */
       .custom-rdm-btn {
         background: linear-gradient(135deg, #ff4d4d, #b30000);
-        color: #fff;
+        color: #fff !important;
         border: none;
         font-weight: bold;
         font-family: 'Orbitron', sans-serif;
@@ -38,34 +55,6 @@ document.addEventListener("DOMContentLoaded", function () {
         padding-bottom: 0.55rem !important;
       }
 
-      /* Desktop Menu Buttons */
-      header.top-header .btn-menu {
-        background: rgba(255, 255, 255, 0.15);
-        color: #fff;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        padding: 0.4rem 0.8rem !important;
-        font-size: 0.8rem !important;
-        border-radius: 6px;
-        font-weight: 500;
-        transition: all 0.2s ease;
-      }
-      header.top-header .btn-menu:hover {
-        background: #fff;
-        color: #b30000;
-        transform: translateY(-2px);
-      }
-
-      header.top-header .btn-admin {
-        border: 1px solid #ffcc00;
-        color: #ffcc00;
-        background: transparent;
-        transition: all 0.2s ease;
-      }
-      header.top-header .btn-admin:hover {
-        background: #ffcc00;
-        color: #b30000;
-      }
-
       /* Offcanvas Styles */
       .offcanvas-header {
         padding: 0.6rem 1rem;
@@ -83,22 +72,6 @@ document.addEventListener("DOMContentLoaded", function () {
         font-size: 0.85rem !important;
         padding: 0.45rem 0.75rem !important;
         border-radius: 6px;
-        transition: all 0.2s ease;
-      }
-      .offcanvas .btn-light {
-        background: #f8f9fa;
-        color: #212529;
-      }
-      .offcanvas .btn-light:hover {
-        background: #e0e0e0;
-      }
-      .offcanvas .btn-admin {
-        border-color: #ffcc00;
-        color: #ffcc00;
-      }
-      .offcanvas .btn-admin:hover {
-        background: #ffcc00;
-        color: #212529;
       }
 
       .offcanvas-footer {
@@ -130,17 +103,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
         <!-- Desktop Menu -->
         <div class="d-none d-md-flex gap-2">
-          <button class="btn btn-menu" onclick="location.href='index.html'">
+          <button class="btn custom-red-btn" onclick="location.href='index.html'">
             <i class="bi bi-house-door-fill me-1"></i> All
           </button>
-          <button class="btn btn-menu" onclick="location.href='moviereview.html'">
+          <button class="btn custom-red-btn" onclick="location.href='moviereview.html'">
             <i class="bi bi-film me-1"></i> Movie Reviews
           </button>
-          <button class="btn btn-menu" onclick="location.href='sportsreview.html'">
+          <button class="btn custom-red-btn" onclick="location.href='sportsreview.html'">
             <i class="bi bi-trophy-fill me-1"></i> Sports Reviews
           </button>
-          <button class="btn btn-admin" onclick="location.href='admin.html'">
-            <i class="bi bi-lock-fill me-1"></i> Admin
+          <button class="btn custom-red-btn" onclick="location.href='admin.html'">
+            <i class="bi bi-lock-fill me-1"></i> Login Admin
           </button>
         </div>
       </div>
@@ -155,17 +128,17 @@ document.addEventListener("DOMContentLoaded", function () {
       </div>
       <div class="offcanvas-body d-flex flex-column">
         <div class="d-grid gap-2 mb-3">
-          <button class="btn btn-sm btn-light text-start w-100" onclick="location.href='index.html'">
+          <button class="btn btn-sm custom-red-btn text-start w-100" onclick="location.href='index.html'">
             <i class="bi bi-house-door-fill me-2"></i> All Reviews
           </button>
-          <button class="btn btn-sm btn-light text-start w-100" onclick="location.href='moviereview.html'">
+          <button class="btn btn-sm custom-red-btn text-start w-100" onclick="location.href='moviereview.html'">
             <i class="bi bi-film me-2"></i> Movie Reviews
           </button>
-          <button class="btn btn-sm btn-light text-start w-100" onclick="location.href='sportsreview.html'">
+          <button class="btn btn-sm custom-red-btn text-start w-100" onclick="location.href='sportsreview.html'">
             <i class="bi bi-trophy-fill me-2"></i> Sports Reviews
           </button>
-          <button class="btn btn-sm btn-admin text-start w-100" onclick="location.href='admin.html'">
-            <i class="bi bi-lock-fill me-2"></i> Admin Panel
+          <button class="btn btn-sm custom-red-btn text-start w-100" onclick="location.href='admin.html'">
+            <i class="bi bi-lock-fill me-2"></i> Login Admin
           </button>
         </div>
       </div>
