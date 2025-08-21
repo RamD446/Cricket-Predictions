@@ -26,7 +26,7 @@
   <!-- Header -->
   <div id="header-container"></div>
 
-  <main class="container" style="padding-top: 6rem; padding-bottom: 4rem;" style="min-height: 80vh;">
+  <main class="container" style="padding-top: 6rem; padding-bottom: 4rem;">
 
     <!-- Login Section -->
     <div id="login-section" class="card p-4 shadow-sm mx-auto" style="max-width: 400px;">
@@ -69,10 +69,6 @@
             <thead class="table-dark">
               <tr>
                 <th>Match ID</th>
-                <th>Title</th>
-                <th>Type</th>
-                <th>Series Name</th>
-                <th>Created By</th>
                 <th>Date</th>
                 <th>Action</th>
               </tr>
@@ -237,7 +233,11 @@
         tr.innerHTML = `
           <td>${d.matchid || ""}</td>
           <td>${d.createddate?.toDate ? d.createddate.toDate().toLocaleString() : ""}</td>
-          <td><button class="btn btn-sm btn-danger icon-btn" data-id="${docSnap.id}"><i class="bi bi-trash"></i></button></td>
+          <td>
+            <button class="btn btn-sm btn-danger icon-btn" data-id="${docSnap.id}">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
         `;
         reviewsTable.appendChild(tr);
       });
