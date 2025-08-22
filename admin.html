@@ -164,9 +164,14 @@
       modules: { toolbar: toolbarOptions }
     });
 
+    // ✅ Updated function for multilingual slugs (Telugu, English, etc.)
     function generateMatchIdFromTitle(title) {
+      const cleanTitle = title.normalize("NFC").trim();
+      const slug = cleanTitle
+        .replace(/\s+/g, "-")   // replace spaces with dash
+        .replace(/-+/g, "-");   // avoid multiple dashes
       const randomId = Math.random().toString(36).substring(2, 10);
-      return title.trim().replace(/\s+/g, "_").replace(/[^\w_]/g, "") + "_" + randomId;
+      return slug + "-" + randomId;
     }
 
     loginForm.addEventListener("submit", async (e) => {

@@ -35,7 +35,7 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      width: 100%;
+      height: 100%;
     }
     .custom-card:hover {
       transform: translateY(-3px);
@@ -43,7 +43,7 @@
     }
     .review-title {
       font-weight: bold;
-      font-size: 1.1rem;
+      font-size: 0.9rem;
       margin-bottom: 0.5rem;
       color: hotpink;
     }
@@ -58,6 +58,10 @@
       font-size: 0.9rem;
       color: #212529;
       margin-bottom: 0.75rem;
+      min-height: 60px;
+      max-height: 60px;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .card-footer {
       font-size: 0.8rem;
@@ -68,6 +72,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 0.5rem 0.75rem;
+      margin-top: auto;
     }
     .btn-details {
       font-size: 0.85rem;
@@ -161,15 +166,15 @@
       if (!imgSrc) imgSrc = "images/image1.jpeg";
 
       const col = document.createElement("div");
-      col.className = "col-12 col-md-6 col-lg-4";
+      col.className = "col-12 col-md-6 col-lg-4 d-flex";
 
       const card = document.createElement("div");
-      card.className = "card custom-card";
+      card.className = "card custom-card flex-fill";
 
       const cardBody = document.createElement("div");
-      cardBody.className = "card-body";
+      cardBody.className = "card-body d-flex flex-column";
 
-      // Title (pink)
+      // Title
       cardBody.innerHTML = `<div class="review-title">${data.title || "Untitled"}</div>`;
 
       // Image
@@ -179,11 +184,12 @@
       img.className = "review-image";
       cardBody.appendChild(img);
 
-      // Full Content
+      // Shortened Content (100 chars)
       const contentText = extractText(data.content);
-      cardBody.innerHTML += `<div class="review-content">${contentText}</div>`;
+      const shortText = contentText.length > 100 ? contentText.substring(0, 100) + "..." : contentText;
+      cardBody.innerHTML += `<div class="review-content">${shortText}</div>`;
 
-      // Footer with Button + Time
+      // Footer
       const footer = document.createElement("div");
       footer.className = "card-footer";
 
@@ -293,3 +299,4 @@
 <script src="footer.js"></script>
 </body>
 </html>
+
