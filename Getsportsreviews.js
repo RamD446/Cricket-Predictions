@@ -227,13 +227,19 @@ function createCardsGrid(snapshot, type) {
       : "Unknown date";
 
     // ✅ Button moved here
-    const btn = document.createElement("button");
-    btn.className = "btn-read";
-    btn.textContent = "Read Post Details";
-    btn.addEventListener("click", () => {
-      const id = docSnap.id;
-      window.location.href = `detailspage.html?id=${encodeURIComponent(id)}&type=${encodeURIComponent(type)}`;
-    });
+   const btn = document.createElement("button");
+btn.className = "btn-read";
+btn.textContent = "Read Post Details";
+btn.addEventListener("click", () => {
+  const matchId = data.matchid || docSnap.id; // just for URL
+  const docId = docSnap.id;                  // the real ID for fetching
+  const type = data.type || '';              // optional type for display/filtering
+
+  window.location.href = `detailspage.html?matchid=${encodeURIComponent(matchId)}&id=${encodeURIComponent(docId)}&type=${encodeURIComponent(type)}`;
+});
+
+
+
 
     footer.appendChild(dateText);
     footer.appendChild(btn);

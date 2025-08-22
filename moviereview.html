@@ -1,4 +1,3 @@
-<!-- moviereview.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -105,7 +104,7 @@
 <!-- Firebase + Firestore -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getFirestore, collection, getDocs, query, where, orderBy, limit, startAfter, documentId, getCountFromServer } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { getFirestore, collection, getDocs, query, where, orderBy, limit, startAfter, getCountFromServer } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyD_4rFTGZn-I7xYwS9SQIhI4KM7P0I2msE",
@@ -122,7 +121,6 @@
 
   const pageSize = 6;
   let lastVisible = null;
-  let currentPage = 1;
   let totalPages = 1;
 
   function extractFirstImage(html) {
@@ -194,7 +192,9 @@
       btn.textContent = "Read Post Details";
       btn.addEventListener("click", () => {
         const id = docSnap.id;
-        window.location.href = `detailspage.html?id=${encodeURIComponent(id)}&type=Movie%20Review`;
+        const matchid = data.matchid || docSnap.id;
+        const type = encodeURIComponent(data.type || "Movie Review");
+        window.location.href = `detailspage.html?id=${encodeURIComponent(id)}&matchid=${encodeURIComponent(matchid)}&type=${type}`;
       });
 
       const dateText = document.createElement("span");
