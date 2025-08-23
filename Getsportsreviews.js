@@ -34,7 +34,7 @@ style.textContent = `
     margin-bottom: 0.3rem;
   }
 
-  /* ===== Preview Text ===== */
+  /* ===== Preview Text (Movies only) ===== */
   .review-preview { 
     font-size: 0.85rem; 
     margin: 0.4rem 0; 
@@ -196,7 +196,7 @@ function createCardsGrid(snapshot, type) {
     img.alt = `${type} Image`;
     cardBody.appendChild(img);
 
-    // ✅ Series Name (only for sports)
+    // ✅ Sports: show Series Name
     if (type === "Sports Review" && data.seriesname) {
       const seriesEl = document.createElement("div");
       seriesEl.className = "series-name";
@@ -204,15 +204,13 @@ function createCardsGrid(snapshot, type) {
       cardBody.appendChild(seriesEl);
     }
 
-    // ✅ Preview
-    const previewEl = document.createElement("div");
-    previewEl.className = "review-preview";
-    if (type === "Sports Review") {
-      previewEl.textContent = extractTextPreview(data.seriesname + " - " + data.content, 120);
-    } else {
+    // ✅ Movies: show Preview
+    if (type === "Movie Review") {
+      const previewEl = document.createElement("div");
+      previewEl.className = "review-preview";
       previewEl.textContent = extractTextPreview(data.content, 120);
+      cardBody.appendChild(previewEl);
     }
-    cardBody.appendChild(previewEl);
 
     card.appendChild(cardBody);
 
@@ -226,20 +224,16 @@ function createCardsGrid(snapshot, type) {
       ? timeAgo(data.createddate.toDate())
       : "Unknown date";
 
-    // ✅ Button moved here
-   const btn = document.createElement("button");
-btn.className = "btn-read";
-btn.textContent = "Read Post Details";
-btn.addEventListener("click", () => {
-  const matchId = data.matchid || docSnap.id; // just for URL
-  const docId = docSnap.id;                  // the real ID for fetching
-  const type = data.type || '';              // optional type for display/filtering
+    const btn = document.createElement("button");
+    btn.className = "btn-read";
+    btn.textContent = "Read Post Details";
+    btn.addEventListener("click", () => {
+      const matchId = data.matchid || docSnap.id; // just for URL
+      const docId = docSnap.id;                  // the real ID for fetching
+      const type = data.type || '';              // optional type for display/filtering
 
-  window.location.href = `detailspage.html?matchid=${encodeURIComponent(matchId)}&id=${encodeURIComponent(docId)}&type=${encodeURIComponent(type)}`;
-});
-
-
-
+      window.location.href = `detailspage.html?matchid=${encodeURIComponent(matchId)}&id=${encodeURIComponent(docId)}&type=${encodeURIComponent(type)}`;
+    });
 
     footer.appendChild(dateText);
     footer.appendChild(btn);
